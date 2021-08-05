@@ -3,6 +3,10 @@ from common.numpy_fast import clip, interp
 from selfdrive.controls.lib.pid import LongPIController
 from selfdrive.controls.lib.drive_helpers import CONTROL_N
 from selfdrive.modeld.constants import T_IDXS
+from selfdrive.config import Conversions as CV
+from selfdrive.car.gm.values import MIN_ACC_SPEED
+
+# mpc에서 계산된 타겟속도로 맞추기 위해 PID를 이용한 gas/brake 값을 산출
 
 LongCtrlState = log.ControlsState.LongControlState
 
@@ -23,9 +27,8 @@ def long_control_state_trans(active, long_control_state, v_ego, v_target, v_pid,
   """Update longitudinal control state machine"""
   stopping_target_speed = min_speed_can + STOPPING_TARGET_SPEED_OFFSET
   stopping_condition = (v_ego < 2.0 and cruise_standstill) or \
-                       (v_ego < STOPPING_EGO_SPEED and
-                        ((v_pid < stopping_target_speed and v_target < stopping_target_speed) or
-                         brake_pressed))
+                       (v_ego < STOPPING_EGO_SPEED and (
+                                 v_pid < stopping_target_speed and v_target < stopping_target_speed))
 
   starting_condition = v_target > STARTING_TARGET_SPEED and not cruise_standstill
 
@@ -97,7 +100,7 @@ class LongControl():
 
     v_ego_pid = max(CS.vEgo, CP.minSpeedCan)  # Without this we get jumps, CAN bus reports 0 when speed < 0.3
 
-    if self.long_control_state == LongCtrlState.off or not CS.adaptiveCruise:
+    if self.long_control_state == LongCtrlState.off or CS.gasPressed or not CS.adaptiveCruise or CS.brakePressed or CS.vEgo <= MIN_ACC_SPEED / CV.MS_TO_KPH:
       self.reset(v_ego_pid)
       output_gb = 0.
 

@@ -135,10 +135,6 @@ class CarInterfaceBase():
       else:
         events.add(EventName.steerTempUnavailableSilent)
 
-    # Disable on rising edge of gas or brake. Also disable on brake when speed > 0.
-    if cs_out.brakePressed and (not self.CS.out.brakePressed or not cs_out.standstill):
-      events.add(EventName.pedalPressed)
-
     # we engage when pcm is active (rising edge)
     if pcm_enable:
       if cs_out.cruiseState.enabled and not self.CS.out.cruiseState.enabled:
