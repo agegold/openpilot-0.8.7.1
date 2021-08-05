@@ -4,13 +4,10 @@ from common.numpy_fast import interp, clip
 from selfdrive.config import Conversions as CV
 from selfdrive.car import apply_std_steer_torque_limits, create_gas_command
 from selfdrive.car.gm import gmcan
-from selfdrive.car.gm.values import DBC, CanBus, CarControllerParams
+from selfdrive.car.gm.values import DBC, CanBus, CarControllerParams, MIN_ACC_SPEED
 from opendbc.can.packer import CANPacker
 
 VisualAlert = car.CarControl.HUDControl.VisualAlert
-
-VEL = [13.889, 16.667, 25.]  # velocities
-MIN_PEDAL = [0.02, 0.05, 0.1]
 
 def accel_hysteresis(accel, accel_steady):
 
@@ -61,34 +58,18 @@ class CarController():
 
       can_sends.append(gmcan.create_steering_control(self.packer_pt, CanBus.POWERTRAIN, apply_steer, idx, lkas_enabled))
 
-    # Pedal/Regen
+    # Pedal
     if CS.CP.enableGasInterceptor and (frame % 2) == 0:
 
-      if not enabled or not CS.adaptive_Cruise:
+      if not enabled or not CS.adaptive_Cruise or CS.out.vEgo <= MIN_ACC_SPEED / CV.MS_TO_KPH:
         final_pedal = 0
-      elif CS.adaptive_Cruise:
-        min_pedal_speed = interp(CS.out.vEgo, VEL, MIN_PEDAL)
-        pedal = clip(actuators.gas, min_pedal_speed, 1.)
-        regen = actuators.brake
-        pedal, self.accel_steady = accel_hysteresis(pedal, self.accel_steady)
-        final_pedal = clip(pedal - regen, 0., 1.)
-        if regen > 0.1:
-          can_sends.append(gmcan.create_regen_paddle_command(self.packer_pt, CanBus.POWERTRAIN))
+      elif CS.adaptive_Cruise and CS.out.vEgo > MIN_ACC_SPEED / CV.MS_TO_KPH:
+        accel = actuators.gas - actuators.brake
+        accel, self.accel_steady = accel_hysteresis(accel, self.accel_steady)
+        final_pedal = clip(accel, 0., 1.)
 
       idx = (frame // 2) % 4
       can_sends.append(create_gas_command(self.packer_pt, final_pedal, idx))
-      #self.apply_pedal_last = final_pedal
-
-    # Send dashboard UI commands (ACC status), 25hz
-    #if (frame % 4) == 0:
-    #  send_fcw = hud_alert == VisualAlert.fcw
-    #  can_sends.append(gmcan.create_acc_dashboard_command(self.packer_pt, CanBus.POWERTRAIN, enabled, hud_v_cruise * CV.MS_TO_KPH, hud_show_car, send_fcw))
-
-    # Radar needs to know current speed and yaw rate (50hz) - Delete
-    # and that ADAS is alive (10hz)
-
-    #if frame % P.ADAS_KEEPALIVE_STEP == 0:
-    #  can_sends += gmcan.create_adas_keepalive(CanBus.POWERTRAIN)
 
     # Show green icon when LKA torque is applied, and
     # alarming orange icon when approaching torque limit.
