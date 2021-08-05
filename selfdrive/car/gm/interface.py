@@ -32,114 +32,30 @@ class CarInterface(CarInterfaceBase):
     ret.enableGasInterceptor = 0x201 in fingerprint[0]
     ret.openpilotLongitudinalControl = ret.enableGasInterceptor
 
-    params = Params()
-    LQR_enabled = params.get_bool("LQR_Selected")
-    INDI_enabled = params.get_bool("INDI_Selected")
+    # Equinox lateralTuning (측면 튜닝)
+    ret.lateralTuning.init('lqr')
+    ret.lateralTuning.lqr.scale = 1680.0
+    ret.lateralTuning.lqr.ki = 0.01
+    ret.lateralTuning.lqr.a = [0., 1., -0.22619643, 1.21822268]
+    ret.lateralTuning.lqr.b = [-1.92006585e-04, 3.95603032e-05]
+    ret.lateralTuning.lqr.c = [1., 0.]
+    ret.lateralTuning.lqr.k = [-110.73572306, 451.22718255]
+    ret.lateralTuning.lqr.l = [0.3233671, 0.3185757]
+    ret.lateralTuning.lqr.dcGain = 0.002858
 
-    if LQR_enabled:
-      ret.lateralTuning.init('lqr')
-      ret.lateralTuning.lqr.scale = 1950.0
-      ret.lateralTuning.lqr.ki = 0.055
-      ret.lateralTuning.lqr.a = [0., 1., -0.22619643, 1.21822268]
-      ret.lateralTuning.lqr.b = [-1.92006585e-04, 3.95603032e-05]
-      ret.lateralTuning.lqr.c = [1., 0.]
-      ret.lateralTuning.lqr.k = [-110.73572306, 451.22718255]
-      ret.lateralTuning.lqr.l = [0.3233671, 0.3185757]
-      ret.lateralTuning.lqr.dcGain = 0.002237852961363602
-    elif not LQR_enabled and INDI_enabled:
-      ret.lateralTuning.init('indi')
-      ret.lateralTuning.indi.innerLoopGainBP = [10., 30.]
-      ret.lateralTuning.indi.innerLoopGainV = [5.5, 8.0]
-      ret.lateralTuning.indi.outerLoopGainBP = [10., 30.]
-      ret.lateralTuning.indi.outerLoopGainV = [4.5, 7.0]
-      ret.lateralTuning.indi.timeConstantBP = [10., 30.]
-      ret.lateralTuning.indi.timeConstantV = [1.8, 3.5]
-      ret.lateralTuning.indi.actuatorEffectivenessBP = [0.]
-      ret.lateralTuning.indi.actuatorEffectivenessV = [2.0]
-    elif not LQR_enabled and not INDI_enabled:
-      ret.lateralTuning.pid.kiBP, ret.lateralTuning.pid.kpBP = [[10., 30.0], [10., 30.0]]
-      ret.lateralTuning.pid.kpV, ret.lateralTuning.pid.kiV = [[0.12, 0.18], [0.02, 0.03]]
-      ret.lateralTuning.pid.kdBP = [0.]
-      ret.lateralTuning.pid.kdV = [0.]  #corolla from shane fork : 0.725
-      ret.lateralTuning.pid.kf = 0.000045
+    ret.steerRatio = 17.2
+    ret.steerActuatorDelay = 0.0
+    ret.steerRateCost = 0.552
 
-    ret.steerRateCost = 1.0
-    ret.steerActuatorDelay = 0.1  # Default delay, not measured yet
+    ret.minSteerSpeed = 2.78  # GM 스티어링 조작은 10km 이상부터 사용 가능하다.
+    ret.minEnableSpeed = -1
+    ret.mass = 3485. * CV.LB_TO_KG + STD_CARGO_KG
+    ret.safetyModel = car.CarParams.SafetyModel.gm
+    ret.wheelbase = 2.72
+    ret.steerRatioRear = 0.
+    ret.centerToFront = ret.wheelbase * 0.4
 
-    if candidate == CAR.VOLT:
-      # supports stop and go, but initial engage must be above 18mph (which include conservatism)
-      ret.minEnableSpeed = 18 * CV.MPH_TO_MS
-      ret.minSteerSpeed = 7 * CV.MPH_TO_MS
-      ret.mass = 1607. + STD_CARGO_KG
-      ret.wheelbase = 2.69
-      ret.steerRatio = 15.7
-      ret.steerRatioRear = 0.
-      ret.centerToFront = ret.wheelbase * 0.4  # wild guess
-      tire_stiffness_factor = 0.444  # not optimized yet
-
-    elif candidate == CAR.BOLT:
-      # initial engage unkown - copied from Volt. Stop and go unknown.
-      ret.minEnableSpeed = -1
-      ret.minSteerSpeed = 5
-      ret.mass = 1625. + STD_CARGO_KG
-      ret.safetyModel = car.CarParams.SafetyModel.gm
-      ret.wheelbase = 2.60096
-      ret.steerRatio = 15.2
-      ret.steerRatioRear = 0.
-      ret.centerToFront = ret.wheelbase * 0.49
-      tire_stiffness_factor = 1.0
-
-    elif candidate == CAR.MALIBU:
-      # supports stop and go, but initial engage must be above 18mph (which include conservatism)
-      ret.minEnableSpeed = 18 * CV.MPH_TO_MS
-      ret.minSteerSpeed = 7 * CV.MPH_TO_MS
-      ret.mass = 1496. + STD_CARGO_KG
-      ret.wheelbase = 2.83
-      ret.steerRatio = 15.8
-      ret.steerRatioRear = 0.
-      ret.centerToFront = ret.wheelbase * 0.4  # wild guess
-      tire_stiffness_factor = 0.444  # not optimized yet
-
-    elif candidate == CAR.HOLDEN_ASTRA:
-      ret.mass = 1363. + STD_CARGO_KG
-      ret.wheelbase = 2.662
-      # Remaining parameters copied from Volt for now
-      ret.centerToFront = ret.wheelbase * 0.4
-      ret.minEnableSpeed = 18 * CV.MPH_TO_MS
-      ret.minSteerSpeed = 7 * CV.MPH_TO_MS
-      ret.steerRatio = 15.7
-      ret.steerRatioRear = 0.
-      tire_stiffness_factor = 0.444  # not optimized yet
-
-    elif candidate == CAR.ACADIA:
-      ret.minEnableSpeed = -1.  # engage speed is decided by pcm
-      ret.minSteerSpeed = 7 * CV.MPH_TO_MS
-      ret.mass = 4353. * CV.LB_TO_KG + STD_CARGO_KG
-      ret.wheelbase = 2.86
-      ret.steerRatio = 14.4  # end to end is 13.46
-      ret.steerRatioRear = 0.
-      ret.centerToFront = ret.wheelbase * 0.4
-      tire_stiffness_factor = 0.444  # not optimized yet
-
-    elif candidate == CAR.BUICK_REGAL:
-      ret.minEnableSpeed = 18 * CV.MPH_TO_MS
-      ret.minSteerSpeed = 7 * CV.MPH_TO_MS
-      ret.mass = 3779. * CV.LB_TO_KG + STD_CARGO_KG  # (3849+3708)/2
-      ret.wheelbase = 2.83  # 111.4 inches in meters
-      ret.steerRatio = 14.4  # guess for tourx
-      ret.steerRatioRear = 0.
-      ret.centerToFront = ret.wheelbase * 0.4  # guess for tourx
-      tire_stiffness_factor = 0.444  # not optimized yet
-
-    elif candidate == CAR.CADILLAC_ATS:
-      ret.minEnableSpeed = 18 * CV.MPH_TO_MS
-      ret.minSteerSpeed = 7 * CV.MPH_TO_MS
-      ret.mass = 1601. + STD_CARGO_KG
-      ret.wheelbase = 2.78
-      ret.steerRatio = 15.3
-      ret.steerRatioRear = 0.
-      ret.centerToFront = ret.wheelbase * 0.49
-      tire_stiffness_factor = 0.444  # not optimized yet
+    tire_stiffness_factor = 0.444  # not optimized yet
 
     # TODO: get actual value, for now starting with reasonable value for
     # civic and scaling by mass and wheelbase
@@ -150,18 +66,17 @@ class CarInterface(CarInterfaceBase):
     ret.tireStiffnessFront, ret.tireStiffnessRear = scale_tire_stiffness(ret.mass, ret.wheelbase, ret.centerToFront,
                                                                          tire_stiffness_factor=tire_stiffness_factor)
 
-    ret.longitudinalTuning.kpBP = [0., 30.]
-    ret.longitudinalTuning.kpV = [0.5, 0.55]
-    ret.longitudinalTuning.kiBP = [0., 20.]
-    ret.longitudinalTuning.kiV = [0.045, 0.055]
-    ret.longitudinalTuning.kfBP = [15., 20., 25.]
-    ret.longitudinalTuning.kfV = [1., 0.5, 0.2]
+    # Equinox 2020
+    ret.longitudinalTuning.kpBP = [0., 5., 10., 20., 30.]
+    ret.longitudinalTuning.kpV = [1.2, 1.1, 0.8, 0.75, 1.3]
+    ret.longitudinalTuning.kiBP = [0., 35.]
+    ret.longitudinalTuning.kiV = [0.18, 0.12]
+    ret.longitudinalTuning.kfBP = [0., 13.889, 27.778]
+    ret.longitudinalTuning.kfV = [1., 0.8, 0.5]
 
     if ret.enableGasInterceptor:
-      ret.gasMaxBP = [5.0, 10.0]
-      ret.gasMaxV =  [0.5, 0.7]
-
-    ret.startAccel = 1.0
+      ret.gasMaxBP = [0., 5., 10., 19., 30.]
+      ret.gasMaxV = [0.2, 0.3, 0.35, 0.5, 0.7]
 
     ret.steerLimitTimer = 0.4
     ret.radarTimeStep = 0.0667  # GM radar runs at 15Hz instead of standard 20Hz
@@ -207,13 +122,13 @@ class CarInterface(CarInterfaceBase):
       events.add(EventName.belowEngageSpeed)
     if self.CS.park_brake:
       events.add(EventName.parkBrake)
-    if ret.vEgo < self.CP.minSteerSpeed:
-      events.add(car.CarEvent.EventName.belowSteerSpeed)
-    if self.CP.enableGasInterceptor:
-      if self.CS.adaptive_Cruise and ret.brakePressed:
-        events.add(EventName.pedalPressed)
-        self.CS.adaptive_Cruise = False
-        self.CS.enable_lkas = True
+    #if ret.vEgo < self.CP.minSteerSpeed:
+    #  events.add(car.CarEvent.EventName.belowSteerSpeed)
+    #if self.CP.enableGasInterceptor:
+    #  if self.CS.adaptive_Cruise and ret.brakePressed:
+    #    events.add(EventName.pedalPressed)
+    #    self.CS.adaptive_Cruise = False
+    #    self.CS.enable_lkas = True
 
     # handle button presses
     if not self.CS.main_on and self.CP.enableGasInterceptor:
@@ -224,7 +139,7 @@ class CarInterface(CarInterfaceBase):
           events.add(EventName.buttonEnable)
         if (b.type == ButtonType.accelCruise and not b.pressed) and not self.CS.adaptive_Cruise:
           self.CS.adaptive_Cruise = True
-          self.CS.enable_lkas = False
+          self.CS.enable_lkas = True
           events.add(EventName.buttonEnable)
         if (b.type == ButtonType.cancel and b.pressed) and self.CS.adaptive_Cruise:
           self.CS.adaptive_Cruise = False
