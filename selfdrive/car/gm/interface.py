@@ -120,9 +120,9 @@ class CarInterface(CarInterfaceBase):
 
     if ret.vEgo < self.CP.minEnableSpeed:
       events.add(EventName.belowEngageSpeed)
-    if self.CS.park_brake:
-      events.add(EventName.parkBrake)
-    #if ret.vEgo < self.CP.minSteerSpeed:
+    #if self.CS.park_brake:
+    #  events.add(EventName.parkBrake)
+    ##if ret.vEgo < self.CP.minSteerSpeed:
     #  events.add(car.CarEvent.EventName.belowSteerSpeed)
     #if self.CP.enableGasInterceptor:
     #  if self.CS.adaptive_Cruise and ret.brakePressed:
