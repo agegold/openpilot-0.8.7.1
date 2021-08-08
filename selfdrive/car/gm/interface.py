@@ -69,10 +69,14 @@ class CarInterface(CarInterfaceBase):
     # Equinox 2020
     ret.longitudinalTuning.kpBP = [0., 5., 10., 20., 30.]
     ret.longitudinalTuning.kpV = [1.2, 1.1, 0.8, 0.75, 1.3]
-    ret.longitudinalTuning.kiBP = [0., 35.]
-    ret.longitudinalTuning.kiV = [0.18, 0.12]
-    ret.longitudinalTuning.kfBP = [0., 13.889, 27.778]
-    ret.longitudinalTuning.kfV = [1., 0.8, 0.5]
+    #ret.longitudinalTuning.kiBP = [0., 35.]
+    #ret.longitudinalTuning.kiV = [0.18, 0.12]
+    ret.longitudinalTuning.kiBP = [0., 20.]
+    ret.longitudinalTuning.kiV = [0.045, 0.055]
+    #ret.longitudinalTuning.kfBP = [0., 13.889, 27.778]
+    #ret.longitudinalTuning.kfV = [1., 0.8, 0.5]
+    ret.longitudinalTuning.kfBP = [15., 20., 25.]
+    ret.longitudinalTuning.kfV = [1., 0.5, 0.2]
 
     if ret.enableGasInterceptor:
       ret.gasMaxBP = [0., 5., 10., 19., 30.]
