@@ -20,12 +20,15 @@ LON_MPC_STEP = 0.2  # first step is 0.2s
 AWARENESS_DECEL = -0.2     # car smoothly decel at .2m/s^2 when user is distracted
 
 #A_CRUISE_MIN = -2.5
-A_CRUISE_MIN = -6.5
+#A_CRUISE_MIN = -6.5
+A_CRUISE_MIN = -7
+
 #A_CRUISE_MAX_VALS = [1.2, 1.1, 0.8, 0.6]
 #A_CRUISE_MAX_BP = [0., 15., 25., 40.]
 
 # ECO Model
-A_CRUISE_MAX_VALS =  [1.0, 0.8, 0.7, 0.7, 1.1]
+#A_CRUISE_MAX_VALS =  [1.0, 0.8, 0.7, 0.7, 1.1]
+A_CRUISE_MAX_VALS =  [0.9, 0.7, 0.6, 0.6, 1.0]
 # 0 -> 18 -> 36 -> 72 -> 108
 A_CRUISE_MAX_BP = [0., 5., 10., 20., 30.]
 
@@ -86,6 +89,7 @@ class Planner():
     long_control_state = sm['controlsState'].longControlState
     force_slow_decel = sm['controlsState'].forceDecel
 
+    # 레이더 비전 상태를 저장한다.
     self.lead_0 = sm['radarState'].leadOne
     self.lead_1 = sm['radarState'].leadTwo
 
@@ -120,7 +124,7 @@ class Planner():
         self.j_desired_trajectory = self.mpcs[key].j_solution[:CONTROL_N]
         next_a = self.mpcs[key].a_solution[5]
 
-    # determine fcw
+    # determine fcw (전방충돌 경고 시스템 결정)
     if self.mpcs['lead0'].new_lead:
       self.fcw_checker.reset_lead(cur_time)
     blinkers = sm['carState'].leftBlinker or sm['carState'].rightBlinker

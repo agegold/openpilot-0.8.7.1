@@ -172,7 +172,7 @@ class RadarD():
     return dat
 
 
-# fuses camera and radar data for best lead detection
+# fuses camera and radar data for best lead detection (최고의 리드 감지를 위해 카메라와 레이더 데이터를 융합)
 def radard_thread(sm=None, pm=None, can_sock=None):
   config_realtime_process(5 if TICI else 2, Priority.CTRL_LOW)
 

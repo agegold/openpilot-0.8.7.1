@@ -88,7 +88,7 @@ class LongControl():
       a_target = 0.0
 
 
-    # Actuation limits
+    # Actuation limits (작동 제한)
     gas_max = interp(CS.vEgo, CP.gasMaxBP, CP.gasMaxV)
     brake_max = interp(CS.vEgo, CP.brakeMaxBP, CP.brakeMaxV)
 
@@ -112,7 +112,7 @@ class LongControl():
       self.reset(v_ego_pid)
       output_gb = REGEN_THRESHOLD
 
-    # tracking objects and driving
+    # tracking objects and driving (물체 추적 및 운전)
     elif self.long_control_state == LongCtrlState.pid:
       self.v_pid = v_target
       self.pid.pos_limit = gas_max
@@ -129,8 +129,9 @@ class LongControl():
         output_gb = min(output_gb, 0.)
 
     # Intention is to stop, switch to a different brake control until we stop
+    # 의도는 멈출 때까지 다른 브레이크 컨트롤로 전환하는 것입니다.
     elif self.long_control_state == LongCtrlState.stopping:
-      # Keep applying brakes until the car is stopped
+      # Keep applying brakes until the car is stopped (차가 멈출 때까지 브레이크를 계속 밟으십시오)
       if not CS.standstill or output_gb > -BRAKE_STOPPING_TARGET:
         output_gb -= CP.stoppingBrakeRate / RATE
       output_gb = clip(output_gb, -brake_max, gas_max)
@@ -138,6 +139,7 @@ class LongControl():
       self.reset(CS.vEgo)
 
     # Intention is to move again, release brake fast before handing control to PID
+    # 다시 이동하려는 의도이며 PID에 제어를 넘기기 전에 브레이크를 빨리 해제하십시오.
     elif self.long_control_state == LongCtrlState.starting:
       if output_gb < -0.2:
         output_gb += CP.startingBrakeRate / RATE
