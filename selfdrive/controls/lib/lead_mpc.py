@@ -57,7 +57,7 @@ class LeadMpc():
     else:
       lead = radarstate.leadTwo
     self.status = lead.status
-    TR = interp(v_ego, VEL, DIST)
+    #TR = interp(v_ego, VEL, DIST)
 
     # Setup current mpc state
     self.cur_state[0].x_ego = 0.0
@@ -91,7 +91,8 @@ class LeadMpc():
 
     # Calculate mpc
     t = sec_since_boot()
-    self.n_its = self.libmpc.run_mpc(self.cur_state, self.mpc_solution, self.a_lead_tau, a_lead, TR)
+    self.n_its = self.libmpc.run_mpc(self.cur_state, self.mpc_solution, self.a_lead_tau, a_lead)
+    #self.n_its = self.libmpc.run_mpc(self.cur_state, self.mpc_solution, self.a_lead_tau, a_lead, TR)
     self.v_solution = interp(T_IDXS[:CONTROL_N], MPC_T, self.mpc_solution.v_ego)
     self.a_solution = interp(T_IDXS[:CONTROL_N], MPC_T, self.mpc_solution.a_ego)
     self.j_solution = interp(T_IDXS[:CONTROL_N], MPC_T[:-1], self.mpc_solution.j_ego)
