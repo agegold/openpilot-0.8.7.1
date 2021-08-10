@@ -4,8 +4,10 @@ from selfdrive.config import RADAR_TO_CAMERA
 
 
 # the longer lead decels, the more likely it will keep decelerating
+# 리드 감속이 길수록 계속 감속할 가능성이 높아집니다.
 # TODO is this a good default?
-_LEAD_ACCEL_TAU = 1.5
+#_LEAD_ACCEL_TAU = 1.5
+_LEAD_ACCEL_TAU = 2.0
 
 # radar tracks
 SPEED, ACCEL = 0, 1   # Kalman filter states enum
@@ -142,7 +144,7 @@ class Cluster():
       "fcw": False,
       "modelProb": float(lead_msg.prob),
       "radar": False,
-      "status": True
+      "status": True       # 선행차 있는 조건
     }
 
   def __str__(self):
