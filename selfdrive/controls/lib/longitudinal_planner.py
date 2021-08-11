@@ -28,8 +28,9 @@ A_CRUISE_MIN = -7.5
 
 # ECO Model
 #A_CRUISE_MAX_VALS =  [1.0, 0.8, 0.7, 0.7, 1.1]
-A_CRUISE_MAX_VALS =  [0.9, 0.7, 0.6, 0.6, 1.0]
 #A_CRUISE_MAX_VALS =  [0.8, 0.6, 0.5, 0.5, 0.9]
+
+A_CRUISE_MAX_VALS =  [0.9, 0.8, 0.7, 0.7, 1.0]
 # 0 -> 18 -> 36 -> 72 -> 108
 A_CRUISE_MAX_BP = [0., 5., 10., 20., 30.]
 
