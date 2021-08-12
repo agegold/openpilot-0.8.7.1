@@ -20,7 +20,7 @@ LON_MPC_STEP = 0.2  # first step is 0.2s
 AWARENESS_DECEL = -0.2     # car smoothly decel at .2m/s^2 when user is distracted
 
 #A_CRUISE_MIN = -2.5
-A_CRUISE_MIN = -6.5
+A_CRUISE_MIN = -7.0
 #A_CRUISE_MIN = -7.5
 
 # 0 -> 18 -> 36 -> 72 -> 108
