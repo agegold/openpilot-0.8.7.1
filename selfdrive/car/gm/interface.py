@@ -67,8 +67,11 @@ class CarInterface(CarInterfaceBase):
                                                                          tire_stiffness_factor=tire_stiffness_factor)
 
     # Equinox 2020
-    ret.longitudinalTuning.kpBP = [0., 5., 10., 20., 30.]
-    ret.longitudinalTuning.kpV = [1.2, 1.1, 0.8, 0.75, 1.3]
+    #ret.longitudinalTuning.kpBP = [0., 5., 10., 20., 30.]
+    # ret.longitudinalTuning.kpV = [1.2, 1.1, 0.8, 0.75, 1.3]
+    # 턴을 하는 경우 가속이 심하게 올라감 튜닝
+    ret.longitudinalTuning.kpBP = [0., 10., 30.]
+    ret.longitudinalTuning.kpV = [0.8, 0.7, 1.0]
     #ret.longitudinalTuning.kiBP = [0., 35.]
     #ret.longitudinalTuning.kiV = [0.18, 0.12]
     ret.longitudinalTuning.kiBP = [0., 20.]
