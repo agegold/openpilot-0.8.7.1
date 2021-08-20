@@ -13,8 +13,8 @@ _LEAD_ACCEL_TAU = 7.0
 SPEED, ACCEL = 0, 1   # Kalman filter states enum
 
 # stationary qualification parameters
-v_ego_stationary = 4.   # no stationary object flag below this speed (이 속도 아래에는 정지 물체 플래그가 없습니다.)
-
+#v_ego_stationary = 4.   # no stationary object flag below this speed (이 속도 아래에는 정지 물체 플래그가 없습니다.)
+v_ego_stationary = 1.
 
 class Track():
   def __init__(self, v_lead, kalman_params):
@@ -153,6 +153,7 @@ class Cluster():
 
   def potential_low_speed_lead(self, v_ego):
     # stop for stuff in front of you and low speed, even without model confirmation
+    # 앞의 물건을 위해 정지하고, 모델 확인 없이도 저속
     return abs(self.yRel) < 1.5 and (v_ego < v_ego_stationary) and self.dRel < 25
 
   def is_potential_fcw(self, model_prob):
