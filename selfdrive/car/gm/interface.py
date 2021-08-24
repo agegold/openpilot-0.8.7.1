@@ -35,7 +35,7 @@ class CarInterface(CarInterfaceBase):
     # Equinox lateralTuning (측면 튜닝)
     ret.lateralTuning.init('lqr')
 
-    ret.lateralTuning.lqr.scale = 1670.
+    ret.lateralTuning.lqr.scale = 1670.0
     ret.lateralTuning.lqr.ki = 0.01
     ret.lateralTuning.lqr.dcGain = 0.002856
 
@@ -77,10 +77,11 @@ class CarInterface(CarInterfaceBase):
     ret.longitudinalTuning.kfBP = [15., 20., 25.]
     ret.longitudinalTuning.kfV = [1., 0.5, 0.2]
 
-    ret.gasMaxBP = [0., 5., 10., 19., 30.]
-    ret.gasMaxV = [0.2, 0.3, 0.35, 0.5, 0.7]
+    if ret.enableGasInterceptor:
+      ret.gasMaxBP = [0., 5., 10., 19., 30.]
+      ret.gasMaxV = [0.2, 0.3, 0.35, 0.5, 0.7]
 
-    # NEOKII
+    # NEO
     #ret.longitudinalTuning.kpBP = [0, 10. * CV.KPH_TO_MS, 20. * CV.KPH_TO_MS, 40. * CV.KPH_TO_MS, 70. * CV.KPH_TO_MS, 100. * CV.KPH_TO_MS, 130. * CV.KPH_TO_MS]
     #ret.longitudinalTuning.kpV = [0.674, 0.654, 0.65, 0.5, 0.38, 0.32, 0.20]
     #ret.longitudinalTuning.kiBP = [0., 30. * CV.KPH_TO_MS, 60. * CV.KPH_TO_MS, ]

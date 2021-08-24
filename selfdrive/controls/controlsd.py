@@ -495,10 +495,6 @@ class Controls:
         left_deviation = actuators.steer > 0 and lat_plan.dPathPoints[0] < -0.1
         right_deviation = actuators.steer < 0 and lat_plan.dPathPoints[0] > 0.1
 
-        # [NEO]
-        #if left_deviation or right_deviation:
-        #  self.events.add(EventName.steerSaturated)
-
     return actuators, lac_log
 
   def publish_logs(self, CS, start_time, actuators, lac_log):
