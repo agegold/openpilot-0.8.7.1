@@ -11,7 +11,7 @@ ButtonCnt = 0
 LongPressed = False
 
 # kph
-V_CRUISE_MAX = 155
+V_CRUISE_MAX = 145
 V_CRUISE_MIN = 5
 V_CRUISE_DELTA = 5
 V_CRUISE_ENABLE_MIN = 20

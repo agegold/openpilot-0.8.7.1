@@ -34,18 +34,20 @@ class CarInterface(CarInterfaceBase):
 
     # Equinox lateralTuning (측면 튜닝)
     ret.lateralTuning.init('lqr')
-    ret.lateralTuning.lqr.scale = 1680.0
+
+    ret.lateralTuning.lqr.scale = 1670.
     ret.lateralTuning.lqr.ki = 0.01
+    ret.lateralTuning.lqr.dcGain = 0.002856
+
     ret.lateralTuning.lqr.a = [0., 1., -0.22619643, 1.21822268]
     ret.lateralTuning.lqr.b = [-1.92006585e-04, 3.95603032e-05]
     ret.lateralTuning.lqr.c = [1., 0.]
     ret.lateralTuning.lqr.k = [-110.73572306, 451.22718255]
     ret.lateralTuning.lqr.l = [0.3233671, 0.3185757]
-    ret.lateralTuning.lqr.dcGain = 0.002858
 
-    ret.steerRatio = 17.2
-    ret.steerActuatorDelay = 0.0
-    ret.steerRateCost = 0.552
+    ret.steerRatio = 16.5
+    ret.steerActuatorDelay = 0.97
+    ret.steerRateCost = 0.4
 
     ret.minSteerSpeed = 2.78  # GM 스티어링 조작은 10km 이상부터 사용 가능하다.
     ret.minEnableSpeed = -1
@@ -66,24 +68,28 @@ class CarInterface(CarInterfaceBase):
     ret.tireStiffnessFront, ret.tireStiffnessRear = scale_tire_stiffness(ret.mass, ret.wheelbase, ret.centerToFront,
                                                                          tire_stiffness_factor=tire_stiffness_factor)
 
-    # Equinox 2020
-    #ret.longitudinalTuning.kpBP = [0., 5., 10., 20., 30.]
-    #ret.longitudinalTuning.kpV = [1.2, 1.1, 0.8, 0.75, 1.3]
+    # [Equinox 2020]
     # 턴을 하는 경우 가속이 심하게 올라감 튜닝
     ret.longitudinalTuning.kpBP = [0., 5., 10., 20., 30.]
-    ret.longitudinalTuning.kpV = [0.8, 0.75, 0.7, 0.65, 1.0]
-    #ret.longitudinalTuning.kiBP = [0., 35.]
-    #ret.longitudinalTuning.kiV = [0.18, 0.12]
+    ret.longitudinalTuning.kpV  = [0.8, 0.75, 0.7, 0.65, 1.0]
     ret.longitudinalTuning.kiBP = [0., 20.]
     ret.longitudinalTuning.kiV = [0.045, 0.055]
-    #ret.longitudinalTuning.kfBP = [0., 13.889, 27.778]
-    #ret.longitudinalTuning.kfV = [1., 0.8, 0.5]
     ret.longitudinalTuning.kfBP = [15., 20., 25.]
     ret.longitudinalTuning.kfV = [1., 0.5, 0.2]
 
-    if ret.enableGasInterceptor:
-      ret.gasMaxBP = [0., 5., 10., 19., 30.]
-      ret.gasMaxV = [0.2, 0.3, 0.35, 0.5, 0.7]
+    ret.gasMaxBP = [0., 5., 10., 19., 30.]
+    ret.gasMaxV = [0.2, 0.3, 0.35, 0.5, 0.7]
+
+    # NEOKII
+    #ret.longitudinalTuning.kpBP = [0, 10. * CV.KPH_TO_MS, 20. * CV.KPH_TO_MS, 40. * CV.KPH_TO_MS, 70. * CV.KPH_TO_MS, 100. * CV.KPH_TO_MS, 130. * CV.KPH_TO_MS]
+    #ret.longitudinalTuning.kpV = [0.674, 0.654, 0.65, 0.5, 0.38, 0.32, 0.20]
+    #ret.longitudinalTuning.kiBP = [0., 30. * CV.KPH_TO_MS, 60. * CV.KPH_TO_MS, ]
+    #ret.longitudinalTuning.kiV = [0.0115, 0.015, 0.0155]
+    #ret.longitudinalTuning.kfBP = [50. * CV.KPH_TO_MS, 100. * CV.KPH_TO_MS]
+    #ret.longitudinalTuning.kfV = [0.79, 0.48]
+
+    #ret.gasMaxBP = [0., 5. * CV.KPH_TO_MS, 10. * CV.KPH_TO_MS, 30. * CV.KPH_TO_MS, 45. * CV.KPH_TO_MS, 70. * CV.KPH_TO_MS, 130. * CV.KPH_TO_MS]
+    #ret.gasMaxV = [0.1, 0.3, 0.36, 0.3, 0.21, 0.14, 0.11]
 
     ret.steerLimitTimer = 0.4
     ret.radarTimeStep = 0.0667  # GM radar runs at 15Hz instead of standard 20Hz
