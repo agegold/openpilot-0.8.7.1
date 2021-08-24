@@ -65,8 +65,11 @@ class CarInterfaceBase():
 
     # standard ALC params
     ret.steerControlType = car.CarParams.SteerControlType.torque
-    ret.steerMaxBP = [10., 25.]
-    ret.steerMaxV = [1., 1.2]
+    #ret.steerMaxBP = [10., 25.]
+    #ret.steerMaxV = [1., 1.2]
+    # [NEO]
+    ret.steerMaxBP = [0.]
+    ret.steerMaxV = [1.]
     ret.minSteerSpeed = 0.
 
     ret.pcmCruise = True     # openpilot's state is tied to the PCM's cruise state on most cars
@@ -78,9 +81,13 @@ class CarInterfaceBase():
     ret.brakeMaxV = [1.]
     ret.openpilotLongitudinalControl = False
     ret.startAccel = 0.0
-    ret.minSpeedCan = 0.5
+    #ret.minSpeedCan = 0.5
+    #[NEO]
+    ret.minSpeedCan = 0.3
     ret.stoppingBrakeRate = 0.2 # brake_travel/s while trying to stop
-    ret.startingBrakeRate = 1.0 # brake_travel/s while releasing on restart
+    #ret.startingBrakeRate = 1.0 # brake_travel/s while releasing on restart
+    #[NEO]
+    ret.startingBrakeRate = 0.8  # brake_travel/s while releasing on restart
     ret.stoppingControl = True
     ret.longitudinalTuning.deadzoneBP = [0.]
     ret.longitudinalTuning.deadzoneV = [0.]
@@ -88,6 +95,9 @@ class CarInterfaceBase():
     ret.longitudinalTuning.kpV = [1.]
     ret.longitudinalTuning.kiBP = [0.]
     ret.longitudinalTuning.kiV = [1.]
+    # [NEO]
+    ret.longitudinalTuning.kfBP = [0.]
+    ret.longitudinalTuning.kfV = [1.]
     return ret
 
   # returns a car.CarState, pass in car.CarControl
@@ -101,10 +111,10 @@ class CarInterfaceBase():
   def create_common_events(self, cs_out, extra_gears=None, gas_resume_speed=-1, pcm_enable=True):
     events = Events()
 
-    if cs_out.doorOpen:
-      events.add(EventName.doorOpen)
-    if cs_out.seatbeltUnlatched:
-      events.add(EventName.seatbeltNotLatched)
+    #if cs_out.doorOpen:
+    #  events.add(EventName.doorOpen)
+    #if cs_out.seatbeltUnlatched:
+    #  events.add(EventName.seatbeltNotLatched)
     if cs_out.gearShifter != GearShifter.drive and (extra_gears is None or
        cs_out.gearShifter not in extra_gears):
       events.add(EventName.wrongGear)
@@ -120,6 +130,9 @@ class CarInterfaceBase():
       events.add(EventName.stockAeb)
     if cs_out.vEgo > MAX_CTRL_SPEED:
       events.add(EventName.speedTooHigh)
+    #[NEO]
+    if cs_out.cruiseState.nonAdaptive:
+      events.add(EventName.wrongCruiseMode)
 
     self.steer_warning = self.steer_warning + 1 if cs_out.steerWarning else 0
     self.steering_unpressed = 0 if cs_out.steeringPressed else self.steering_unpressed + 1

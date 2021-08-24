@@ -16,16 +16,14 @@ from selfdrive.controls.lib.long_mpc import LongitudinalMpc
 from selfdrive.controls.lib.drive_helpers import V_CRUISE_MAX, CONTROL_N
 from selfdrive.swaglog import cloudlog
 
+
 LON_MPC_STEP = 0.2  # first step is 0.2s
 AWARENESS_DECEL = -0.2     # car smoothly decel at .2m/s^2 when user is distracted
 
-#A_CRUISE_MIN = -2.5
 A_CRUISE_MIN = -7.0
-#A_CRUISE_MIN = -7.5
-
 # 0 -> 18 -> 36 -> 72 -> 108
-A_CRUISE_MAX_BP = [0., 5., 10., 20., 30.]
 A_CRUISE_MAX_VALS = [0.8, 0.75, 0.7, 0.65, 1.0]
+A_CRUISE_MAX_BP = [0., 5., 10., 20., 30.]
 
 
 # Lookup table for turns
@@ -70,7 +68,6 @@ class Planner():
 
     self.v_desired_trajectory = np.zeros(CONTROL_N)
     self.a_desired_trajectory = np.zeros(CONTROL_N)
-
 
   def update(self, sm, CP):
     cur_time = sec_since_boot()

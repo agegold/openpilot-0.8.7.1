@@ -21,7 +21,7 @@ STOPPING_TARGET_SPEED_OFFSET = 0.01
 STARTING_TARGET_SPEED = 0.5
 
 BRAKE_THRESHOLD_TO_PID = 0.2
-REGEN_THRESHOLD = 0.02
+#REGEN_THRESHOLD = 0.02
 
 # apply at least this amount of brake to maintain the vehicle stationary
 # 차량을 정지 상태로 유지하려면 최소한 이 정도의 브레이크를 적용하십시오.
@@ -113,13 +113,13 @@ class LongControl():
       self.reset(v_ego_pid)
       output_gb = 0.
 
-    elif CS.regenPressed:
-      self.reset(CS.vEgo)
-      output_gb = REGEN_THRESHOLD
+    #elif CS.regenPressed:
+    #  self.reset(CS.vEgo)
+    #  output_gb = REGEN_THRESHOLD
 
-    elif CS.gasPressed:
-      self.reset(v_ego_pid)
-      output_gb = REGEN_THRESHOLD
+    #elif CS.gasPressed:
+    #  self.reset(v_ego_pid)
+    #  output_gb = REGEN_THRESHOLD
 
     # tracking objects and driving (물체 추적 및 운전)
     elif self.long_control_state == LongCtrlState.pid:
