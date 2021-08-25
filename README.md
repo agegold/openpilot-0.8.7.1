@@ -1,4 +1,4 @@
-<b/>**Release Notes**</b>
+# Release Notes
 
 This branch is only for GM Chevolet Equinox 2020 premire based on latest released version from openpilot
 
