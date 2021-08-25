@@ -2,7 +2,7 @@
 
 This branch is only for GM Chevolet Equinox 2020 premire based on latest released version from openpilot
 
-차차넘버투(hanabi95) 님 오픈파일럿 기반으로 만든 dragonpilot 입니다. (https://github.com/hanabi95)
+차차넘버투(hanabi95) 님 오픈파일럿 기반으로 만든 openpilot 입니다. (https://github.com/hanabi95)
 
 # Unofficial Vehicles
 Any GM vehicle 2016+ with front camera and LKA. These will only have ALC, not ACC. With a comma pedal, limited ACC is possible using Low gear. Find a way to control friction brakes!
