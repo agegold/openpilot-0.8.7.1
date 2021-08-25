@@ -115,6 +115,9 @@ def manager_cleanup():
 
 
 def manager_thread():
+
+  Process(name="shutdownd", target=launcher, args=("selfdrive.shutdownd",)).start()
+
   cloudlog.info("manager start")
   cloudlog.info({"environ": os.environ})
 
