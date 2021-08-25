@@ -28,6 +28,10 @@ Published for research purposes and not for commercial purposes.
   - 이쿼녹스 콤마 페달 KP, KI, KF 튜닝
   - 크루즈 Min, Max 값 튜닝
   
+[2021-08-25]
+  - 콤마 페달을 사용한 차간 거리 튜닝
+  - 이벤트 정보, UI 화면 정보 한글화
+  - 왼쪽 UI : 외기 온도, CPU 온도 추가
   
 # Features
 
