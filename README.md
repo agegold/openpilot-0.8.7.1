@@ -1,7 +1,34 @@
 <b/>**Release Notes**</b>
 
-This branch is only for GM Chevolet Bolt EV based on latest released version from comma ai
+This branch is only for GM Chevolet Equinox 2020 premire based on latest released version from openpilot
 
+차차넘버투(hanabi95) 님 오픈파일럿 기반으로 만든 dragonpilot 입니다. (https://github.com/hanabi95)
+
+# Unofficial Vehicles
+Any GM vehicle 2016+ with front camera and LKA. These will only have ALC, not ACC. With a comma pedal, limited ACC is possible using Low gear. Find a way to control friction brakes!
+
+# vehicle information
+
+- Equinox 2020 premire
+- Comma pedal installation
+
+# Guidance
+
+브레이크 활성화가 안되어있습니다. 
+엑셀로만 차량 속도 조정을 하기 때문에 매우 위험할 수 있습니다. 
+연구 목적으로 공개되었으며 상업적인 목적이 아닙니다. 
+
+Brake is not activated.
+It can be very dangerous because the vehicle speed is adjusted only with the accelerator.
+Published for research purposes and not for commercial purposes.
+
+# Work history
+
+[2021-07-26]
+  - 이쿼녹스 콤마 페달 KP, KI, KF 튜닝
+  - 크루즈 Min, Max 값 튜닝
+  
+  
 # Features
 
   - Add target speed setting by long press (thanks to neokii님)
