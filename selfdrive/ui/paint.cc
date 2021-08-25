@@ -355,7 +355,7 @@ static void bb_ui_draw_measures_left(UIState *s, int bb_x, int bb_y, int bb_w ) 
     bb_ry = bb_y + bb_h;
   }
 
-  float batteryTemp = device_state.getBatteryTempC();
+  float batteryTemp = (*s->sm)["deviceState"].getDeviceState().getBatteryTempC();
   bool batteryless =  batteryTemp < -20;
 
   // add battery level
@@ -365,7 +365,7 @@ static void bb_ui_draw_measures_left(UIState *s, int bb_x, int bb_y, int bb_w ) 
     char bat_lvl[4] = "";
     NVGcolor val_color = nvgRGBA(255, 255, 255, 200);
 
-    int batteryPercent = device_state.getBatteryPercent();
+    int batteryPercent = (*s->sm)["deviceState"].getDeviceState().getBatteryPercent();
 
     snprintf(val_str, sizeof(val_str), "%d%%", batteryPercent);
     snprintf(uom_str, sizeof(uom_str), "");
@@ -376,7 +376,7 @@ static void bb_ui_draw_measures_left(UIState *s, int bb_x, int bb_y, int bb_w ) 
     bb_ry = bb_y + bb_h;
   }
 
-  float ambientTemp = device_state.getAmbientTempC();
+  float ambientTemp = (*s->sm)["deviceState"].getDeviceState().getAmbientTempC();
   // add ambient temperature
   if (UI_FEATURE_AMBIENT_TEMP) {
 
