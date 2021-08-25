@@ -355,76 +355,12 @@ static void bb_ui_draw_measures_left(UIState *s, int bb_x, int bb_y, int bb_w ) 
     bb_ry = bb_y + bb_h;
   }
 
-  //add steering angle
-  if (true) {
-    char val_str[16];
-    char uom_str[6];
-    NVGcolor val_color = nvgRGBA(0, 255, 0, 200);
-      //show Orange if more than 30 degrees
-      //show red if  more than 50 degrees
-
-      auto controls_state = (*s->sm)["controlsState"].getControlsState();
-      float angleSteers = controls_state.getAngleSteers();
-
-      if(((int)(angleSteers) < -30) || ((int)(angleSteers) > 30)) {
-        val_color = nvgRGBA(255, 175, 3, 200);
-      }
-      if(((int)(angleSteers) < -55) || ((int)(angleSteers) > 55)) {
-        val_color = nvgRGBA(255, 0, 0, 200);
-      }
-      // steering is in degrees
-      snprintf(val_str, sizeof(val_str), "%.1f°", angleSteers);
-
-      snprintf(uom_str, sizeof(uom_str), "");
-    bb_h +=bb_ui_draw_measure(s,  val_str, uom_str, "현재 조향각",
-        bb_rx, bb_ry, bb_uom_dx,
-        val_color, lab_color, uom_color,
-        value_fontSize, label_fontSize, uom_fontSize );
-    bb_ry = bb_y + bb_h;
-  }
-
-  //add desired steering angle
-  if (true) {
-    char val_str[16];
-    char uom_str[6];
-    NVGcolor val_color = nvgRGBA(255, 255, 255, 200);
-
-    auto carControl = (*s->sm)["carControl"].getCarControl();
-    if (carControl.getEnabled()) {
-      //show Orange if more than 6 degrees
-      //show red if  more than 12 degrees
-
-      auto actuators = carControl.getActuators();
-      float steeringAngleDeg  = actuators.getSteeringAngleDeg();
-
-      if(((int)(steeringAngleDeg ) < -30) || ((int)(steeringAngleDeg ) > 30)) {
-        val_color = nvgRGBA(255, 255, 255, 200);
-      }
-      if(((int)(steeringAngleDeg ) < -50) || ((int)(steeringAngleDeg ) > 50)) {
-        val_color = nvgRGBA(255, 255, 255, 200);
-      }
-      // steering is in degrees
-      snprintf(val_str, sizeof(val_str), "%.1f°", steeringAngleDeg );
-    } else {
-       snprintf(val_str, sizeof(val_str), "-");
-    }
-      snprintf(uom_str, sizeof(uom_str), "");
-    bb_h +=bb_ui_draw_measure(s,  val_str, uom_str, "필요 조향각",
-        bb_rx, bb_ry, bb_uom_dx,
-        val_color, lab_color, uom_color,
-        value_fontSize, label_fontSize, uom_fontSize );
-    bb_ry = bb_y + bb_h;
-  }
-
   // add battery level
-  float batteryTemp = (*s->sm)["deviceState"].getDeviceState().getBatteryTempC();
-  bool batteryless =  batteryTemp < -20;
-  if(UI_FEATURE_BATTERY_LEVEL && !batteryless) {
+  if(true) {
     char val_str[16];
     char uom_str[6];
     //char bat_lvl[4] = "";
     NVGcolor val_color = nvgRGBA(255, 255, 255, 200);
-
     int batteryPercent = (*s->sm)["deviceState"].getDeviceState().getBatteryPercent();
 
     snprintf(val_str, sizeof(val_str), "%d%%", batteryPercent);
