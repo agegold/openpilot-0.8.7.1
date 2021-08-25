@@ -355,13 +355,17 @@ static void bb_ui_draw_measures_left(UIState *s, int bb_x, int bb_y, int bb_w ) 
     bb_ry = bb_y + bb_h;
   }
 
+  float batteryTemp = device_state.getBatteryTempC();
+  bool batteryless =  batteryTemp < -20;
+
   // add battery level
-  if(true) {
+  if(UI_FEATURE_BATTERY_LEVEL && !batteryless) {
     char val_str[16];
     char uom_str[6];
-    //char bat_lvl[4] = "";
+    char bat_lvl[4] = "";
     NVGcolor val_color = nvgRGBA(255, 255, 255, 200);
-    int batteryPercent = (*s->sm)["deviceState"].getDeviceState().getBatteryPercent();
+
+    int batteryPercent = device_state.getBatteryPercent();
 
     snprintf(val_str, sizeof(val_str), "%d%%", batteryPercent);
     snprintf(uom_str, sizeof(uom_str), "");
@@ -372,8 +376,31 @@ static void bb_ui_draw_measures_left(UIState *s, int bb_x, int bb_y, int bb_w ) 
     bb_ry = bb_y + bb_h;
   }
 
+  float ambientTemp = device_state.getAmbientTempC();
+  // add ambient temperature
+  if (UI_FEATURE_AMBIENT_TEMP) {
+
+    char val_str[16];
+    char uom_str[6];
+    NVGcolor val_color = nvgRGBA(255, 255, 255, 200);
+
+    if(ambientTemp > 48.f) {
+      val_color = nvgRGBA(255, 188, 3, 200);
+    }
+    if(ambientTemp > 55.f) {
+      val_color = nvgRGBA(255, 0, 0, 200);
+    }
+    snprintf(val_str, sizeof(val_str), "%.1f°", ambientTemp);
+    snprintf(uom_str, sizeof(uom_str), "");
+    bb_h +=bb_ui_draw_measure(s,  val_str, uom_str, "외기 온도",
+        bb_rx, bb_ry, bb_uom_dx,
+        val_color, lab_color, uom_color,
+        value_fontSize, label_fontSize, uom_fontSize );
+    bb_ry = bb_y + bb_h;
+  }
+
   // add CPU temperature
-  if(true) {
+  if(UI_FEATURE_CPU_TEMP) {
     char val_str[16];
     char uom_str[6];
     //char bat_lvl[4] = "";

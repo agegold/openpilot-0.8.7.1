@@ -1,6 +1,9 @@
 #pragma once
 
 #define UI_FEATURE_BATTERY_LEVEL 1
+#define UI_FEATURE_AMBIENT_TEMP 1
+#define UI_FEATURE_CPU_TEMP 1
+
 #include <atomic>
 #include <map>
 #include <memory>
