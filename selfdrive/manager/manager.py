@@ -115,7 +115,7 @@ def manager_cleanup():
 
 
 def manager_thread():
-
+  # 자동종료 기능 추가 (Neokii)
   Process(name="shutdownd", target=launcher, args=("selfdrive.shutdownd",)).start()
 
   cloudlog.info("manager start")
