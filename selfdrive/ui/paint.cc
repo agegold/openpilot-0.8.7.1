@@ -362,7 +362,7 @@ static void bb_ui_draw_measures_left(UIState *s, int bb_x, int bb_y, int bb_w ) 
   if(UI_FEATURE_BATTERY_LEVEL && !batteryless) {
     char val_str[16];
     char uom_str[6];
-    char bat_lvl[4] = "";
+    //char bat_lvl[4] = "";
     NVGcolor val_color = nvgRGBA(255, 255, 255, 200);
 
     int batteryPercent = (*s->sm)["deviceState"].getDeviceState().getBatteryPercent();
@@ -403,7 +403,6 @@ static void bb_ui_draw_measures_left(UIState *s, int bb_x, int bb_y, int bb_w ) 
   if(UI_FEATURE_CPU_TEMP) {
     char val_str[16];
     char uom_str[6];
-    //char bat_lvl[4] = "";
     NVGcolor val_color = nvgRGBA(255, 255, 255, 200);
 
     float cpuTemp = 0;
