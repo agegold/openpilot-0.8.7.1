@@ -22,7 +22,9 @@ AWARENESS_DECEL = -0.2     # car smoothly decel at .2m/s^2 when user is distract
 
 A_CRUISE_MIN = -7.0
 # 0 -> 18 -> 36 -> 72 -> 108
-A_CRUISE_MAX_VALS = [0.8, 0.75, 0.7, 0.65, 1.0]
+#A_CRUISE_MAX_VALS = [0.8, 0.75, 0.7, 0.65, 1.0]
+#운행을 하면서 초반 엑셀 속도가 느린편
+A_CRUISE_MAX_VALS = [0.85, 0.8, 0.75, 0.7, 1.1]
 A_CRUISE_MAX_BP = [0., 5., 10., 20., 30.]
 
 

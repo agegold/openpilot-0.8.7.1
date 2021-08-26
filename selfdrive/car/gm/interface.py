@@ -67,9 +67,10 @@ class CarInterface(CarInterfaceBase):
                                                                          tire_stiffness_factor=tire_stiffness_factor)
 
     # [Equinox 2020]
-    # 턴을 하는 경우 가속이 심하게 올라감 튜닝
+    # 턴을 하는 경우 가속이 심하게 올라감 튜닝 -> 기존 Lepro3 하드웨어 문제??
     ret.longitudinalTuning.kpBP = [0., 5., 10., 20., 30.]
-    ret.longitudinalTuning.kpV  = [0.8, 0.75, 0.7, 0.65, 1.0]
+    #ret.longitudinalTuning.kpV = [0.8, 0.75, 0.7, 0.65, 1.0]
+    ret.longitudinalTuning.kpV = [0.85, 0.8, 0.75, 0.7, 1.1]
     ret.longitudinalTuning.kiBP = [0., 20.]
     ret.longitudinalTuning.kiV = [0.045, 0.055]
     ret.longitudinalTuning.kfBP = [15., 20., 25.]
