@@ -67,7 +67,6 @@ class CarInterface(CarInterfaceBase):
                                                                          tire_stiffness_factor=tire_stiffness_factor)
 
     # [Equinox 2020]
-    # 턴을 하는 경우 가속이 심하게 올라감 튜닝 -> 기존 Lepro3 하드웨어 문제??
     ret.longitudinalTuning.kpBP = [0., 5., 10., 20., 30.]
     #ret.longitudinalTuning.kpV = [0.8, 0.75, 0.7, 0.65, 1.0]
     ret.longitudinalTuning.kpV = [0.85, 0.8, 0.75, 0.7, 1.1]
@@ -80,16 +79,6 @@ class CarInterface(CarInterfaceBase):
       ret.gasMaxBP = [0., 5., 10., 19., 30.]
       ret.gasMaxV = [0.2, 0.3, 0.35, 0.5, 0.7]
 
-    # NEO
-    #ret.longitudinalTuning.kpBP = [0, 10. * CV.KPH_TO_MS, 20. * CV.KPH_TO_MS, 40. * CV.KPH_TO_MS, 70. * CV.KPH_TO_MS, 100. * CV.KPH_TO_MS, 130. * CV.KPH_TO_MS]
-    #ret.longitudinalTuning.kpV = [0.674, 0.654, 0.65, 0.5, 0.38, 0.32, 0.20]
-    #ret.longitudinalTuning.kiBP = [0., 30. * CV.KPH_TO_MS, 60. * CV.KPH_TO_MS, ]
-    #ret.longitudinalTuning.kiV = [0.0115, 0.015, 0.0155]
-    #ret.longitudinalTuning.kfBP = [50. * CV.KPH_TO_MS, 100. * CV.KPH_TO_MS]
-    #ret.longitudinalTuning.kfV = [0.79, 0.48]
-
-    #ret.gasMaxBP = [0., 5. * CV.KPH_TO_MS, 10. * CV.KPH_TO_MS, 30. * CV.KPH_TO_MS, 45. * CV.KPH_TO_MS, 70. * CV.KPH_TO_MS, 130. * CV.KPH_TO_MS]
-    #ret.gasMaxV = [0.1, 0.3, 0.36, 0.3, 0.21, 0.14, 0.11]
 
     ret.steerLimitTimer = 0.4
     ret.radarTimeStep = 0.0667  # GM radar runs at 15Hz instead of standard 20Hz
