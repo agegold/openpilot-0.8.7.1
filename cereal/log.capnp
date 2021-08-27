@@ -542,6 +542,9 @@ struct ControlsState @0x97ff69c53601abf1 {
   curvature @37 :Float32;  # path curvature from vehicle model
   forceDecel @51 :Bool;
 
+  # NDA Mode on/off (Parksunkyu81)
+  ndaable @60 :Bool;
+
   # UI alerts
   alertText1 @24 :Text;
   alertText2 @25 :Text;
