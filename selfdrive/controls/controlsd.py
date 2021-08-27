@@ -606,7 +606,7 @@ class Controls:
     controlsState.vPid = float(self.LoC.v_pid)
     controlsState.vCruise = float(self.v_cruise_kph)
     # NDA Add (Parksunkyu81)
-    controlsState.ndaable = self.roadLimitSpeedActive
+    #controlsState.ndaable = self.roadLimitSpeedActive
 
     controlsState.upAccelCmd = float(self.LoC.pid.p)
     controlsState.uiAccelCmd = float(self.LoC.pid.i)
