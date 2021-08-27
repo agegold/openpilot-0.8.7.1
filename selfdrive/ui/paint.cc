@@ -186,8 +186,8 @@ static void ui_draw_vision_maxspeed(UIState *s) {
 
   float maxspeed = (*s->sm)["controlsState"].getControlsState().getVCruise();
 
-  // NDA 유무
-  bool is_nda = (*s->sm)["controlsState"].getControlsState().getNdaable();
+  // HDA 유무
+  bool is_hda = (*s->sm)["controlsState"].getControlsState().getHdaable();
 
   const bool is_cruise_set = maxspeed != 0 && maxspeed != SET_SPEED_NA;
   if (is_cruise_set && !s->scene.is_metric) { maxspeed *= 0.6225; }
@@ -197,8 +197,8 @@ static void ui_draw_vision_maxspeed(UIState *s) {
   ui_draw_rect(s->vg, rect, COLOR_WHITE_ALPHA(100), 10, 20.);
 
   nvgTextAlign(s->vg, NVG_ALIGN_CENTER | NVG_ALIGN_BASELINE);
-  if (is_nda) {
-    ui_draw_text(s, rect.centerX(), 118, "NDA", 26 * 2.5, COLOR_WHITE_ALPHA(is_cruise_set ? 200 : 100), "sans-regular");
+  if (is_hda) {
+    ui_draw_text(s, rect.centerX(), 118, "HDA", 26 * 2.5, COLOR_WHITE_ALPHA(is_cruise_set ? 200 : 100), "sans-regular");
   } else {
     ui_draw_text(s, rect.centerX(), 118, "MAX", 26 * 2.5, COLOR_WHITE_ALPHA(is_cruise_set ? 200 : 100), "sans-regular");
   }

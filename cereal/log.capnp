@@ -543,7 +543,7 @@ struct ControlsState @0x97ff69c53601abf1 {
   forceDecel @51 :Bool;
 
   # NDA Mode on/off (Parksunkyu81)
-  ndaable @60 :Bool;
+  hdaable @60 :Bool;
 
   # UI alerts
   alertText1 @24 :Text;
