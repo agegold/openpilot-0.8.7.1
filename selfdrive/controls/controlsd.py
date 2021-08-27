@@ -24,7 +24,7 @@ from selfdrive.controls.lib.alertmanager import AlertManager
 from selfdrive.controls.lib.vehicle_model import VehicleModel
 from selfdrive.locationd.calibrationd import Calibration
 from selfdrive.hardware import HARDWARE, TICI
-#from selfdrive.road_speed_limiter import road_speed_limiter_get_max_speed, road_speed_limiter_get_active
+from selfdrive.road_speed_limiter import road_speed_limiter_get_max_speed, road_speed_limiter_get_active
 
 LDW_MIN_SPEED = 31 * CV.MPH_TO_MS
 LANE_DEPARTURE_THRESHOLD = 0.1
@@ -142,7 +142,8 @@ class Controls:
     self.v_cruise_road_limit = 0
     self.v_cruise_road_limit_prev = 0
     self.v_cruise_kph_long_prev = 0
-    self.roadLimitSpeedActive = False
+    # NDA 사용 여부
+    self.roadLimitSpeedActive = 0
 
     self.mismatch_counter = 0
     self.can_error_counter = 0
@@ -364,19 +365,20 @@ class Controls:
     self.v_cruise_kph_last = self.v_cruise_kph
 
     # if stock cruise is completely disabled, then we can use our own set speed logic
+    # if(activeNDA > 0)
     # 크루즈 속도값 설정
     # [TMAP]
     if CS.adaptiveCruise:
-      self.v_cruise_kph = update_v_cruise(self.v_cruise_kph, CS.buttonEvents, self.enabled, self.is_metric)
-      #self.v_cruise_kph_long = update_v_cruise(self.v_cruise_kph_long_prev, CS.buttonEvents, self.enabled, self.is_metric)
-      #self.roadLimitSpeedActive = road_speed_limiter_get_active()
-      #self.v_cruise_road_limit = road_speed_limiter_get_max_speed(CS, self.v_cruise_road_limit_prev)
-      #if self.roadLimitSpeedActive:
-      #  self.v_cruise_kph = self.v_cruise_road_limit
-      #  self.v_cruise_road_limit_prev = self.v_cruise_road_limit
-      #else:
-      #  self.v_cruise_kph = self.v_cruise_kph_long
-      #  self.v_cruise_kph_long_prev = self.v_cruise_kph_long
+      #self.v_cruise_kph = update_v_cruise(self.v_cruise_kph, CS.buttonEvents, self.enabled, self.is_metric)
+      self.v_cruise_kph_long = update_v_cruise(self.v_cruise_kph_long_prev, CS.buttonEvents, self.enabled, self.is_metric)
+      self.roadLimitSpeedActive = road_speed_limiter_get_active()
+      self.v_cruise_road_limit = road_speed_limiter_get_max_speed(CS, self.v_cruise_road_limit_prev)
+      if self.roadLimitSpeedActive > 0:
+        self.v_cruise_kph = self.v_cruise_road_limit
+        self.v_cruise_road_limit_prev = self.v_cruise_road_limit
+      else:
+        self.v_cruise_kph = self.v_cruise_kph_long
+        self.v_cruise_kph_long_prev = self.v_cruise_kph_long
 
     elif not CS.adaptiveCruise and CS.cruiseState.enabled:
       self.v_cruise_kph = 40
