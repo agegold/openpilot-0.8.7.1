@@ -229,6 +229,7 @@ class RoadSpeedLimiter:
     log = ""
     self.recv()
 
+    print('get_max_speed start')
     if self.roadLimitSpeed is None:
       return 0, 0
 
@@ -336,6 +337,7 @@ def road_speed_limiter_get_max_speed(CS, v_cruise_speed):
   if road_speed_limiter is None:
     road_speed_limiter = RoadSpeedLimiter()
 
+  print('get_max_speed end')
   return road_speed_limiter.get_max_speed(CS, v_cruise_speed)
 
 
