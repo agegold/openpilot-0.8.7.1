@@ -543,7 +543,9 @@ struct ControlsState @0x97ff69c53601abf1 {
   forceDecel @51 :Bool;
 
   # NDA Mode on/off (Parksunkyu81)
-  #hdaable @60 :Bool;
+  roadLimitSpeedActive @60 :Bool;
+  roadLimitSpeed @61 :UInt32;
+  roadLimitSpeedLeftDist @62 :UInt32;
 
   # UI alerts
   alertText1 @24 :Text;

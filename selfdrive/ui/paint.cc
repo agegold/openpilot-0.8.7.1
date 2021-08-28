@@ -186,9 +186,6 @@ static void ui_draw_vision_maxspeed(UIState *s) {
 
   float maxspeed = (*s->sm)["controlsState"].getControlsState().getVCruise();
 
-  // HDA 유무
-  //bool is_hda = (*s->sm)["controlsState"].getControlsState().getHdaable();
-
   const bool is_cruise_set = maxspeed != 0 && maxspeed != SET_SPEED_NA;
   if (is_cruise_set && !s->scene.is_metric) { maxspeed *= 0.6225; }
 
@@ -197,12 +194,6 @@ static void ui_draw_vision_maxspeed(UIState *s) {
   ui_draw_rect(s->vg, rect, COLOR_WHITE_ALPHA(100), 10, 20.);
 
   nvgTextAlign(s->vg, NVG_ALIGN_CENTER | NVG_ALIGN_BASELINE);
-  /*if (is_hda) {
-    ui_draw_text(s, rect.centerX(), 118, "HDA", 26 * 2.5, COLOR_WHITE_ALPHA(is_cruise_set ? 200 : 100), "sans-regular");
-  } else {
-    ui_draw_text(s, rect.centerX(), 118, "MAX", 26 * 2.5, COLOR_WHITE_ALPHA(is_cruise_set ? 200 : 100), "sans-regular");
-  }*/
-
   ui_draw_text(s, rect.centerX(), 118, "MAX", 26 * 2.5, COLOR_WHITE_ALPHA(is_cruise_set ? 200 : 100), "sans-regular");
 
   if (is_cruise_set) {
@@ -258,6 +249,8 @@ static void ui_draw_vision_header(UIState *s) {
   }
   ui_draw_vision_speed(s);
   ui_draw_vision_event(s);
+  // NDA
+  ui_draw_extras(s);
 }
 
 //BB START: functions added for the display of various items
@@ -474,7 +467,7 @@ static void ui_draw_vision(UIState *s) {
   // Set Speed, Current Speed, Status/Events
   ui_draw_vision_header(s);
   if ((*s->sm)["controlsState"].getControlsState().getAlertSize() == cereal::ControlsState::AlertSize::NONE) {
-    ui_draw_vision_face(s);
+    //ui_draw_vision_face(s);  비활성화
 	ui_draw_vision_brake(s);
 	bb_ui_draw_UI(s);
   }
@@ -591,6 +584,8 @@ void ui_nvg_init(UIState *s) {
     {"wheel", "../assets/img_chffr_wheel.png"},
     {"driver_face", "../assets/img_driver_face.png"},
     {"brake_img", "../assets/img_brake_disc.png"},
+    {"img_nda", "../assets/img_nda.png"},
+	{"img_hda", "../assets/img_hda.png"},
   };
   for (auto [name, file] : images) {
     s->images[name] = nvgCreateImage(s->vg, file, 1);

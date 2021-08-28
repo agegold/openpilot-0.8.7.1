@@ -24,6 +24,7 @@ from selfdrive.controls.lib.alertmanager import AlertManager
 from selfdrive.controls.lib.vehicle_model import VehicleModel
 from selfdrive.locationd.calibrationd import Calibration
 from selfdrive.hardware import HARDWARE, TICI
+from selfdrive.road_speed_limiter import road_speed_limiter_get_max_speed, road_speed_limiter_get_active
 
 LDW_MIN_SPEED = 31 * CV.MPH_TO_MS
 LANE_DEPARTURE_THRESHOLD = 0.1
@@ -135,6 +136,16 @@ class Controls:
     self.soft_disable_timer = 0
     self.v_cruise_kph = 255
     self.v_cruise_kph_last = 0
+    # [TMAP]
+    self.v_cruise_kph_long = 0
+    self.v_cruise_kph_prev = 0
+    self.left_dist = 0
+    self.v_cruise_road_limit = 0
+    self.v_cruise_road_limit_prev = 0
+    self.v_cruise_kph_long_prev = 0
+    # NDA 사용 여부
+    self.roadLimitSpeedActive = 0
+
     self.mismatch_counter = 0
     self.can_error_counter = 0
     self.last_blinker_frame = 0
@@ -312,9 +323,6 @@ class Controls:
       v_future = speeds[-1]
     else:
       v_future = 100.0
-    if CS.brakePressed and v_future >= STARTING_TARGET_SPEED \
-      and self.CP.openpilotLongitudinalControl and CS.vEgo < 0.3:
-      self.events.add(EventName.noTarget)
 
   def data_sample(self):
     """Receive data from sockets and update carState"""
@@ -358,10 +366,24 @@ class Controls:
     self.v_cruise_kph_last = self.v_cruise_kph
 
     # if stock cruise is completely disabled, then we can use our own set speed logic
+    # if(activeNDA > 0)
+    # 크루즈 속도값 설정
+    # [TMAP]
     if CS.adaptiveCruise:
-      self.v_cruise_kph = update_v_cruise(self.v_cruise_kph, CS.buttonEvents, self.enabled, self.is_metric)
+      #self.v_cruise_kph = update_v_cruise(self.v_cruise_kph, CS.buttonEvents, self.enabled, self.is_metric)
+      self.v_cruise_kph_long = update_v_cruise(self.v_cruise_kph_long_prev, CS.buttonEvents, self.enabled, self.is_metric)
+      self.roadLimitSpeedActive = road_speed_limiter_get_active()
+      self.v_cruise_road_limit, self.left_dist = road_speed_limiter_get_max_speed(CS, self.v_cruise_road_limit_prev)
+
+      if self.roadLimitSpeedActive > 0:  # NDA = 1
+        self.v_cruise_kph = self.v_cruise_road_limit
+        self.v_cruise_road_limit_prev = self.v_cruise_road_limit
+      else:
+        self.v_cruise_kph = self.v_cruise_kph_long
+        self.v_cruise_kph_long_prev = self.v_cruise_kph_long
+
     elif not CS.adaptiveCruise and CS.cruiseState.enabled:
-      self.v_cruise_kph = 20
+      self.v_cruise_kph = 30
 
     # decrease the soft disable timer at every step, as it's reset on
     # entrance in SOFT_DISABLING state
@@ -496,9 +518,6 @@ class Controls:
         left_deviation = actuators.steer > 0 and lat_plan.dPathPoints[0] < -0.1
         right_deviation = actuators.steer < 0 and lat_plan.dPathPoints[0] > 0.1
 
-        if left_deviation or right_deviation:
-          self.events.add(EventName.steerSaturated)
-
     return actuators, lac_log
 
   def publish_logs(self, CS, start_time, actuators, lac_log):
@@ -589,7 +608,13 @@ class Controls:
     controlsState.engageable = not self.events.any(ET.NO_ENTRY)
     controlsState.longControlState = self.LoC.long_control_state
     controlsState.vPid = float(self.LoC.v_pid)
+
+    # NDA [NEOKII]
     controlsState.vCruise = float(self.v_cruise_kph)
+    controlsState.roadLimitSpeedActive = self.roadLimitSpeedActive
+    controlsState.roadLimitSpeed = loat(self.v_cruise_kph)
+    controlsState.roadLimitSpeedLeftDist = self.left_dist
+
     controlsState.upAccelCmd = float(self.LoC.pid.p)
     controlsState.uiAccelCmd = float(self.LoC.pid.i)
     controlsState.ufAccelCmd = float(self.LoC.pid.f)
