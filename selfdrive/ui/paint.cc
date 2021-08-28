@@ -186,6 +186,7 @@ static void ui_draw_vision_maxspeed(UIState *s) {
   const int SET_SPEED_NA = 255;
 
   float maxspeed = (*s->sm)["controlsState"].getControlsState().getVCruise();
+  int hda = (*s->sm)["controlsState"].getControlsState().getRoadLimitSpeedActive();
 
   const bool is_cruise_set = maxspeed != 0 && maxspeed != SET_SPEED_NA;
   if (is_cruise_set && !s->scene.is_metric) { maxspeed *= 0.6225; }
@@ -195,7 +196,7 @@ static void ui_draw_vision_maxspeed(UIState *s) {
   ui_draw_rect(s->vg, rect, COLOR_WHITE_ALPHA(100), 10, 20.);
 
   nvgTextAlign(s->vg, NVG_ALIGN_CENTER | NVG_ALIGN_BASELINE);
-  ui_draw_text(s, rect.centerX(), 118, "MAX", 26 * 2.5, COLOR_WHITE_ALPHA(is_cruise_set ? 200 : 100), "sans-regular");
+  ui_draw_text(s, rect.centerX(), 118, hda, 26 * 2.5, COLOR_WHITE_ALPHA(is_cruise_set ? 200 : 100), "sans-regular");
 
   if (is_cruise_set) {
     const std::string maxspeed_str = std::to_string((int)std::nearbyint(maxspeed));
