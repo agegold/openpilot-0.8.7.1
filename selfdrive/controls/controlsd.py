@@ -375,6 +375,10 @@ class Controls:
       self.roadLimitSpeedActive = road_speed_limiter_get_active()
       self.v_cruise_road_limit, self.left_dist = road_speed_limiter_get_max_speed(CS, self.v_cruise_road_limit_prev)
 
+      print('roadLimitSpeedActive', self.roadLimitSpeedActive)
+      print('v_cruise_road_limit', self.v_cruise_road_limit)
+      print('left_dist', self.left_dist)
+
       if self.roadLimitSpeedActive > 0:  # NDA = 1
         self.v_cruise_kph = self.v_cruise_road_limit
         self.v_cruise_road_limit_prev = self.v_cruise_road_limit
