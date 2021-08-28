@@ -612,8 +612,8 @@ class Controls:
     # NDA [NEOKII]
     controlsState.vCruise = float(self.v_cruise_kph)
     controlsState.roadLimitSpeedActive = self.roadLimitSpeedActive
-    #controlsState.roadLimitSpeed = float(self.v_cruise_kph)
-    #controlsState.roadLimitSpeedLeftDist = float(self.left_dist)
+    controlsState.roadLimitSpeed = self.v_cruise_kph
+    controlsState.roadLimitSpeedLeftDist = self.left_dist
 
     controlsState.upAccelCmd = float(self.LoC.pid.p)
     controlsState.uiAccelCmd = float(self.LoC.pid.i)
