@@ -373,11 +373,11 @@ class Controls:
       #self.v_cruise_kph = update_v_cruise(self.v_cruise_kph, CS.buttonEvents, self.enabled, self.is_metric)
       self.v_cruise_kph_long = update_v_cruise(self.v_cruise_kph_long_prev, CS.buttonEvents, self.enabled, self.is_metric)
       self.roadLimitSpeedActive = road_speed_limiter_get_active()
-      self.v_cruise_road_limit, self.left_dist = road_speed_limiter_get_max_speed(CS, self.v_cruise_road_limit_prev)
+      #self.v_cruise_road_limit, self.left_dist = road_speed_limiter_get_max_speed(CS, self.v_cruise_road_limit_prev)
 
       if self.roadLimitSpeedActive > 0:  # NDA = 1
-        self.v_cruise_kph = self.v_cruise_road_limit
-        self.v_cruise_road_limit_prev = self.v_cruise_road_limit
+        self.v_cruise_kph = 100
+        self.v_cruise_road_limit_prev = 100
       else:
         self.v_cruise_kph = self.v_cruise_kph_long
         self.v_cruise_kph_long_prev = self.v_cruise_kph_long
@@ -612,8 +612,8 @@ class Controls:
     # NDA [NEOKII]
     controlsState.vCruise = float(self.v_cruise_kph)
     controlsState.roadLimitSpeedActive = self.roadLimitSpeedActive
-    controlsState.roadLimitSpeed = self.v_cruise_kph
-    controlsState.roadLimitSpeedLeftDist = self.left_dist
+    #controlsState.roadLimitSpeed = self.v_cruise_kph
+    #controlsState.roadLimitSpeedLeftDist = self.left_dist
 
     controlsState.upAccelCmd = float(self.LoC.pid.p)
     controlsState.uiAccelCmd = float(self.LoC.pid.i)

@@ -6,8 +6,8 @@
 static void ui_draw_extras_limit_speed(UIState *s)
 {
     int activeNDA = (*s->sm)["controlsState"].getControlsState().getRoadLimitSpeedActive();
-    int limit_speed = (*s->sm)["controlsState"].getControlsState().getRoadLimitSpeed();
-    int left_dist = (*s->sm)["controlsState"].getControlsState().getRoadLimitSpeedLeftDist();
+    //int limit_speed = (*s->sm)["controlsState"].getControlsState().getRoadLimitSpeed();
+    //int left_dist = (*s->sm)["controlsState"].getControlsState().getRoadLimitSpeedLeftDist();
 
     if(activeNDA > 0)
     {
@@ -20,7 +20,7 @@ static void ui_draw_extras_limit_speed(UIState *s)
         ui_draw_image(s, {x, y, w, h}, img, 1.f);
     }
 
-    if(limit_speed > 10 && left_dist > 0)
+    /*if(limit_speed > 10 && left_dist > 0)
     {
         int w = 200;
         int h = 200;
@@ -55,7 +55,7 @@ static void ui_draw_extras_limit_speed(UIState *s)
             snprintf(str, sizeof(str), "%dm", left_dist);
 
         nvgText(s->vg, x+w/2, y+h + 70, str, NULL);
-    }
+    }*/
     /*else
     {
         auto controls_state = (*s->sm)["controlsState"].getControlsState();
