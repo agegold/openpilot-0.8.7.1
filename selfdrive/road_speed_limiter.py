@@ -34,41 +34,6 @@ class RoadLimitSpeedServer:
     broadcast.setDaemon(True)
     broadcast.start()
 
-    #gps = Thread(target=self.gps_thread, args=[])
-    #gps.setDaemon(True)
-    #gps.start()
-
-  def gps_thread(self):
-
-    sm = messaging.SubMaster(['gpsLocationExternal'], poll=['gpsLocationExternal'])
-    with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as sock:
-      while True:
-        try:
-          sm.update()
-          if self.remote_addr is not None and sm.updated['gpsLocationExternal']:
-            location = sm['gpsLocationExternal']
-            json_location = json.dumps([
-              location.latitude,
-              location.longitude,
-              location.altitude,
-              location.speed,
-              location.bearingDeg,
-              location.accuracy,
-              location.timestamp,
-              location.source,
-              location.vNED,
-              location.verticalAccuracy,
-              location.bearingAccuracyDeg,
-              location.speedAccuracy,
-            ])
-
-            address = (self.remote_addr[0], Port.LOCATION_PORT)
-            sock.sendto(json_location.encode(), address)
-          else:
-            time.sleep(1.)
-        except Exception as e:
-          print("exception", e)
-          time.sleep(1.)
 
   def get_broadcast_address(self):
     try:
