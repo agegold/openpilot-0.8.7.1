@@ -6,8 +6,8 @@ import cereal.messaging as messaging
 
 
 def main():
-  # 300초가 지나면 자동 종료된다.
-  shutdown_at = 3 * 100
+  # 60초가 지나면 자동 종료된다.
+  shutdown_at = 6 * 10
   shutdown_count = 0
   device_state_sock = messaging.sub_sock('deviceState')
 
