@@ -376,8 +376,8 @@ class Controls:
       self.v_cruise_road_limit = road_speed_limiter_get_max_speed(CS, self.v_cruise_road_limit_prev)
 
       if self.roadLimitSpeedActive > 0:  # NDA = 1
-        self.v_cruise_kph = self.v_cruise_road_limit
-        self.v_cruise_road_limit_prev = self.v_cruise_road_limit
+        self.v_cruise_kph = 44
+        self.v_cruise_road_limit_prev = 44
       else:
         self.v_cruise_kph = self.v_cruise_kph_long
         self.v_cruise_kph_long_prev = self.v_cruise_kph_long
