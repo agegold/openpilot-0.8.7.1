@@ -8,7 +8,7 @@ static void ui_draw_extras_limit_speed(UIState *s)
     //int activeNDA = (*s->sm)["controlsState"].getControlsState().getRoadLimitSpeedActive();
     //int limit_speed = (*s->sm)["controlsState"].getControlsState().getRoadLimitSpeed();
     //int left_dist = (*s->sm)["controlsState"].getControlsState().getRoadLimitSpeedLeftDist();
-    int activeNDA = 0
+    int activeNDA = 0;
     int w = 120;
     int h = 54;
     int x = (s->fb_w + (bdr_s*2))/2 - w/2 - bdr_s;
