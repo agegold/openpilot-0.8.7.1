@@ -154,7 +154,7 @@ struct CarState {
   brake @5 :Float32;      # this is user pedal only
   brakePressed @6 :Bool;  # this is user pedal only
   brakeLights @19 :Bool;
-  #regenPressed @37 :Bool; #this is regen button only
+  regenPressed @37 :Bool; #this is regen button only
   autoHold @40 : Int32;
 
   # steering wheel
