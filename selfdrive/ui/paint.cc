@@ -186,8 +186,6 @@ static void ui_draw_vision_maxspeed(UIState *s) {
   const int SET_SPEED_NA = 255;
 
   float maxspeed = (*s->sm)["controlsState"].getControlsState().getVCruise();
-  int hda = (*s->sm)["controlsState"].getControlsState().getRoadLimitSpeedActive();
-
 
   const bool is_cruise_set = maxspeed != 0 && maxspeed != SET_SPEED_NA;
   if (is_cruise_set && !s->scene.is_metric) { maxspeed *= 0.6225; }
@@ -197,11 +195,7 @@ static void ui_draw_vision_maxspeed(UIState *s) {
   ui_draw_rect(s->vg, rect, COLOR_WHITE_ALPHA(100), 10, 20.);
 
   nvgTextAlign(s->vg, NVG_ALIGN_CENTER | NVG_ALIGN_BASELINE);
-  if (hda > 0) {
-    ui_draw_text(s, rect.centerX(), 118, "HDA", 26 * 2.5, COLOR_WHITE_ALPHA(is_cruise_set ? 200 : 100), "sans-regular");
-  } else {
-    ui_draw_text(s, rect.centerX(), 118, "MAX", 26 * 2.5, COLOR_WHITE_ALPHA(is_cruise_set ? 200 : 100), "sans-regular");
-  }
+  ui_draw_text(s, rect.centerX(), 118, "MAX", 26 * 2.5, COLOR_WHITE_ALPHA(is_cruise_set ? 200 : 100), "sans-regular");
 
   if (is_cruise_set) {
     const std::string maxspeed_str = std::to_string((int)std::nearbyint(maxspeed));
@@ -244,6 +238,25 @@ static void ui_draw_vision_brake(UIState *s) {
   const int brake_x = brake_size + (bdr_s * 2) + 255;
   const int brake_y = s->fb_h - footer_h / 2;
   ui_draw_circle_image(s, brake_x, brake_y, brake_size, "brake_img", s->scene.brakeLights);
+}
+
+static void ui_draw_vision_autohold(UIState *s) {
+  auto car_state = (*s->sm)["carState"].getCarState();
+  int autohold = car_state.getAutoHold();
+  if(autohold < 0)
+    return;
+
+  const int radius = 96;
+  const int center_x = radius + (bdr_s * 2) + (radius*2 + 60) * 2;
+  const int center_y = s->fb_h - footer_h / 2;
+
+  float brake_img_alpha = autohold > 0 ? 1.0f : 0.15f;
+  float brake_bg_alpha = autohold > 0 ? 0.3f : 0.1f;
+  NVGcolor brake_bg = nvgRGBA(0, 0, 0, (255 * brake_bg_alpha));
+
+  ui_draw_circle_image(s, center_x, center_y, radius,
+        autohold > 1 ? "autohold_warning" : "autohold_active",
+        brake_bg, brake_img_alpha);
 }
 
 static void ui_draw_vision_header(UIState *s) {
@@ -476,6 +489,8 @@ static void ui_draw_vision(UIState *s) {
   if ((*s->sm)["controlsState"].getControlsState().getAlertSize() == cereal::ControlsState::AlertSize::NONE) {
     //ui_draw_vision_face(s);  비활성화
 	ui_draw_vision_brake(s);
+	// 오토 홀드 추가
+	ui_draw_vision_autohold(s);
 	bb_ui_draw_UI(s);
   }
 }
@@ -593,6 +608,8 @@ void ui_nvg_init(UIState *s) {
     {"brake_img", "../assets/img_brake_disc.png"},
     {"img_nda", "../assets/img_nda.png"},
 	{"img_hda", "../assets/img_hda.png"},
+	{"autohold_warning", "../assets/img_autohold_warning.png"},
+	{"autohold_active", "../assets/img_autohold_active.png"},
   };
   for (auto [name, file] : images) {
     s->images[name] = nvgCreateImage(s->vg, file, 1);

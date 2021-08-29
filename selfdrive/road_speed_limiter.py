@@ -34,6 +34,41 @@ class RoadLimitSpeedServer:
     broadcast.setDaemon(True)
     broadcast.start()
 
+    #gps = Thread(target=self.gps_thread, args=[])
+    #gps.setDaemon(True)
+    #gps.start()
+
+  def gps_thread(self):
+
+    sm = messaging.SubMaster(['gpsLocationExternal'], poll=['gpsLocationExternal'])
+    with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as sock:
+      while True:
+        try:
+          sm.update()
+          if self.remote_addr is not None and sm.updated['gpsLocationExternal']:
+            location = sm['gpsLocationExternal']
+            json_location = json.dumps([
+              location.latitude,
+              location.longitude,
+              location.altitude,
+              location.speed,
+              location.bearingDeg,
+              location.accuracy,
+              location.timestamp,
+              location.source,
+              location.vNED,
+              location.verticalAccuracy,
+              location.bearingAccuracyDeg,
+              location.speedAccuracy,
+            ])
+
+            address = (self.remote_addr[0], Port.LOCATION_PORT)
+            sock.sendto(json_location.encode(), address)
+          else:
+            time.sleep(1.)
+        except Exception as e:
+          print("exception", e)
+          time.sleep(1.)
 
   def get_broadcast_address(self):
     try:
@@ -195,7 +230,7 @@ class RoadSpeedLimiter:
     self.recv()
 
     if self.roadLimitSpeed is None:
-      return 0, 0
+      return 0
 
     try:
 
@@ -259,10 +294,10 @@ class RoadSpeedLimiter:
           else:
             pp = 0
 
-          return cam_limit_speed, cam_limit_speed_left_dist
+          return cam_limit_speed
 
         self.slowing_down = False
-        return cam_limit_speed, cam_limit_speed_left_dist
+        return cam_limit_speed
 
       elif section_left_dist is not None and section_limit_speed is not None and section_left_dist > 0:
         if MIN_LIMIT <= section_limit_speed <= MAX_LIMIT:
@@ -273,17 +308,17 @@ class RoadSpeedLimiter:
           else:
             first_started = False
 
-          return section_limit_speed, section_left_dist
+          return section_limit_speed
 
         self.slowing_down = False
-        return section_limit_speed, section_left_dist
+        return section_limit_speed
 
     except Exception as e:
       log = "Ex: " + str(e)
       pass
 
     self.slowing_down = False
-    return 0, 0
+    return 0
 
 road_speed_limiter = None
 
