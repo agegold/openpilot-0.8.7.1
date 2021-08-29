@@ -5,20 +5,17 @@
 
 static void ui_draw_extras_limit_speed(UIState *s)
 {
-    int activeNDA = (*s->sm)["controlsState"].getControlsState().getRoadLimitSpeedActive();
+    //int activeNDA = (*s->sm)["controlsState"].getControlsState().getRoadLimitSpeedActive();
     //int limit_speed = (*s->sm)["controlsState"].getControlsState().getRoadLimitSpeed();
     //int left_dist = (*s->sm)["controlsState"].getControlsState().getRoadLimitSpeedLeftDist();
 
-    if(activeNDA > 0)
-    {
-        int w = 120;
-        int h = 54;
-        int x = (s->fb_w + (bdr_s*2))/2 - w/2 - bdr_s;
-        int y = 40 - bdr_s;
+    int w = 120;
+    int h = 54;
+    int x = (s->fb_w + (bdr_s*2))/2 - w/2 - bdr_s;
+    int y = 40 - bdr_s;
 
-        const char* img = activeNDA == 1 ? "img_nda" : "img_hda";
-        ui_draw_image(s, {x, y, w, h}, img, 1.f);
-    }
+    const char* img = activeNDA == 1 ? "img_nda" : "img_hda";
+    ui_draw_image(s, {x, y, w, h}, img, 1.f);
 
     /*if(limit_speed > 10 && left_dist > 0)
     {
