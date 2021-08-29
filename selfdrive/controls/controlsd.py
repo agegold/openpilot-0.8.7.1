@@ -370,20 +370,20 @@ class Controls:
     # 크루즈 속도값 설정
     # [TMAP]
     if CS.adaptiveCruise:
-      self.v_cruise_kph = update_v_cruise(self.v_cruise_kph, CS.buttonEvents, self.enabled, self.is_metric)
-      #self.v_cruise_kph_long = update_v_cruise(self.v_cruise_kph_long_prev, CS.buttonEvents, self.enabled, self.is_metric)
+      #self.v_cruise_kph = update_v_cruise(self.v_cruise_kph, CS.buttonEvents, self.enabled, self.is_metric)
+      self.v_cruise_kph_long = update_v_cruise(self.v_cruise_kph_long_prev, CS.buttonEvents, self.enabled, self.is_metric)
       self.roadLimitSpeedActive = road_speed_limiter_get_active()
       self.v_cruise_road_limit = road_speed_limiter_get_max_speed(CS, self.v_cruise_road_limit_prev)
 
       if self.roadLimitSpeedActive > 0:  # NDA = 1
-        self.v_cruise_kph = 44
-        self.v_cruise_road_limit_prev = 44
+        self.v_cruise_kph = self.v_cruise_road_limit
+        self.v_cruise_road_limit_prev = self.v_cruise_road_limit
       else:
         self.v_cruise_kph = self.v_cruise_kph_long
         self.v_cruise_kph_long_prev = self.v_cruise_kph_long
 
     elif not CS.adaptiveCruise and CS.cruiseState.enabled:
-      self.v_cruise_kph = 30
+      self.v_cruise_kph = 40
 
     # decrease the soft disable timer at every step, as it's reset on
     # entrance in SOFT_DISABLING state
