@@ -143,7 +143,7 @@ class SccSmoother:
 
     max_speed_log = ""
 
-    # 현재 크루즈 맥스 속도를 기준으로 30kph
+    # 현재 크루즈 맥스 속도를 기준으로 [30km/h]
     if apply_limit_speed >= self.kph_to_clu(30):
 
       if first_started:
@@ -186,7 +186,8 @@ class SccSmoother:
   def update(self, enabled, can_sends, packer, CC, CS, frame, apply_accel, controls):
 
     # mph or kph
-    # 크루즈 설정 속도
+    # 현재 크루즈 설정 속도
+    #clu11_speed = CS.clu11["CF_Clu_Vanz"] ##############################################################################
     clu11_speed = CS.clu11["CF_Clu_Vanz"]
 
     road_limit_speed, left_dist, max_speed_log = self.cal_max_speed(frame, CC, CS, controls.sm, clu11_speed, controls)
