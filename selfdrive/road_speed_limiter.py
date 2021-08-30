@@ -230,7 +230,7 @@ class RoadSpeedLimiter:
     self.recv()
 
     if self.roadLimitSpeed is None:
-      return 0
+      return 0, 0, 0, False, ""
 
     try:
 
@@ -244,6 +244,7 @@ class RoadSpeedLimiter:
 
       section_limit_speed = self.roadLimitSpeed.sectionLimitSpeed
       section_left_dist = self.roadLimitSpeed.sectionLeftDist
+      camSpeedFactor = clip(self.roadLimitSpeed.camSpeedFactor, 1.0, 1.1)
 
       if is_highway is not None:
         if is_highway:
@@ -294,10 +295,11 @@ class RoadSpeedLimiter:
           else:
             pp = 0
 
-          return cam_limit_speed
+          return cam_limit_speed * camSpeedFactor + int(
+            pp * diff_speed), cam_limit_speed, cam_limit_speed_left_dist, first_started, log
 
         self.slowing_down = False
-        return cam_limit_speed
+        return 0, cam_limit_speed, cam_limit_speed_left_dist, False, log
 
       elif section_left_dist is not None and section_limit_speed is not None and section_left_dist > 0:
         if MIN_LIMIT <= section_limit_speed <= MAX_LIMIT:
@@ -308,17 +310,17 @@ class RoadSpeedLimiter:
           else:
             first_started = False
 
-          return section_limit_speed
+          return section_limit_speed * camSpeedFactor, section_limit_speed, section_left_dist, first_started, log
 
         self.slowing_down = False
-        return section_limit_speed
+        return 0, section_limit_speed, section_left_dist, False, log
 
     except Exception as e:
       log = "Ex: " + str(e)
       pass
 
     self.slowing_down = False
-    return 0
+    return 0, 0, 0, False, log
 
 road_speed_limiter = None
 
