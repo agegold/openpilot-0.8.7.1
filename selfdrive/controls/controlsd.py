@@ -373,7 +373,6 @@ class Controls:
       self.v_cruise_kph = update_v_cruise(self.v_cruise_kph, CS.buttonEvents, self.enabled, self.is_metric)
       #self.v_cruise_kph_long = update_v_cruise(self.v_cruise_kph_long_prev, CS.buttonEvents, self.enabled, self.is_metric)
       #self.roadLimitSpeedActive = road_speed_limiter_get_active()
-      self.roadLimitSpeedActive = 1
       #self.v_cruise_road_limit = road_speed_limiter_get_max_speed(CS, self.v_cruise_road_limit_prev)
 
       #if self.roadLimitSpeedActive > 0:  # NDA = 1
