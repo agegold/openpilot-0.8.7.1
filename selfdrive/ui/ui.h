@@ -170,6 +170,9 @@ typedef struct UIState {
 
   TouchState touch;
 
+  // neokii dev UI
+  cereal::CarControl::Reader car_control;
+
 } UIState;
 
 
