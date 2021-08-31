@@ -77,7 +77,7 @@ class CarController():
 
     # NDA Add (PSK)
     # NDA 정보를 CC 에 셋팅
-    self.scc_smoother.update(self, CC, CS, frame, controls)
+    self.scc_smoother.update(self, CS, frame, controls)
 
     # Show green icon when LKA torque is applied, and
     # alarming orange icon when approaching torque limit.

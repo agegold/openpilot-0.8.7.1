@@ -68,7 +68,7 @@ class SccSmoother:
       events.add(EventName.slowingDownSpeed)
 
   # clu11_speed : 크루즈 설정 속도
-  def cal_max_speed(self, frame, CC, CS, sm, controls):
+  def cal_max_speed(self, frame, CS, sm, controls):
 
     # kph
     #apply_limit_speed, road_limit_speed, left_dist, first_started, max_speed_log = road_speed_limiter_get_max_speed(clu11_speed, self.is_metric)
@@ -89,7 +89,7 @@ class SccSmoother:
     #                                              float(self.curve_speed_ms*self.speed_conv_to_clu),
     #                                              float(lead_speed))
 
-    max_speed_log = ""
+    #max_speed_log = ""
 
     # PSK add
     self.current_max_speed_clu = self.kph_to_clu(controls.v_cruise_kph)
@@ -97,51 +97,29 @@ class SccSmoother:
     # 현재 크루즈 맥스 속도를 기준으로 [30km/h]
     if apply_limit_speed >= self.kph_to_clu(30):
 
-      # Check please....
-      #if first_started:
-      #  self.max_speed_clu = CS.out.vEgo
-
       # 작은 값으로 설정
       max_speed_clu = min(max_speed_clu, apply_limit_speed)
 
-      # PSK
-      if self.current_max_speed_clu > apply_limit_speed:
-
-        if not self.slowing_down_alert and not self.slowing_down:
-          self.slowing_down_sound_alert = True
-          self.slowing_down = True
-
-        self.slowing_down_alert = True
-
-      else:
-        self.slowing_down_alert = False
-
-    else:
-      self.slowing_down_alert = False
-      self.slowing_down = False
 
     # 크루즈 MAX 속도 셋팅
     self.update_max_speed(int(max_speed_clu + 0.5))
 
     return road_limit_speed, left_dist, max_speed_log
 
-  def update(self, CC, CS, frame, controls):
+  def update(self, CS, frame, controls):
 
     # NDA 연동 표시
-    road_limit_speed, left_dist, max_speed_log = self.cal_max_speed(frame, CC, CS, controls.sm, controls)
+    road_limit_speed, left_dist, max_speed_log = self.cal_max_speed(frame, CS, controls.sm, controls)
 
-    CC.sccSmoother.roadLimitSpeedActive = road_speed_limiter_get_active()
-
-    print('road_speed_limiter_get_active', CC.sccSmoother.roadLimitSpeedActive)
-
-    CC.sccSmoother.roadLimitSpeed = road_limit_speed
-    CC.sccSmoother.roadLimitSpeedLeftDist = left_dist
+    #CC.sccSmoother.roadLimitSpeedActive = road_speed_limiter_get_active()
+    #CC.sccSmoother.roadLimitSpeed = road_limit_speed
+    #CC.sccSmoother.roadLimitSpeedLeftDist = left_dist
 
     # kph
     controls.applyMaxSpeed = float(self.max_speed_clu * self.speed_conv_to_ms * CV.MS_TO_KPH)
 
-    CC.sccSmoother.applyMaxSpeed = controls.applyMaxSpeed
-    CC.sccSmoother.cruiseMaxSpeed = controls.v_cruise_kph
+    #CC.sccSmoother.applyMaxSpeed = controls.applyMaxSpeed
+    #CC.sccSmoother.cruiseMaxSpeed = controls.v_cruise_kph
 
     if not CS.adaptiveCruise:
       self.reset()
