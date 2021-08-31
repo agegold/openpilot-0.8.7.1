@@ -131,6 +131,9 @@ class SccSmoother:
     road_limit_speed, left_dist, max_speed_log = self.cal_max_speed(frame, CC, CS, controls.sm, controls)
 
     CC.sccSmoother.roadLimitSpeedActive = road_speed_limiter_get_active()
+
+    print('road_speed_limiter_get_active', CC.sccSmoother.roadLimitSpeedActive)
+
     CC.sccSmoother.roadLimitSpeed = road_limit_speed
     CC.sccSmoother.roadLimitSpeedLeftDist = left_dist
 
