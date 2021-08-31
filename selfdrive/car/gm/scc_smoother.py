@@ -43,9 +43,6 @@ class SccSmoother:
     self.max_speed_clu = 0.
     self.current_max_speed_clu = 0.
 
-    self.slowing_down = False
-    self.slowing_down_alert = False
-    self.slowing_down_sound_alert = False
     self.active_cam = False
 
 
@@ -60,12 +57,6 @@ class SccSmoother:
     self.slowing_down_sound_alert = False
 
 
-  def inject_events(self, events):
-    if self.slowing_down_sound_alert:
-      self.slowing_down_sound_alert = False
-      events.add(EventName.slowingDownSpeedSound)
-    elif self.slowing_down_alert:
-      events.add(EventName.slowingDownSpeed)
 
   # clu11_speed : 크루즈 설정 속도
   def cal_max_speed(self, frame, CS, sm, controls):
