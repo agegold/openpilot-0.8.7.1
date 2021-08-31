@@ -70,7 +70,7 @@ class CarState(CarStateBase):
     # 오토홀드 표시 추가 (PSK)
     ret.autoHold = pt_cp.vl["EPBStatus"]["EPBClosed"]
     # NDA 표시 (PSK)
-    ret.roadLimitSpeedActive = road_speed_limiter_get_active()
+    #ret.roadLimitSpeedActive = road_speed_limiter_get_active()
     #ret.roadLimitSpeedActive = 1
 
     self.main_on = bool(pt_cp.vl["ECMEngineStatus"]["CruiseMainOn"])
