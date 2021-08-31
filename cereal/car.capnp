@@ -157,6 +157,9 @@ struct CarState {
   regenPressed @37 :Bool; #this is regen button only
   autoHold @40 : Int32;
 
+  # NDA add.. (PSK)
+  roadLimitSpeedActive @41 :Int32;
+
   # steering wheel
   steeringAngleDeg @7 :Float32;
   steeringRateDeg @15 :Float32;

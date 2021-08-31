@@ -5,7 +5,11 @@
 
 static void ui_draw_extras_limit_speed(UIState *s)
 {
-        int activeNDA = 1;
+    auto car_state = (*s->sm)["carState"].getCarState();
+    int activeNDA = car_state.getAutoHold();
+
+    if(activeNDA > 0)
+    {
         int w = 120;
         int h = 54;
         int x = (s->fb_w + (bdr_s*2))/2 - w/2 - bdr_s;
@@ -13,6 +17,7 @@ static void ui_draw_extras_limit_speed(UIState *s)
 
         const char* img = activeNDA == 1 ? "img_nda" : "img_hda";
         ui_draw_image(s, {x, y, w, h}, img, 1.f);
+    }
 
 }
 
