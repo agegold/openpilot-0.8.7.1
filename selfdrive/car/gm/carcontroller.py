@@ -6,6 +6,7 @@ from selfdrive.car import apply_std_steer_torque_limits, create_gas_command
 from selfdrive.car.gm import gmcan
 from selfdrive.car.gm.values import DBC, CanBus, CarControllerParams, MIN_ACC_SPEED
 from opendbc.can.packer import CANPacker
+from selfdrive.car.gm.scc_smoother import SccSmoother
 
 VisualAlert = car.CarControl.HUDControl.VisualAlert
 
@@ -34,6 +35,9 @@ class CarController():
     self.packer_pt = CANPacker(DBC[CP.carFingerprint]['pt'])
     #self.packer_obj = CANPacker(DBC[CP.carFingerprint]['radar'])
     #self.packer_ch = CANPacker(DBC[CP.carFingerprint]['chassis'])
+
+    # NDA Add (PSK...)
+    self.scc_smoother = SccSmoother()
 
   def update(self, enabled, CS, frame, actuators,
              hud_v_cruise, hud_show_lanes, hud_show_car, hud_alert):
@@ -70,6 +74,10 @@ class CarController():
 
       idx = (frame // 2) % 4
       can_sends.append(create_gas_command(self.packer_pt, final_pedal, idx))
+
+    # NDA Add (PSK)
+    # NDA 정보를 CC 에 셋팅
+    self.scc_smoother.update(self, CC, CS, frame, controls)
 
     # Show green icon when LKA torque is applied, and
     # alarming orange icon when approaching torque limit.

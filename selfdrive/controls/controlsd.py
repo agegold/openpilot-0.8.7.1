@@ -24,7 +24,7 @@ from selfdrive.controls.lib.alertmanager import AlertManager
 from selfdrive.controls.lib.vehicle_model import VehicleModel
 from selfdrive.locationd.calibrationd import Calibration
 from selfdrive.hardware import HARDWARE, TICI
-from selfdrive.road_speed_limiter import road_speed_limiter_get_max_speed, road_speed_limiter_get_active
+from selfdrive.car.gm.scc_smoother import SccSmoother
 
 LDW_MIN_SPEED = 31 * CV.MPH_TO_MS
 LANE_DEPARTURE_THRESHOLD = 0.1
@@ -365,12 +365,13 @@ class Controls:
 
     self.v_cruise_kph_last = self.v_cruise_kph
 
+    SccSmoother.update_cruise_buttons(self, CS)
     # if stock cruise is completely disabled, then we can use our own set speed logic
     # if(activeNDA > 0)
     # 크루즈 속도값 설정
     # [TMAP]
-    if CS.adaptiveCruise:
-      self.v_cruise_kph = update_v_cruise(self.v_cruise_kph, CS.buttonEvents, self.enabled, self.is_metric)
+    #if CS.adaptiveCruise:
+      #self.v_cruise_kph = update_v_cruise(self.v_cruise_kph, CS.buttonEvents, self.enabled, self.is_metric)
       #self.v_cruise_kph_long = update_v_cruise(self.v_cruise_kph_long_prev, CS.buttonEvents, self.enabled, self.is_metric)
       #self.roadLimitSpeedActive = road_speed_limiter_get_active()
       #self.v_cruise_road_limit = road_speed_limiter_get_max_speed(CS, self.v_cruise_road_limit_prev)
@@ -382,8 +383,8 @@ class Controls:
       #  self.v_cruise_kph = self.v_cruise_kph_long
       #  self.v_cruise_kph_long_prev = self.v_cruise_kph_long
 
-    elif not CS.adaptiveCruise and CS.cruiseState.enabled:
-      self.v_cruise_kph = 40
+    #elif not CS.adaptiveCruise and CS.cruiseState.enabled:
+    #  self.v_cruise_kph = 40
 
     # decrease the soft disable timer at every step, as it's reset on
     # entrance in SOFT_DISABLING state

@@ -5,19 +5,24 @@
 
 static void ui_draw_extras_limit_speed(UIState *s)
 {
-    //int activeNDA = (*s->sm)["controlsState"].getControlsState().getRoadLimitSpeedActive();
-    //int limit_speed = (*s->sm)["controlsState"].getControlsState().getRoadLimitSpeed();
-    //int left_dist = (*s->sm)["controlsState"].getControlsState().getRoadLimitSpeedLeftDist();
-    int activeNDA = 0;
-    int w = 120;
-    int h = 54;
-    int x = (s->fb_w + (bdr_s*2))/2 - w/2 - bdr_s;
-    int y = 40 - bdr_s;
+    const UIScene *scene = &s->scene;
+    cereal::CarControl::SccSmoother::Reader scc_smoother = scene->car_control.getSccSmoother();
+    int activeNDA = scc_smoother.getRoadLimitSpeedActive();
+    int limit_speed = scc_smoother.getRoadLimitSpeed();
+    int left_dist = scc_smoother.getRoadLimitSpeedLeftDist();
 
-    const char* img = activeNDA == 1 ? "img_nda" : "img_hda";
-    ui_draw_image(s, {x, y, w, h}, img, 1.f);
+    if(activeNDA > 0)
+    {
+        int w = 120;
+        int h = 54;
+        int x = (s->fb_w + (bdr_s*2))/2 - w/2 - bdr_s;
+        int y = 40 - bdr_s;
 
-    /*if(limit_speed > 10 && left_dist > 0)
+        const char* img = activeNDA == 1 ? "img_nda" : "img_hda";
+        ui_draw_image(s, {x, y, w, h}, img, 1.f);
+    }
+
+    if(limit_speed > 10 && left_dist > 0)
     {
         int w = 200;
         int h = 200;
@@ -52,8 +57,8 @@ static void ui_draw_extras_limit_speed(UIState *s)
             snprintf(str, sizeof(str), "%dm", left_dist);
 
         nvgText(s->vg, x+w/2, y+h + 70, str, NULL);
-    }*/
-    /*else
+    }
+    else
     {
         auto controls_state = (*s->sm)["controlsState"].getControlsState();
         int sccStockCamAct = (int)controls_state.getSccStockCamAct();
@@ -85,7 +90,7 @@ static void ui_draw_extras_limit_speed(UIState *s)
 
             nvgText(s->vg, x+w/2, y+h/2, "CAM", NULL);
         }
-    }*/
+    }
 }
 
 static void ui_draw_extras(UIState *s)

@@ -66,7 +66,7 @@ class CarState(CarStateBase):
     ret.rightBlinker = pt_cp.vl["BCMTurnSignals"]["TurnSignals"] == 2
 
     self.park_brake = pt_cp.vl["EPBStatus"]["EPBClosed"]
-    # 오토홀드 표시 추가
+    # 오토홀드 표시 추가 (PSK)
     ret.autoHold = pt_cp.vl["EPBStatus"]["EPBClosed"]
     self.main_on = bool(pt_cp.vl["ECMEngineStatus"]["CruiseMainOn"])
     ret.espDisabled = pt_cp.vl["ESPStatus"]["TractionControlOn"] != 1
