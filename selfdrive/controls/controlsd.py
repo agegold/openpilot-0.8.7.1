@@ -24,7 +24,7 @@ from selfdrive.controls.lib.alertmanager import AlertManager
 from selfdrive.controls.lib.vehicle_model import VehicleModel
 from selfdrive.locationd.calibrationd import Calibration
 from selfdrive.hardware import HARDWARE, TICI
-from selfdrive.car.gm.scc_smoother import SccSmoother
+#from selfdrive.car.gm.scc_smoother import SccSmoother
 
 LDW_MIN_SPEED = 31 * CV.MPH_TO_MS
 LANE_DEPARTURE_THRESHOLD = 0.1
@@ -365,7 +365,13 @@ class Controls:
 
     self.v_cruise_kph_last = self.v_cruise_kph
 
-    SccSmoother.update_cruise_buttons(self, CS)
+    if CS.adaptiveCruise:
+      self.v_cruise_kph = update_v_cruise(self.v_cruise_kph, CS.buttonEvents, self.enabled, self.is_metric)
+    elif not CS.adaptiveCruise and CS.cruiseState.enabled:
+      self.v_cruise_kph = 40
+
+    #SccSmoother.update_cruise_buttons(self, CS)
+
     # if stock cruise is completely disabled, then we can use our own set speed logic
     # if(activeNDA > 0)
     # 크루즈 속도값 설정
