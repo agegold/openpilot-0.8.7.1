@@ -40,6 +40,7 @@ class SccSmoother:
     self.max_set_speed_clu = self.kph_to_clu(MAX_SET_SPEED_KPH)
 
     self.target_speed = 0.
+    # 크루즈 MAX 속도
     self.max_speed_clu = 0.
     self.current_max_speed_clu = 0.
 
@@ -52,13 +53,9 @@ class SccSmoother:
     self.max_speed_clu = 0.
     self.current_max_speed_clu = 0.
 
-    self.slowing_down = False
-    self.slowing_down_alert = False
-    self.slowing_down_sound_alert = False
 
 
-
-  # clu11_speed : 크루즈 설정 속도
+  # 크루즈 MAX 표시 설정
   def cal_max_speed(self, frame, CS, sm, controls):
 
     # kph
@@ -72,6 +69,7 @@ class SccSmoother:
     #else:
     #  max_speed_clu = self.kph_to_clu(controls.v_cruise_kph)
 
+    # 크루즈 MAX 표시 속도
     max_speed_clu = self.kph_to_clu(controls.v_cruise_kph)
 
     self.active_cam = road_limit_speed > 0
@@ -80,20 +78,18 @@ class SccSmoother:
     #                                              float(self.curve_speed_ms*self.speed_conv_to_clu),
     #                                              float(lead_speed))
 
-    #max_speed_log = ""
+    max_speed_log = ""
 
     # PSK add
-    self.current_max_speed_clu = self.kph_to_clu(controls.v_cruise_kph)
+    #self.current_max_speed_clu = self.kph_to_clu(controls.v_cruise_kph)
 
-    # 현재 크루즈 맥스 속도를 기준으로 [30km/h]
-    if apply_limit_speed >= self.kph_to_clu(30):
-
-      # 작은 값으로 설정
-      max_speed_clu = min(max_speed_clu, apply_limit_speed)
-
+    # 작은 값으로 설정
+    # 크루즈 MAX 표시와 , apply_limit_speed 작은 값으로 설정
+    max_speed_clu = min(max_speed_clu, apply_limit_speed)
 
     # 크루즈 MAX 속도 셋팅
     self.update_max_speed(int(max_speed_clu + 0.5))
+    controls.v_cruise_kph = int(max_speed_clu + 0.5)
 
     return road_limit_speed, left_dist, max_speed_log
 
