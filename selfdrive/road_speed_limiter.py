@@ -9,7 +9,6 @@ from threading import Thread
 from cereal import messaging
 from common.params import Params
 from common.numpy_fast import interp
-from common.realtime import sec_since_boot
 
 
 CAMERA_SPEED_FACTOR = 1.05
@@ -127,13 +126,13 @@ class RoadLimitSpeedServer:
           try:
             if 'active' in json_obj:
               self.active = json_obj['active']
-              self.last_updated_active = sec_since_boot()
+              self.last_updated_active = time.monotonic()
           except:
             pass
 
           if 'road_limit' in json_obj:
             self.json_road_limit = json_obj['road_limit']
-            self.last_updated = sec_since_boot()
+            self.last_updated = time.monotonic()
 
         finally:
           self.lock.release()
@@ -149,7 +148,7 @@ class RoadLimitSpeedServer:
     return ret
 
   def check(self):
-    now = sec_since_boot()
+    now = time.monotonic()
     if now - self.last_updated > 20.:
       try:
         self.lock.acquire()
@@ -206,7 +205,7 @@ class RoadSpeedLimiter:
     self.slowing_down = False
     self.start_dist = 0
 
-    #self.longcontrol = Params().get_bool('LongControlEnabled')
+    self.longcontrol = Params().get_bool('LongControlEnabled')
     self.sock = messaging.sub_sock("roadLimitSpeed")
     self.roadLimitSpeed = None
 
@@ -244,7 +243,6 @@ class RoadSpeedLimiter:
 
       section_limit_speed = self.roadLimitSpeed.sectionLimitSpeed
       section_left_dist = self.roadLimitSpeed.sectionLeftDist
-      camSpeedFactor = clip(self.roadLimitSpeed.camSpeedFactor, 1.0, 1.1)
 
       if is_highway is not None:
         if is_highway:
@@ -263,18 +261,16 @@ class RoadSpeedLimiter:
       # log += ", " + str(section_limit_speed)
       # log += ", " + str(section_left_dist)
 
-      v_ego = CS.out.vEgo / 3.6
+      v_ego = CS.clu11["CF_Clu_Vanz"] / 3.6
 
       if cam_limit_speed_left_dist is not None and cam_limit_speed is not None and cam_limit_speed_left_dist > 0:
 
         diff_speed = v_ego * 3.6 - cam_limit_speed
 
-        #if self.longcontrol:
-        #  sec = interp(diff_speed, [10., 30.], [13., 18.])
-        #else:
-        #  sec = interp(diff_speed, [10., 30.], [15., 20.])
-
-        sec = interp(diff_speed, [10., 30.], [13., 18.])
+        if self.longcontrol:
+          sec = interp(diff_speed, [10., 30.], [12., 17.])
+        else:
+          sec = interp(diff_speed, [10., 30.], [14., 19.])
 
         if MIN_LIMIT <= cam_limit_speed <= MAX_LIMIT and (self.slowing_down or cam_limit_speed_left_dist < v_ego * sec):
 
@@ -295,7 +291,7 @@ class RoadSpeedLimiter:
           else:
             pp = 0
 
-          return cam_limit_speed * camSpeedFactor + int(
+          return cam_limit_speed * CAMERA_SPEED_FACTOR + int(
             pp * diff_speed), cam_limit_speed, cam_limit_speed_left_dist, first_started, log
 
         self.slowing_down = False
@@ -310,7 +306,7 @@ class RoadSpeedLimiter:
           else:
             first_started = False
 
-          return section_limit_speed * camSpeedFactor, section_limit_speed, section_left_dist, first_started, log
+          return section_limit_speed, section_limit_speed, section_left_dist, first_started, log
 
         self.slowing_down = False
         return 0, section_limit_speed, section_left_dist, False, log
