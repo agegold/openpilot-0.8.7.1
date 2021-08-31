@@ -6,7 +6,7 @@
 static void ui_draw_extras_limit_speed(UIState *s)
 {
     auto car_state = (*s->sm)["carState"].getCarState();
-    int activeNDA = car_state.getAutoHold();
+    int activeNDA = car_state.getRoadLimitSpeedActive();
 
     if(activeNDA > 0)
     {
