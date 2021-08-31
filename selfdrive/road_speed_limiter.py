@@ -181,6 +181,8 @@ def main():
         sock.bind(('0.0.0.0', Port.RECEIVE_PORT))
         sock.setblocking(False)
 
+        print('client Socket', sock)
+
         while True:
 
           if server.udp_recv(sock):
