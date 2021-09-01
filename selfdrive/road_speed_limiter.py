@@ -196,6 +196,8 @@ def main():
             dat.roadLimitSpeed.sectionLeftDist = server.get_limit_val("section_left_dist", 0)
             roadLimitSpeed.send(dat.to_bytes())
 
+            print("Server send ========================================= ", str(dat))
+
           server.check()
 
       except Exception as e:
