@@ -130,8 +130,8 @@ struct CarEvent @0x9b1657f34caf3ad3 {
     modelLagWarningDEPRECATED @93;
     startupOneplusDEPRECATED @82;
 
-    slowingDownSpeed @104;
-    slowingDownSpeedSound @105;
+    slowingDownSpeed @105;
+    slowingDownSpeedSound @106;
   }
 }
 
