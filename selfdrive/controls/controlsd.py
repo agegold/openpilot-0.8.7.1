@@ -245,7 +245,7 @@ class Controls:
         self.max_speed_clu = self.kph_to_clu(self.v_cruise_kph)
 
 
-      print("max_speed_clu : ", max_speed_clu)
+      print("max_speed_clu : ", self.max_speed_clu)
 
       # max_speed_log = "{:.1f}/{:.1f}/{:.1f}".format(float(limit_speed),
       #                                              float(self.curve_speed_ms*self.speed_conv_to_clu),
@@ -286,7 +286,7 @@ class Controls:
       # else:
       #  self.limited_lead = False
 
-      self.update_max_speed(int(self.max_speed_clu + 0.5))
+      self.update_max_speed(int(max_speed_clu + 0.5))
 
       return road_limit_speed, left_dist, max_speed_log
 
