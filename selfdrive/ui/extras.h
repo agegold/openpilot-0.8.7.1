@@ -58,7 +58,7 @@ static void ui_draw_extras_limit_speed(UIState *s)
 
         nvgText(s->vg, x+w/2, y+h + 70, str, NULL);
     }
-    else
+    /*else
     {
         auto controls_state = (*s->sm)["controlsState"].getControlsState();
         int sccStockCamAct = (int)controls_state.getSccStockCamAct();
@@ -90,7 +90,7 @@ static void ui_draw_extras_limit_speed(UIState *s)
 
             nvgText(s->vg, x+w/2, y+h/2, "CAM", NULL);
         }
-    }
+    }*/
 }
 
 static void ui_draw_extras(UIState *s)
