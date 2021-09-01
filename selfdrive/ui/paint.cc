@@ -182,7 +182,7 @@ static void ui_draw_world(UIState *s) {
 }
 
 // 크루즈 셋팅 UI (PSK)
-static void ui_draw_vision_maxspeed(UIState *s) {
+/*static void ui_draw_vision_maxspeed(UIState *s) {
   const int SET_SPEED_NA = 255;
 
   float maxspeed = (*s->sm)["controlsState"].getControlsState().getVCruise();
@@ -203,8 +203,55 @@ static void ui_draw_vision_maxspeed(UIState *s) {
   } else {
     ui_draw_text(s, rect.centerX(), 212, "-", 42 * 2.5, COLOR_WHITE_ALPHA(100), "sans-semibold");
   }
-}
+}*/
 
+static void ui_draw_vision_maxspeed(UIState *s) {
+
+  // scc smoother
+  cereal::CarControl::SccSmoother::Reader scc_smoother = s->scene.car_control.getSccSmoother();
+  bool longControl = scc_smoother.getLongControl();
+
+  // kph
+  float applyMaxSpeed = scc_smoother.getApplyMaxSpeed();
+  float cruiseMaxSpeed = scc_smoother.getCruiseMaxSpeed();
+
+  bool is_cruise_set = (cruiseMaxSpeed > 0 && cruiseMaxSpeed < 255);
+
+  const Rect rect = {bdr_s * 2, int(bdr_s * 1.5), 184, 202};
+  ui_fill_rect(s->vg, rect, COLOR_BLACK_ALPHA(100), 30.);
+  ui_draw_rect(s->vg, rect, COLOR_WHITE_ALPHA(100), 10, 20.);
+
+  nvgTextAlign(s->vg, NVG_ALIGN_CENTER | NVG_ALIGN_BASELINE);
+  const int text_x = rect.centerX();
+
+  if(is_cruise_set)
+  {
+    char str[256];
+
+    if(s->scene.is_metric)
+        snprintf(str, sizeof(str), "%d", (int)(applyMaxSpeed + 0.5));
+    else
+        snprintf(str, sizeof(str), "%d", (int)(applyMaxSpeed*0.621371 + 0.5));
+
+    ui_draw_text(s, text_x, 100, str, 33 * 2.5, COLOR_WHITE, "sans-semibold");
+
+    if(s->scene.is_metric)
+        snprintf(str, sizeof(str), "%d", (int)(cruiseMaxSpeed + 0.5));
+    else
+        snprintf(str, sizeof(str), "%d", (int)(cruiseMaxSpeed*0.621371 + 0.5));
+
+    ui_draw_text(s, text_x, 195, str, 48 * 2.5, COLOR_WHITE, "sans-bold");
+  }
+  else
+  {
+    if(longControl)
+        ui_draw_text(s, text_x, 100, "OP", 25 * 2.5, COLOR_WHITE_ALPHA(100), "sans-semibold");
+    else
+        ui_draw_text(s, text_x, 100, "MAX", 25 * 2.5, COLOR_WHITE_ALPHA(100), "sans-semibold");
+
+    ui_draw_text(s, text_x, 195, "N/A", 42 * 2.5, COLOR_WHITE_ALPHA(100), "sans-semibold");
+  }
+}
 
 static void ui_draw_vision_speed(UIState *s) {
   const float speed = std::max(0.0, (*s->sm)["carState"].getCarState().getVEgo() * (s->scene.is_metric ? 3.6 : 2.2369363));

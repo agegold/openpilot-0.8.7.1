@@ -2,9 +2,14 @@
 
 from cereal import car
 from selfdrive.car import dbc_dict
+from selfdrive.config import Conversions as CV
 Ecu = car.CarParams.Ecu
 
 MIN_ACC_SPEED = 1     # ACC operating minimum speed (ACC 작동 최저 속도 KPH)
+
+SLOW_ON_CURVES = 1    # 슬로우 커브 사용 유무 (0,1)
+
+MIN_CURVE_SPEED = 32. * CV.KPH_TO_MS    # 커브 속도 설정
 
 class CarControllerParams():
   def __init__(self):
