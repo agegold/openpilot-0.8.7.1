@@ -716,19 +716,9 @@ class Controls:
 
     # NDA Add.. (PSK)
     road_limit_speed, left_dist, max_speed_log = self.cal_max_speed(self.sm.frame, CS.vEgo, self.sm)
-    print("road_limit_speed : ", road_limit_speed)
-    print("left_dist : ", left_dist)
-    print("max_speed_log : ", max_speed_log)
-    CC.roadLimitSpeedActive = road_speed_limiter_get_active()
-    print("roadLimitSpeedActive : ", CC.roadLimitSpeedActive)
-    CC.roadLimitSpeed = road_limit_speed
-    print("CC.roadLimitSpeed : ", CC.roadLimitSpeed)
-    CC.roadLimitSpeedLeftDist = left_dist
-    print("CC.roadLimitSpeedLeftDist : ", CC.roadLimitSpeedLeftDist)
-    CC.applyMaxSpeed = float(self.max_speed_clu * self.speed_conv_to_ms * CV.MS_TO_KPH)
-    print("CC.applyMaxSpeed : ", CC.applyMaxSpeed)
-    CC.cruiseMaxSpeed = self.v_cruise_kph
-    print("CC.cruiseMaxSpeed : ", CC.cruiseMaxSpeed)
+    #print("road_limit_speed : ", road_limit_speed)
+    #print("left_dist : ", left_dist)
+    #print("max_speed_log : ", max_speed_log)
 
     # controlsState
     dat = messaging.new_message('controlsState')
@@ -761,6 +751,18 @@ class Controls:
     controlsState.startMonoTime = int(start_time * 1e9)
     controlsState.forceDecel = bool(force_decel)
     controlsState.canErrorCounter = self.can_error_counter
+
+    # NDA Add (PSK)
+    controlsState.roadLimitSpeedActive = road_speed_limiter_get_active()
+    #print("roadLimitSpeedActive : ", CC.roadLimitSpeedActive)
+    controlsState.roadLimitSpeed = road_limit_speed
+    #print("CC.roadLimitSpeed : ", CC.roadLimitSpeed)
+    controlsState.roadLimitSpeedLeftDist = left_dist
+    #print("CC.roadLimitSpeedLeftDist : ", CC.roadLimitSpeedLeftDist)
+    controlsState.applyMaxSpeed = float(self.max_speed_clu * self.speed_conv_to_ms * CV.MS_TO_KPH)
+    #print("CC.applyMaxSpeed : ", CC.applyMaxSpeed)
+    controlsState.cruiseMaxSpeed = self.v_cruise_kph
+    #print("CC.cruiseMaxSpeed : ", CC.cruiseMaxSpeed)
 
     if self.joystick_mode:
       controlsState.lateralControlState.debugState = lac_log

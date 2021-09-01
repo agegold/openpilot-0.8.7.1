@@ -542,10 +542,12 @@ struct ControlsState @0x97ff69c53601abf1 {
   curvature @37 :Float32;  # path curvature from vehicle model
   forceDecel @51 :Bool;
 
-  # NDA Mode on/off (Parksunkyu81)
-  #roadLimitSpeedActive @60 :Int32;
-  #roadLimitSpeed @61 :UInt32;
-  #roadLimitSpeedLeftDist @62 :UInt32;
+  # Neokii ADD (PSK)
+  applyMaxSpeed @60 :Float32;
+  cruiseMaxSpeed @61 :Float32;
+  roadLimitSpeedActive @62 :Int32;
+  roadLimitSpeed @63 :UInt32;
+  roadLimitSpeedLeftDist @64 :UInt32;
 
   # UI alerts
   alertText1 @24 :Text;
