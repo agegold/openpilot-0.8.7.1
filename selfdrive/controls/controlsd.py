@@ -279,7 +279,7 @@ class Controls:
       # else:
       #  self.limited_lead = False
 
-      self.update_max_speed(int(max_speed_clu + 0.5))
+      self.update_max_speed(int(self.max_speed_clu + 0.5))
 
       return road_limit_speed, left_dist, max_speed_log
 
