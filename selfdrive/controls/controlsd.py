@@ -220,12 +220,12 @@ class Controls:
         self.curve_speed_ms = 255.
 
   # [크루즈 MAX 속도 설정] #
-  def cal_max_speed(self, frame, CS, sm):
+  def cal_max_speed(self, frame, CS, CC, sm):
 
       # kph
+      # section_limit_speed * CAMERA_SPEED_FACTOR, section_limit_speed, section_left_dist, first_started, log
       # apply_limit_speed, road_limit_speed, left_dist, first_started, max_speed_log = road_speed_limiter_get_max_speed(clu11_speed, self.is_metric)
-      apply_limit_speed, road_limit_speed, left_dist, first_started, max_speed_log = \
-        road_speed_limiter_get_max_speed(CS, self.is_metric)
+      apply_limit_speed, road_limit_speed, left_dist, first_started, max_speed_log = road_speed_limiter_get_max_speed(CS, self.is_metric)
 
       self.cal_curve_speed(sm, CS.out.vEgo, frame)
       if SLOW_ON_CURVES and self.curve_speed_ms >= MIN_CURVE_SPEED:
