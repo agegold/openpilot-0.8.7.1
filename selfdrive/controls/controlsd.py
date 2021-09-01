@@ -247,6 +247,8 @@ class Controls:
       # 크루즈 MAX 표시 속도
       self.max_speed_clu = self.kph_to_clu(self.v_cruise_kph)
 
+      print("max_speed_clu : ", max_speed_clu)
+
       # max_speed_log = "{:.1f}/{:.1f}/{:.1f}".format(float(limit_speed),
       #                                              float(self.curve_speed_ms*self.speed_conv_to_clu),
       #                                              float(lead_speed))
@@ -714,7 +716,11 @@ class Controls:
 
     # NDA Add.. (PSK)
     road_limit_speed, left_dist, max_speed_log = self.cal_max_speed(self.sm.frame, CS.vEgo, self.sm)
+    print("road_limit_speed : ", road_limit_speed)
+    print("left_dist : ", left_dist)
+    print("max_speed_log : ", max_speed_log)
     CC.roadLimitSpeedActive = road_speed_limiter_get_active()
+    print("roadLimitSpeedActive : ", CC.roadLimitSpeedActiv)
     CC.roadLimitSpeed = road_limit_speed
     CC.roadLimitSpeedLeftDist = left_dist
     CC.applyMaxSpeed = float(self.max_speed_clu * self.speed_conv_to_ms * CV.MS_TO_KPH)
