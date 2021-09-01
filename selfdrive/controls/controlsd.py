@@ -228,7 +228,14 @@ class Controls:
       # kph
       # section_limit_speed * CAMERA_SPEED_FACTOR, section_limit_speed, section_left_dist, first_started, log
       # apply_limit_speed, road_limit_speed, left_dist, first_started, max_speed_log = road_speed_limiter_get_max_speed(clu11_speed, self.is_metric)
+      print("apply_limit_speed [START] ")
       apply_limit_speed, road_limit_speed, left_dist, first_started, max_speed_log = road_speed_limiter_get_max_speed(CS.out.vEgo, self.is_metric)
+
+      print("apply_limit_speed : ", apply_limit_speed)
+      print("road_limit_speed : ", road_limit_speed)
+      print("left_dist : ", left_dist)
+      print("first_started : ", first_started)
+      print("max_speed_log : ", max_speed_log)
 
       # self, sm, v_ego, frame
       #self.cal_curve_speed(self, sm, CS.out.vEgo, frame)
@@ -708,7 +715,6 @@ class Controls:
     # NDA Add.. (PSK)
     road_limit_speed, left_dist, max_speed_log = self.cal_max_speed(self, self.sm.frame, CS, self.sm)
     CC.roadLimitSpeedActive = road_speed_limiter_get_active()
-    print("CC.roadLimitSpeedActive : ", CC.roadLimitSpeedActive)
     CC.roadLimitSpeed = road_limit_speed
     CC.roadLimitSpeedLeftDist = left_dist
     CC.applyMaxSpeed = float(self.max_speed_clu * self.speed_conv_to_ms * CV.MS_TO_KPH)
