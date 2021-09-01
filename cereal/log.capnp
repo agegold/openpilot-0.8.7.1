@@ -1439,6 +1439,8 @@ struct Event {
     deviceState @6 :DeviceState;
     logMessage @18 :Text;
 
+    # neokii
+    roadLimitSpeed @80 :RoadLimitSpeed;
 
     # *********** debug ***********
     testJoystick @52 :Joystick;
