@@ -249,7 +249,8 @@ static void update_vision(UIState *s) {
 #endif
 }
 
-
+static void update_extras(UIState *s)
+{
    UIScene &scene = s->scene;
    SubMaster &sm = *(s->sm);
 
