@@ -228,7 +228,7 @@ class Controls:
       # kph
       # section_limit_speed * CAMERA_SPEED_FACTOR, section_limit_speed, section_left_dist, first_started, log
       # apply_limit_speed, road_limit_speed, left_dist, first_started, max_speed_log = road_speed_limiter_get_max_speed(clu11_speed, self.is_metric)
-      apply_limit_speed, road_limit_speed, left_dist, first_started, max_speed_log = road_speed_limiter_get_max_speed(CS, self.is_metric)
+      apply_limit_speed, road_limit_speed, left_dist, first_started, max_speed_log = road_speed_limiter_get_max_speed(CS.out.vEgo, self.is_metric)
 
       # self, sm, v_ego, frame
       #self.cal_curve_speed(self, sm, CS.out.vEgo, frame)
