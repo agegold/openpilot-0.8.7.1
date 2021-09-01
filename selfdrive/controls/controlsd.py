@@ -381,6 +381,13 @@ class Controls:
     if self.sm['longitudinalPlan'].fcw or (self.enabled and self.sm['modelV2'].meta.hardBrakePredicted):
       self.events.add(EventName.fcw)
 
+    # NDA Neokii Add.. (PSK)
+    if self.slowing_down_sound_alert:
+      self.slowing_down_sound_alert = False
+      self.events.add(EventName.slowingDownSpeedSound)
+    elif self.slowing_down_alert:
+      self.events.add(EventName.slowingDownSpeed)
+
     if TICI:
       logs = messaging.drain_sock(self.log_sock, wait_for_one=False)
       messages = []
