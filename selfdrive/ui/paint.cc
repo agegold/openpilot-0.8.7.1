@@ -182,6 +182,7 @@ static void ui_draw_world(UIState *s) {
 }
 
 // 크루즈 셋팅 UI (PSK)
+/*
 static void ui_draw_vision_maxspeed(UIState *s) {
   const int SET_SPEED_NA = 255;
 
@@ -203,16 +204,16 @@ static void ui_draw_vision_maxspeed(UIState *s) {
   } else {
     ui_draw_text(s, rect.centerX(), 212, "-", 42 * 2.5, COLOR_WHITE_ALPHA(100), "sans-semibold");
   }
-}
+}*/
 
-/*static void ui_draw_vision_maxspeed(UIState *s) {
+static void ui_draw_vision_maxspeed(UIState *s) {
 
   // scc smoother
-  auto car_control = (*s->sm)["carControl"].getCarControl();
+  auto control_state = (*s->sm)["controlsState"].getControlsState();
 
   // kph
-  float applyMaxSpeed = car_control.getApplyMaxSpeed();
-  float cruiseMaxSpeed = car_control.getCruiseMaxSpeed();
+  float applyMaxSpeed = control_state.getApplyMaxSpeed();
+  float cruiseMaxSpeed = control_state.getCruiseMaxSpeed();
 
   bool is_cruise_set = (cruiseMaxSpeed > 0 && cruiseMaxSpeed < 255);
 
@@ -246,7 +247,7 @@ static void ui_draw_vision_maxspeed(UIState *s) {
     ui_draw_text(s, text_x, 100, "MAX", 25 * 2.5, COLOR_WHITE_ALPHA(100), "sans-semibold");
     ui_draw_text(s, text_x, 195, "N/A", 42 * 2.5, COLOR_WHITE_ALPHA(100), "sans-semibold");
   }
-}*/
+}
 
 static void ui_draw_vision_speed(UIState *s) {
   const float speed = std::max(0.0, (*s->sm)["carState"].getCarState().getVEgo() * (s->scene.is_metric ? 3.6 : 2.2369363));
