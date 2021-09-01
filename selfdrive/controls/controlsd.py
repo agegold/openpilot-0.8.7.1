@@ -238,14 +238,12 @@ class Controls:
       print("max_speed_log : ", max_speed_log)
 
       # self, sm, v_ego, frame
-      #self.cal_curve_speed(self, sm, CS.out.vEgo, frame)
-      #if SLOW_ON_CURVES and self.curve_speed_ms >= MIN_CURVE_SPEED:
-      #  self.max_speed_clu = min(self.v_cruise_kph * CV.KPH_TO_MS, self.curve_speed_ms) * self.speed_conv_to_clu
-      #else:
-      #  self.max_speed_clu = self.kph_to_clu(self.v_cruise_kph)
+      self.cal_curve_speed(sm, vEgo, frame)
+      if SLOW_ON_CURVES and self.curve_speed_ms >= MIN_CURVE_SPEED:
+        self.max_speed_clu = min(self.v_cruise_kph * CV.KPH_TO_MS, self.curve_speed_ms) * self.speed_conv_to_clu
+      else:
+        self.max_speed_clu = self.kph_to_clu(self.v_cruise_kph)
 
-      # 크루즈 MAX 표시 속도
-      self.max_speed_clu = self.kph_to_clu(self.v_cruise_kph)
 
       print("max_speed_clu : ", max_speed_clu)
 
@@ -719,12 +717,12 @@ class Controls:
     print("road_limit_speed : ", road_limit_speed)
     print("left_dist : ", left_dist)
     print("max_speed_log : ", max_speed_log)
-    CC.roadLimitSpeedActive = road_speed_limiter_get_active()
+    #CC.roadLimitSpeedActive = road_speed_limiter_get_active()
     print("roadLimitSpeedActive : ", CC.roadLimitSpeedActiv)
-    CC.roadLimitSpeed = road_limit_speed
-    CC.roadLimitSpeedLeftDist = left_dist
-    CC.applyMaxSpeed = float(self.max_speed_clu * self.speed_conv_to_ms * CV.MS_TO_KPH)
-    CC.cruiseMaxSpeed = self.v_cruise_kph
+    #CC.roadLimitSpeed = road_limit_speed
+    #CC.roadLimitSpeedLeftDist = left_dist
+    #CC.applyMaxSpeed = float(self.max_speed_clu * self.speed_conv_to_ms * CV.MS_TO_KPH)
+    #CC.cruiseMaxSpeed = self.v_cruise_kph
 
     # controlsState
     dat = messaging.new_message('controlsState')
