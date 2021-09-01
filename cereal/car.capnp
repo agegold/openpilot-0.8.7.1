@@ -303,12 +303,12 @@ struct CarControl {
   hudControl @5 :HUDControl;
 
   # Neokii ADD (PSK)
-  applyMaxSpeed @10 :Float32;
-  cruiseMaxSpeed @11 :Float32;
-  logMessage @12 :Text;
-  roadLimitSpeedActive @13 :Int32;
-  roadLimitSpeed @14 :UInt32;
-  roadLimitSpeedLeftDist @15 :UInt32;
+  applyMaxSpeed @8 :Float32;
+  cruiseMaxSpeed @9 :Float32;
+  logMessage @10 :Text;
+  roadLimitSpeedActive @11 :Int32;
+  roadLimitSpeed @12 :UInt32;
+  roadLimitSpeedLeftDist @13 :UInt32;
 
   struct Actuators {
     # range from 0.0 - 1.0
