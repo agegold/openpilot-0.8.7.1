@@ -5,7 +5,7 @@
 
 static void ui_draw_extras_limit_speed(UIState *s)
 {
-   /* auto car_control = (*s->sm)["carControl"].getCarControl();
+    auto car_control = (*s->sm)["carControl"].getCarControl();
 
     int activeNDA = car_control.getRoadLimitSpeedActive();
     int limit_speed = car_control.getRoadLimitSpeed();
@@ -22,7 +22,7 @@ static void ui_draw_extras_limit_speed(UIState *s)
         ui_draw_image(s, {x, y, w, h}, img, 1.f);
     }
 
-    if(limit_speed > 10 && left_dist > 0)
+    /*if(limit_speed > 10 && left_dist > 0)
     {
         int w = 200;
         int h = 200;
