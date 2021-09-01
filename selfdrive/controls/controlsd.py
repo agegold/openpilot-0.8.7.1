@@ -722,9 +722,13 @@ class Controls:
     CC.roadLimitSpeedActive = road_speed_limiter_get_active()
     print("roadLimitSpeedActive : ", CC.roadLimitSpeedActive)
     CC.roadLimitSpeed = road_limit_speed
+    print("CC.roadLimitSpeed : ", CC.roadLimitSpeed)
     CC.roadLimitSpeedLeftDist = left_dist
+    print("CC.roadLimitSpeedLeftDist : ", CC.roadLimitSpeedLeftDist)
     CC.applyMaxSpeed = float(self.max_speed_clu * self.speed_conv_to_ms * CV.MS_TO_KPH)
+    print("CC.applyMaxSpeed : ", CC.applyMaxSpeed)
     CC.cruiseMaxSpeed = self.v_cruise_kph
+    print("CC.cruiseMaxSpeed : ", CC.cruiseMaxSpeed)
 
     # controlsState
     dat = messaging.new_message('controlsState')
