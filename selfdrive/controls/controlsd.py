@@ -708,6 +708,7 @@ class Controls:
     # NDA Add.. (PSK)
     road_limit_speed, left_dist, max_speed_log = self.cal_max_speed(self, self.sm.frame, CS, self.sm)
     CC.roadLimitSpeedActive = road_speed_limiter_get_active()
+    print("CC.roadLimitSpeedActive : ", CC.roadLimitSpeedActive)
     CC.roadLimitSpeed = road_limit_speed
     CC.roadLimitSpeedLeftDist = left_dist
     CC.applyMaxSpeed = float(self.max_speed_clu * self.speed_conv_to_ms * CV.MS_TO_KPH)
@@ -734,6 +735,7 @@ class Controls:
     controlsState.engageable = not self.events.any(ET.NO_ENTRY)
     controlsState.longControlState = self.LoC.long_control_state
     controlsState.vPid = float(self.LoC.v_pid)
+    controlsState.vCruise = float(self.applyMaxSpeed if self.CP.openpilotLongitudinalControl else self.v_cruise_kph)
 
 
     controlsState.upAccelCmd = float(self.LoC.pid.p)
