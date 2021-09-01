@@ -240,9 +240,9 @@ class Controls:
       # self, sm, v_ego, frame
       self.cal_curve_speed(sm, vEgo, frame)
       if SLOW_ON_CURVES and self.curve_speed_ms >= MIN_CURVE_SPEED:
-        self.max_speed_clu = min(self.v_cruise_kph * CV.KPH_TO_MS, self.curve_speed_ms) * self.speed_conv_to_clu
+        max_speed_clu = min(self.v_cruise_kph * CV.KPH_TO_MS, self.curve_speed_ms) * self.speed_conv_to_clu
       else:
-        self.max_speed_clu = self.kph_to_clu(self.v_cruise_kph)
+        max_speed_clu = self.kph_to_clu(self.v_cruise_kph)
 
 
       print("max_speed_clu : ", self.max_speed_clu)
