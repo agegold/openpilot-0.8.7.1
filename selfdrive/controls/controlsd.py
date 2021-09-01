@@ -51,9 +51,6 @@ class Controls:
   def __init__(self, sm=None, pm=None, can_sock=None):
     config_realtime_process(4 if TICI else 3, Priority.CTRL_HIGH)
 
-    self.speed_conv_to_ms = CV.KPH_TO_MS if self.is_metric else CV.MPH_TO_MS
-    self.speed_conv_to_clu = CV.MS_TO_KPH if self.is_metric else CV.MS_TO_MPH
-
     # Setup sockets
     self.pm = pm
     if self.pm is None:
@@ -150,6 +147,9 @@ class Controls:
     self.roadLimitSpeed = 0
     self.roadLimitSpeedLeftDist = 0
     self.applyMaxSpeed = 0
+
+    self.speed_conv_to_ms = CV.KPH_TO_MS if self.is_metric else CV.MPH_TO_MS
+    self.speed_conv_to_clu = CV.MS_TO_KPH if self.is_metric else CV.MS_TO_MPH
 
     self.slowing_down = False
     self.slowing_down_alert = False
