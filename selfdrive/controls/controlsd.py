@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 import os
 import math
+import numpy as np
 from cereal import car, log
 from common.numpy_fast import clip
 from common.realtime import sec_since_boot, config_realtime_process, Priority, Ratekeeper, DT_CTRL
@@ -27,6 +28,7 @@ from selfdrive.hardware import HARDWARE, TICI
 from selfdrive.road_speed_limiter import road_speed_limiter_get_max_speed, road_speed_limiter_get_active
 from selfdrive.controls.lib.lane_planner import TRAJECTORY_SIZE
 from selfdrive.car.gm.values import SLOW_ON_CURVES, MIN_CURVE_SPEED
+
 
 
 LDW_MIN_SPEED = 31 * CV.MPH_TO_MS
