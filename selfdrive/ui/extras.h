@@ -5,12 +5,11 @@
 
 static void ui_draw_extras_limit_speed(UIState *s)
 {
-    const UIScene *scene = &s->scene;
-    auto scc_smoother = s->scene.car_control.getSccSmoother();
+    auto car_control = (*s->sm)["carControl"].getCarControl();
 
-    int activeNDA = scc_smoother.getRoadLimitSpeedActive();
-    int limit_speed = scc_smoother.getRoadLimitSpeed();
-    int left_dist = scc_smoother.getRoadLimitSpeedLeftDist();
+    int activeNDA = car_control.getRoadLimitSpeedActive();
+    int limit_speed = car_control.getRoadLimitSpeed();
+    int left_dist = car_control.getRoadLimitSpeedLeftDist();
 
     if(activeNDA > 0)
     {

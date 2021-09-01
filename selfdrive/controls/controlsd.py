@@ -696,11 +696,11 @@ class Controls:
 
     # NDA Add.. (PSK)
     road_limit_speed, left_dist, max_speed_log = self.cal_max_speed(self, self.sm.frame, CS, self.sm)
-    CC.sccSmoother.roadLimitSpeedActive = road_speed_limiter_get_active()
-    CC.sccSmoother.roadLimitSpeed = road_limit_speed
-    CC.sccSmoother.roadLimitSpeedLeftDist = left_dist
-    CC.sccSmoother.applyMaxSpeed = float(self.max_speed_clu * self.speed_conv_to_ms * CV.MS_TO_KPH)
-    CC.sccSmoother.cruiseMaxSpeed = self.v_cruise_kph
+    CC.roadLimitSpeedActive = road_speed_limiter_get_active()
+    CC.roadLimitSpeed = road_limit_speed
+    CC.roadLimitSpeedLeftDist = left_dist
+    CC.applyMaxSpeed = float(self.max_speed_clu * self.speed_conv_to_ms * CV.MS_TO_KPH)
+    CC.cruiseMaxSpeed = self.v_cruise_kph
 
     # controlsState
     dat = messaging.new_message('controlsState')
