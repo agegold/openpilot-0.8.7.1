@@ -223,13 +223,13 @@ class Controls:
         self.curve_speed_ms = 255.
 
   # [크루즈 MAX 속도 설정] #
-  def cal_max_speed(self, frame, CS, CC, sm):
+  def cal_max_speed(self, frame, vEgo, sm):
 
       # kph
       # section_limit_speed * CAMERA_SPEED_FACTOR, section_limit_speed, section_left_dist, first_started, log
       # apply_limit_speed, road_limit_speed, left_dist, first_started, max_speed_log = road_speed_limiter_get_max_speed(clu11_speed, self.is_metric)
       print("apply_limit_speed [START] ")
-      apply_limit_speed, road_limit_speed, left_dist, first_started, max_speed_log = road_speed_limiter_get_max_speed(CS.out.vEgo, self.is_metric)
+      apply_limit_speed, road_limit_speed, left_dist, first_started, max_speed_log = road_speed_limiter_get_max_speed(vEgo, self.is_metric)
 
       print("apply_limit_speed : ", apply_limit_speed)
       print("road_limit_speed : ", road_limit_speed)
@@ -713,7 +713,7 @@ class Controls:
     curvature = -self.VM.calc_curvature(steer_angle_without_offset, CS.vEgo)
 
     # NDA Add.. (PSK)
-    road_limit_speed, left_dist, max_speed_log = self.cal_max_speed(self, self.sm.frame, CS, self.sm)
+    road_limit_speed, left_dist, max_speed_log = self.cal_max_speed(self, self.sm.frame, CS.vEgo, self.sm)
     CC.roadLimitSpeedActive = road_speed_limiter_get_active()
     CC.roadLimitSpeed = road_limit_speed
     CC.roadLimitSpeedLeftDist = left_dist
