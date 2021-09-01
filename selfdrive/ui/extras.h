@@ -5,7 +5,7 @@
 
 static void ui_draw_extras_limit_speed(UIState *s)
 {
-    auto car_control = (*s->sm)["carControl"].getCarControl();
+   /* auto car_control = (*s->sm)["carControl"].getCarControl();
 
     int activeNDA = car_control.getRoadLimitSpeedActive();
     int limit_speed = car_control.getRoadLimitSpeed();
@@ -57,7 +57,7 @@ static void ui_draw_extras_limit_speed(UIState *s)
             snprintf(str, sizeof(str), "%dm", left_dist);
 
         nvgText(s->vg, x+w/2, y+h + 70, str, NULL);
-    }
+    }*/
     /*else
     {
         auto controls_state = (*s->sm)["controlsState"].getControlsState();
