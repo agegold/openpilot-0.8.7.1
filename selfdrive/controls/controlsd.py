@@ -190,6 +190,9 @@ class Controls:
     self.rk = Ratekeeper(100, print_delay_threshold=None)
     self.prof = Profiler(False)  # off by default
 
+  def kph_to_clu(self, kph):
+    return int(kph * CV.KPH_TO_MS * self.speed_conv_to_clu)
+
   def cal_curve_speed(self, sm, v_ego, frame):
 
     if frame % 10 == 0:
