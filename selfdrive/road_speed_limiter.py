@@ -9,6 +9,7 @@ from threading import Thread
 from cereal import messaging
 from common.params import Params
 from common.numpy_fast import interp
+from common.realtime import sec_since_boot
 
 
 CAMERA_SPEED_FACTOR = 1.05
@@ -126,13 +127,13 @@ class RoadLimitSpeedServer:
           try:
             if 'active' in json_obj:
               self.active = json_obj['active']
-              self.last_updated_active = time.monotonic()
+              self.last_updated_active = sec_since_boot()
           except:
             pass
 
           if 'road_limit' in json_obj:
             self.json_road_limit = json_obj['road_limit']
-            self.last_updated = time.monotonic()
+            self.last_updated = sec_since_boot()
 
         finally:
           self.lock.release()
@@ -148,7 +149,7 @@ class RoadLimitSpeedServer:
     return ret
 
   def check(self):
-    now = time.monotonic()
+    now = sec_since_boot()
     if now - self.last_updated > 20.:
       try:
         self.lock.acquire()
@@ -198,6 +199,7 @@ def main():
           server.check()
 
       except Exception as e:
+        print("Server error ========================================= " , str(e))
         server.last_exception = e
 
 class RoadSpeedLimiter:
@@ -261,16 +263,18 @@ class RoadSpeedLimiter:
       # log += ", " + str(section_limit_speed)
       # log += ", " + str(section_left_dist)
 
-      v_ego = CS.clu11["CF_Clu_Vanz"] / 3.6
+      v_ego = CS.out.vEgo / 3.6
 
       if cam_limit_speed_left_dist is not None and cam_limit_speed is not None and cam_limit_speed_left_dist > 0:
 
         diff_speed = v_ego * 3.6 - cam_limit_speed
 
-        if self.longcontrol:
-          sec = interp(diff_speed, [10., 30.], [12., 17.])
-        else:
-          sec = interp(diff_speed, [10., 30.], [14., 19.])
+        #if self.longcontrol:
+        #  sec = interp(diff_speed, [10., 30.], [13., 18.])
+        #else:
+        #  sec = interp(diff_speed, [10., 30.], [15., 20.])
+
+        sec = interp(diff_speed, [10., 30.], [13., 18.])
 
         if MIN_LIMIT <= cam_limit_speed <= MAX_LIMIT and (self.slowing_down or cam_limit_speed_left_dist < v_ego * sec):
 
@@ -306,13 +310,14 @@ class RoadSpeedLimiter:
           else:
             first_started = False
 
-          return section_limit_speed, section_limit_speed, section_left_dist, first_started, log
+          return section_limit_speed * CAMERA_SPEED_FACTOR, section_limit_speed, section_left_dist, first_started, log
 
         self.slowing_down = False
         return 0, section_limit_speed, section_left_dist, False, log
 
     except Exception as e:
       log = "Ex: " + str(e)
+      print("get_max_speed ======================= ", log)
       pass
 
     self.slowing_down = False
