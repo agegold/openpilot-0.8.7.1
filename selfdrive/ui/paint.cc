@@ -211,6 +211,9 @@ static void ui_draw_vision_maxspeed(UIState *s) {
   // scc smoother
   auto control_state = (*s->sm)["controlsState"].getControlsState();
 
+  // 상단속도 : 적용 속도
+  // 하단속도 : 크루즈 속도
+
   // kph
   float applyMaxSpeed = control_state.getApplyMaxSpeed();
   float cruiseMaxSpeed = control_state.getCruiseMaxSpeed();

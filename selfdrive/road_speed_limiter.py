@@ -227,7 +227,7 @@ class RoadSpeedLimiter:
       return self.roadLimitSpeed.active
     return 0
 
-  def get_max_speed(self, cruise_speed, v_cruise_speed):
+  def get_max_speed(self, cruise_speed, is_metric):
 
     log = ""
     self.recv()
@@ -336,12 +336,12 @@ def road_speed_limiter_get_active():
   return road_speed_limiter.get_active()
 
 
-def road_speed_limiter_get_max_speed(cruise_speed, v_cruise_speed):
+def road_speed_limiter_get_max_speed(cruise_speed, is_metric):
   global road_speed_limiter
   if road_speed_limiter is None:
     road_speed_limiter = RoadSpeedLimiter()
 
-  return road_speed_limiter.get_max_speed(cruise_speed, v_cruise_speed)
+  return road_speed_limiter.get_max_speed(cruise_speed, is_metric)
 
 
 if __name__ == "__main__":

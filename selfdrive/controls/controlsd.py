@@ -28,8 +28,11 @@ from selfdrive.hardware import HARDWARE, TICI
 from selfdrive.road_speed_limiter import road_speed_limiter_get_max_speed, road_speed_limiter_get_active
 from selfdrive.controls.lib.lane_planner import TRAJECTORY_SIZE
 from selfdrive.car.gm.values import SLOW_ON_CURVES, MIN_CURVE_SPEED
+from selfdrive.controls.lib.drive_helpers import V_CRUISE_MAX, V_CRUISE_MIN, V_CRUISE_DELTA_KM, V_CRUISE_DELTA_MI
 
 
+MIN_SET_SPEED_KPH = V_CRUISE_MIN
+MAX_SET_SPEED_KPH = V_CRUISE_MAX
 
 LDW_MIN_SPEED = 31 * CV.MPH_TO_MS
 LANE_DEPARTURE_THRESHOLD = 0.1
@@ -150,6 +153,7 @@ class Controls:
     self.roadLimitSpeedLeftDist = 0
     self.applyMaxSpeed = 0
 
+
     self.speed_conv_to_ms = CV.KPH_TO_MS if self.is_metric else CV.MPH_TO_MS
     self.speed_conv_to_clu = CV.MS_TO_KPH if self.is_metric else CV.MS_TO_MPH
 
@@ -195,7 +199,7 @@ class Controls:
   def kph_to_clu(self, kph):
     return int(kph * CV.KPH_TO_MS * self.speed_conv_to_clu)
 
-  def cal_curve_speed(self, sm, v_ego, frame):
+  def cal_curve_speed(self, sm, v_ego, frame: int):
 
     if frame % 10 == 0:
       md = sm['modelV2']
@@ -225,19 +229,18 @@ class Controls:
         self.curve_speed_ms = 255.
 
   # [크루즈 MAX 속도 설정] #
-  def cal_max_speed(self, frame, vEgo, sm):
+  def cal_max_speed(self, frame: int, vEgo, sm):
 
       # kph
       # section_limit_speed * CAMERA_SPEED_FACTOR, section_limit_speed, section_left_dist, first_started, log
       # apply_limit_speed, road_limit_speed, left_dist, first_started, max_speed_log = road_speed_limiter_get_max_speed(clu11_speed, self.is_metric)
-      print("apply_limit_speed [START] ")
       apply_limit_speed, road_limit_speed, left_dist, first_started, max_speed_log = road_speed_limiter_get_max_speed(vEgo, self.is_metric)
 
-      print("apply_limit_speed : ", apply_limit_speed)
-      print("road_limit_speed : ", road_limit_speed)
-      print("left_dist : ", left_dist)
-      print("first_started : ", first_started)
-      print("max_speed_log : ", max_speed_log)
+      #print("apply_limit_speed : ", apply_limit_speed)
+      #print("road_limit_speed : ", road_limit_speed)
+      #print("left_dist : ", left_dist)
+      #print("first_started : ", first_started)
+      #print("max_speed_log : ", max_speed_log)
 
       # self, sm, v_ego, frame
       self.cal_curve_speed(sm, vEgo, frame)
@@ -247,7 +250,7 @@ class Controls:
         max_speed_clu = self.kph_to_clu(self.v_cruise_kph)
 
 
-      print("max_speed_clu : ", self.max_speed_clu)
+      #print("max_speed_clu : ========================== ", max_speed_clu)
 
       # max_speed_log = "{:.1f}/{:.1f}/{:.1f}".format(float(limit_speed),
       #                                              float(self.curve_speed_ms*self.speed_conv_to_clu),
@@ -741,8 +744,8 @@ class Controls:
     controlsState.engageable = not self.events.any(ET.NO_ENTRY)
     controlsState.longControlState = self.LoC.long_control_state
     controlsState.vPid = float(self.LoC.v_pid)
-    controlsState.vCruise = float(self.applyMaxSpeed if self.CP.openpilotLongitudinalControl else self.v_cruise_kph)
-
+    # 속도가 낮은걸 기준으로 크루즈 속도 설정 (PSK)
+    controlsState.vCruise = float(min(self.applyMaxSpeed, self.v_cruise_kph))
 
     controlsState.upAccelCmd = float(self.LoC.pid.p)
     controlsState.uiAccelCmd = float(self.LoC.pid.i)
@@ -753,15 +756,17 @@ class Controls:
     controlsState.canErrorCounter = self.can_error_counter
 
     # NDA Add (PSK)
+    # 화면 정상 보임
     controlsState.roadLimitSpeedActive = road_speed_limiter_get_active()
-    #print("roadLimitSpeedActive : ", CC.roadLimitSpeedActive)
     controlsState.roadLimitSpeed = road_limit_speed
-    #print("CC.roadLimitSpeed : ", CC.roadLimitSpeed)
     controlsState.roadLimitSpeedLeftDist = left_dist
-    #print("CC.roadLimitSpeedLeftDist : ", CC.roadLimitSpeedLeftDist)
-    controlsState.applyMaxSpeed = float(self.max_speed_clu * self.speed_conv_to_ms * CV.MS_TO_KPH)
-    #print("CC.applyMaxSpeed : ", CC.applyMaxSpeed)
+
+    # kph
+    controlsState.applyMaxSpeed = float(clip(self.v_cruise_kph, MIN_SET_SPEED_KPH,
+                                        self.max_speed_clu * self.speed_conv_to_ms * CV.MS_TO_KPH))
     controlsState.cruiseMaxSpeed = self.v_cruise_kph
+
+    #print("CC.applyMaxSpeed : ", CC.applyMaxSpeed)
     #print("CC.cruiseMaxSpeed : ", CC.cruiseMaxSpeed)
 
     if self.joystick_mode:
