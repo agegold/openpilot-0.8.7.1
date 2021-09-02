@@ -99,7 +99,7 @@ class RoadLimitSpeedServer:
             if broadcast_address is None or frame % 10 == 0:
               broadcast_address = self.get_broadcast_address()
 
-            print('broadcast_address', broadcast_address)
+            #print('broadcast_address', broadcast_address)
 
             if broadcast_address is not None:
               address = (broadcast_address, Port.BROADCAST_PORT)
@@ -196,7 +196,7 @@ def main():
             dat.roadLimitSpeed.sectionLeftDist = server.get_limit_val("section_left_dist", 0)
             roadLimitSpeed.send(dat.to_bytes())
 
-            print("Server send ========================================= ", str(dat))
+            #print("Server send ========================================= ", str(dat))
 
           server.check()
 
@@ -297,8 +297,7 @@ class RoadSpeedLimiter:
           else:
             pp = 0
 
-          return cam_limit_speed * CAMERA_SPEED_FACTOR + int(
-            pp * diff_speed), cam_limit_speed, cam_limit_speed_left_dist, first_started, log
+          return cam_limit_speed * CAMERA_SPEED_FACTOR + int(pp * diff_speed), cam_limit_speed, cam_limit_speed_left_dist, first_started, log
 
         self.slowing_down = False
         return 0, cam_limit_speed, cam_limit_speed_left_dist, False, log
