@@ -199,6 +199,15 @@ class Controls:
   def kph_to_clu(self, kph):
     return int(kph * CV.KPH_TO_MS * self.speed_conv_to_clu)
 
+  def reset(self):
+
+    self.max_speed_clu = 0.
+    self.curve_speed_ms = 0.
+
+    self.slowing_down = False
+    self.slowing_down_alert = False
+    self.slowing_down_sound_alert = False
+
   def cal_curve_speed(self, sm, v_ego, frame: int):
 
     if frame % 10 == 0:
@@ -493,6 +502,7 @@ class Controls:
     if CS.adaptiveCruise:
       self.v_cruise_kph = update_v_cruise(self.v_cruise_kph, CS.buttonEvents, self.enabled, self.is_metric)
     elif not CS.adaptiveCruise and CS.cruiseState.enabled:
+      self.reset()
       self.v_cruise_kph = 40
 
     # if stock cruise is completely disabled, then we can use our own set speed logic
@@ -723,6 +733,14 @@ class Controls:
     #print("left_dist : ", left_dist)
     #print("max_speed_log : ", max_speed_log)
 
+    # kph
+    controlsState.applyMaxSpeed = float(clip(self.v_cruise_kph, MIN_SET_SPEED_KPH,
+                                        self.max_speed_clu * self.speed_conv_to_ms * CV.MS_TO_KPH))
+    controlsState.cruiseMaxSpeed = self.v_cruise_kph
+
+    print("CC.applyMaxSpeed : ", CC.applyMaxSpeed)
+    print("CC.cruiseMaxSpeed : ", CC.cruiseMaxSpeed)
+
     # controlsState
     dat = messaging.new_message('controlsState')
     dat.valid = CS.canValid
@@ -746,6 +764,7 @@ class Controls:
     controlsState.vPid = float(self.LoC.v_pid)
     # 속도가 낮은걸 기준으로 크루즈 속도 설정 (PSK)
     controlsState.vCruise = float(min(self.applyMaxSpeed, self.v_cruise_kph))
+    print("controlsState.vCruise : ", controlsState.vCruise)
 
     controlsState.upAccelCmd = float(self.LoC.pid.p)
     controlsState.uiAccelCmd = float(self.LoC.pid.i)
@@ -760,14 +779,6 @@ class Controls:
     controlsState.roadLimitSpeedActive = road_speed_limiter_get_active()
     controlsState.roadLimitSpeed = road_limit_speed
     controlsState.roadLimitSpeedLeftDist = left_dist
-
-    # kph
-    controlsState.applyMaxSpeed = float(clip(self.v_cruise_kph, MIN_SET_SPEED_KPH,
-                                        self.max_speed_clu * self.speed_conv_to_ms * CV.MS_TO_KPH))
-    controlsState.cruiseMaxSpeed = self.v_cruise_kph
-
-    #print("CC.applyMaxSpeed : ", CC.applyMaxSpeed)
-    #print("CC.cruiseMaxSpeed : ", CC.cruiseMaxSpeed)
 
     if self.joystick_mode:
       controlsState.lateralControlState.debugState = lac_log
