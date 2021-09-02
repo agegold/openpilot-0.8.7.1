@@ -505,25 +505,6 @@ class Controls:
       self.reset()
       self.v_cruise_kph = 40
 
-    # if stock cruise is completely disabled, then we can use our own set speed logic
-    # if(activeNDA > 0)
-    # 크루즈 속도값 설정
-    # [TMAP]
-    #if CS.adaptiveCruise:
-      #self.v_cruise_kph = update_v_cruise(self.v_cruise_kph, CS.buttonEvents, self.enabled, self.is_metric)
-      #self.v_cruise_kph_long = update_v_cruise(self.v_cruise_kph_long_prev, CS.buttonEvents, self.enabled, self.is_metric)
-      #self.roadLimitSpeedActive = road_speed_limiter_get_active()
-      #self.v_cruise_road_limit = road_speed_limiter_get_max_speed(CS, self.v_cruise_road_limit_prev)
-
-      #if self.roadLimitSpeedActive > 0:  # NDA = 1
-      #  self.v_cruise_kph = self.v_cruise_road_limit
-      #  self.v_cruise_road_limit_prev = self.v_cruise_road_limit
-      #else:
-      #  self.v_cruise_kph = self.v_cruise_kph_long
-      #  self.v_cruise_kph_long_prev = self.v_cruise_kph_long
-
-    #elif not CS.adaptiveCruise and CS.cruiseState.enabled:
-    #  self.v_cruise_kph = 40
 
     # decrease the soft disable timer at every step, as it's reset on
     # entrance in SOFT_DISABLING state
@@ -729,6 +710,7 @@ class Controls:
 
     # NDA Add.. (PSK)
     road_limit_speed, left_dist, max_speed_log = self.cal_max_speed(self.sm.frame, CS.vEgo, self.sm)
+
     #print("road_limit_speed : ", road_limit_speed)
     #print("left_dist : ", left_dist)
     #print("max_speed_log : ", max_speed_log)
@@ -756,15 +738,16 @@ class Controls:
     controlsState.longControlState = self.LoC.long_control_state
     controlsState.vPid = float(self.LoC.v_pid)
 
-    # kph
-    controlsState.applyMaxSpeed = float(clip(self.v_cruise_kph, MIN_SET_SPEED_KPH,
-                                        self.max_speed_clu * self.speed_conv_to_ms * CV.MS_TO_KPH))
-    controlsState.cruiseMaxSpeed = self.v_cruise_kph
+    # kph [applyMaxSpeed, cruiseMaxSpeed]
+    #controlsState.applyMaxSpeed = float(clip(self.v_cruise_kph, MIN_SET_SPEED_KPH, self.max_speed_clu * self.speed_conv_to_ms * CV.MS_TO_KPH))
+    #controlsState.cruiseMaxSpeed = self.v_cruise_kph
+
     #print("CC.applyMaxSpeed : ", controlsState.applyMaxSpeed)
     #print("CC.cruiseMaxSpeed : ", controlsState.cruiseMaxSpeed)
 
     # 속도가 낮은걸 기준으로 크루즈 속도 설정 (PSK)
-    controlsState.vCruise = float(min(self.applyMaxSpeed, self.v_cruise_kph))
+    controlsState.vCruise = float(self.v_cruise_kph)
+    #controlsState.vCruise = float(min(self.applyMaxSpeed, self.v_cruise_kph))
     #print("controlsState.vCruise : ", controlsState.vCruise)
 
     controlsState.upAccelCmd = float(self.LoC.pid.p)
