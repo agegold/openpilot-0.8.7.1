@@ -746,8 +746,9 @@ class Controls:
     #print("CC.cruiseMaxSpeed : ", controlsState.cruiseMaxSpeed)
 
     # 속도가 낮은걸 기준으로 크루즈 속도 설정 (PSK)
-    controlsState.vCruise = float(self.v_cruise_kph)
-    #controlsState.vCruise = float(min(self.applyMaxSpeed, self.v_cruise_kph))
+    #controlsState.vCruise = float(self.v_cruise_kph)
+    current_cruise_kph = min(self.applyMaxSpeed, self.v_cruise_kph)
+    controlsState.vCruise = float(current_cruise_kph)
     #print("controlsState.vCruise : ", controlsState.vCruise)
 
     controlsState.upAccelCmd = float(self.LoC.pid.p)
