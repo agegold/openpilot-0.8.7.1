@@ -4,6 +4,13 @@ from selfdrive.config import RADAR_TO_CAMERA
 from selfdrive.car.gm.values import LEAD_ACCEL_TAU
 
 
+# the longer lead decels, the more likely it will keep decelerating
+# 리드 감속이 길수록 계속 감속할 가능성이 높아집니다.
+# TODO is this a good default?
+#_LEAD_ACCEL_TAU = 1.5
+#_LEAD_ACCEL_TAU = 7.0
+_LEAD_ACCEL_TAU = LEAD_ACCEL_TAU
+
 # radar tracks
 SPEED, ACCEL = 0, 1   # Kalman filter states enum
 
@@ -14,7 +21,7 @@ v_ego_stationary = 1.
 class Track():
   def __init__(self, v_lead, kalman_params):
     self.cnt = 0
-    self.aLeadTau = LEAD_ACCEL_TAU
+    self.aLeadTau = _LEAD_ACCEL_TAU
     self.K_A = kalman_params.A
     self.K_C = kalman_params.C
     self.K_K = kalman_params.K
@@ -37,7 +44,7 @@ class Track():
 
     # Learn if constant acceleration
     if abs(self.aLeadK) < 0.5:
-      self.aLeadTau = LEAD_ACCEL_TAU
+      self.aLeadTau = _LEAD_ACCEL_TAU
     else:
       self.aLeadTau *= 0.9
 
@@ -104,7 +111,7 @@ class Cluster():
   @property
   def aLeadTau(self):
     if all(t.cnt <= 1 for t in self.tracks):
-      return LEAD_ACCEL_TAU
+      return _LEAD_ACCEL_TAU
     else:
       return mean([t.aLeadTau for t in self.tracks if t.cnt > 1])
 
@@ -135,7 +142,7 @@ class Cluster():
       "vLead": float(v_ego + lead_msg.xyva[2]),
       "vLeadK": float(v_ego + lead_msg.xyva[2]),
       "aLeadK": float(0),
-      "aLeadTau": LEAD_ACCEL_TAU,
+      "aLeadTau": _LEAD_ACCEL_TAU,
       "fcw": False,
       "modelProb": float(lead_msg.prob),
       "radar": False,
