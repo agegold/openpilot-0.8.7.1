@@ -6,9 +6,7 @@ from selfdrive.car.gm.values import LEAD_ACCEL_TAU
 
 # the longer lead decels, the more likely it will keep decelerating
 # 리드 감속이 길수록 계속 감속할 가능성이 높아집니다.
-# TODO is this a good default?
-#_LEAD_ACCEL_TAU = 1.5
-#_LEAD_ACCEL_TAU = 7.0
+
 _LEAD_ACCEL_TAU = LEAD_ACCEL_TAU
 
 # radar tracks
