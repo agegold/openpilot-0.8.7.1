@@ -13,7 +13,7 @@ MIN_CURVE_SPEED = 32. * CV.KPH_TO_MS    # 커브 속도 설정
 
 LEAD_ACCEL_TAU = 8.0     # 리드 감속이 길수록 계속 감속할 가능성이 높아집니다.
 
-NDA_SPEED_CORRECTION = 18 * CV.KPH_TO_MS    # 커브 속도 설정   (5 KPH 조정)
+NDA_SPEED_CORRECTION = 18     # 카메라 속도 보정  (5 KPH 조정)
 
 class CarControllerParams():
   def __init__(self):
