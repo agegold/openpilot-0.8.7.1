@@ -27,7 +27,7 @@ from selfdrive.locationd.calibrationd import Calibration
 from selfdrive.hardware import HARDWARE, TICI
 from selfdrive.road_speed_limiter import road_speed_limiter_get_max_speed, road_speed_limiter_get_active
 from selfdrive.controls.lib.lane_planner import TRAJECTORY_SIZE
-from selfdrive.car.gm.values import SLOW_ON_CURVES, MIN_CURVE_SPEED
+from selfdrive.car.gm.values import SLOW_ON_CURVES, MIN_CURVE_SPEED, NDA_SPEED_CORRECTION
 from selfdrive.controls.lib.drive_helpers import V_CRUISE_MAX, V_CRUISE_MIN, V_CRUISE_DELTA_KM, V_CRUISE_DELTA_MI
 
 
@@ -752,7 +752,7 @@ class Controls:
       controlsState.vCruise = float(controlsState.cruiseMaxSpeed)
     elif controlsState.applyMaxSpeed < controlsState.cruiseMaxSpeed:
       #controlsState.applyMaxSpeed = controlsState.applyMaxSpeed - 10
-      controlsState.vCruise = float(controlsState.applyMaxSpeed - 10)
+      controlsState.vCruise = float(controlsState.applyMaxSpeed - NDA_SPEED_CORRECTION)
 
 
     controlsState.upAccelCmd = float(self.LoC.pid.p)
