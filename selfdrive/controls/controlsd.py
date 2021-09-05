@@ -259,8 +259,6 @@ class Controls:
       else:
         max_speed_clu = self.kph_to_clu(self.v_cruise_kph)
 
-      print("curve_speed_ms : ========================== ", self.curve_speed_ms)
-      print("max_speed_clu : ========================== ", max_speed_clu)
 
       # max_speed_log = "{:.1f}/{:.1f}/{:.1f}".format(float(limit_speed),
       #                                              float(self.curve_speed_ms*self.speed_conv_to_clu),
