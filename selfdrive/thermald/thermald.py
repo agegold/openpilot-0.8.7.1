@@ -33,9 +33,6 @@ CPU_TEMP_TAU = 5.   # 5s time constant
 DAYS_NO_CONNECTIVITY_MAX = 7  # do not allow to engage after a week without internet
 DAYS_NO_CONNECTIVITY_PROMPT = 4  # send an offroad prompt after 4 days with no internet
 DISCONNECT_TIMEOUT = 5.  # wait 5 seconds before going offroad after disconnect so you get an alert
-EON_BATT_MIN_SOC = 40
-EON_BATT_MAX_SOC = 80
-EON_BATT_CHARGE_PAUSE = 11100
 
 prev_offroad_states: Dict[str, Tuple[bool, Optional[str]]] = {}
 
@@ -157,10 +154,10 @@ def thermald_thread():
 
   network_type = NetworkType.none
   network_strength = NetworkStrength.unknown
+  wifiIpAddress = 'N/A'
   network_info = None
   modem_version = None
   registered_count = 0
-  wifiIpAddress = 'N/A'
 
   current_filter = FirstOrderFilter(0., CURRENT_TAU, DT_TRML)
   cpu_temp_filter = FirstOrderFilter(0., CPU_TEMP_TAU, DT_TRML)
@@ -212,7 +209,8 @@ def thermald_thread():
         no_panda_cnt = 0
         startup_conditions["ignition"] = pandaState.pandaState.ignitionLine or pandaState.pandaState.ignitionCan
 
-      startup_conditions["hardware_supported"] = True
+      startup_conditions["hardware_supported"] = True #pandaState.pandaState.pandaType not in [log.PandaState.PandaType.whitePanda,
+                                                      #                                   log.PandaState.PandaType.greyPanda]
       set_offroad_alert_if_changed("Offroad_HardwareUnsupported", not startup_conditions["hardware_supported"])
 
       # Setup fan handler on first connect to panda
@@ -240,6 +238,7 @@ def thermald_thread():
         network_type = HARDWARE.get_network_type()
         network_strength = HARDWARE.get_network_strength(network_type)
         network_info = HARDWARE.get_network_info()  # pylint: disable=assignment-from-none
+        wifiIpAddress = HARDWARE.get_ip_address()
 
         # Log modem version once
         if modem_version is None:
@@ -247,7 +246,6 @@ def thermald_thread():
           if modem_version is not None:
             cloudlog.warning(f"Modem version: {modem_version}")
 
-        wifiIpAddress = HARDWARE.get_ip_address()
         if TICI and (network_info.get('state', None) == "REGISTERED"):
           registered_count += 1
         else:
@@ -269,6 +267,7 @@ def thermald_thread():
     msg.deviceState.networkStrength = network_strength
     if network_info is not None:
       msg.deviceState.networkInfo = network_info
+
     msg.deviceState.wifiIpAddress = wifiIpAddress
     msg.deviceState.batteryPercent = HARDWARE.get_battery_capacity()
     msg.deviceState.batteryStatus = HARDWARE.get_battery_status()
@@ -321,17 +320,17 @@ def thermald_thread():
     now = datetime.datetime.utcnow()
 
     # show invalid date/time alert
-    startup_conditions["time_valid"] = (now.year > 2020) or (now.year == 2020 and now.month >= 10)
+    startup_conditions["time_valid"] = True #(now.year > 2020) or (now.year == 2020 and now.month >= 10)
     set_offroad_alert_if_changed("Offroad_InvalidTime", (not startup_conditions["time_valid"]))
 
     # Show update prompt
     try:
-      last_update = datetime.datetime.fromisoformat(params.get("LastUpdateTime", encoding='utf8'))
+      last_update = now #datetime.datetime.fromisoformat(params.get("LastUpdateTime", encoding='utf8'))
     except (TypeError, ValueError):
       last_update = now
     dt = now - last_update
 
-    update_failed_count = params.get("UpdateFailedCount")
+    update_failed_count = 0 #params.get("UpdateFailedCount")
     update_failed_count = 0 if update_failed_count is None else int(update_failed_count)
     last_update_exception = params.get("LastUpdateException", encoding='utf8')
 
@@ -408,31 +407,12 @@ def thermald_thread():
     # Check if we need to disable charging (handled by boardd)
     msg.deviceState.chargingDisabled = power_monitor.should_disable_charging(pandaState, off_ts)
 
-    # 양민님 충전로직
-    if EON:
-      if power_monitor.car_voltage_mV is None or msg.deviceState.batteryPercent is None :
-        HARDWARE.set_battery_charging(False)
-      elif HARDWARE.get_battery_charging and (msg.deviceState.batteryPercent > EON_BATT_MAX_SOC or power_monitor.car_voltage_mV < EON_BATT_CHARGE_PAUSE and not should_start):
-        HARDWARE.set_battery_charging(False)
-      elif not HARDWARE.get_battery_charging and (msg.deviceState.batteryPercent < EON_BATT_MIN_SOC and power_monitor.car_voltage_mV > EON_BATT_CHARGE_PAUSE):
-        HARDWARE.set_battery_charging(True)
-
     # Check if we need to shut down
     if power_monitor.should_shutdown(pandaState, off_ts, started_seen):
       cloudlog.info(f"shutting device down, offroad since {off_ts}")
       # TODO: add function for blocking cloudlog instead of sleep
       time.sleep(10)
       HARDWARE.shutdown()
-
-    # dp - auto shutdown
-    if off_ts is not None:
-      shutdown_sec = 10 * 60
-      sec_now = sec_since_boot() - off_ts
-      if (shutdown_sec - 5) < sec_now:
-        msg.deviceState.chargingDisabled = True
-      if shutdown_sec < sec_now:
-        time.sleep(10)
-        HARDWARE.shutdown()
 
     # If UI has crashed, set the brightness to reasonable non-zero value
     manager_state = messaging.recv_one_or_none(managerState_sock)
