@@ -17,10 +17,6 @@ class CarState(CarStateBase):
     self.adaptive_Cruise = False
     self.enable_lkas = True
 
-    self.prev_distance_button = 0
-    self.distance_button = 0
-    self.follow_level = 2
-
   def update(self, pt_cp):
     ret = car.CarState.new_message()
     ret.adaptiveCruise = self.adaptive_Cruise
@@ -74,9 +70,6 @@ class CarState(CarStateBase):
     # 오토홀드 표시 추가 (PSK)
     ret.autoHold = pt_cp.vl["EPBStatus"]["EPBClosed"]
 
-    self.prev_distance_button = self.distance_button
-    self.distance_button = pt_cp.vl["ASCMSteeringButton"]["DistanceButton"]
-
     self.main_on = bool(pt_cp.vl["ECMEngineStatus"]["CruiseMainOn"])
     ret.espDisabled = pt_cp.vl["ESPStatus"]["TractionControlOn"] != 1
     self.pcm_acc_status = pt_cp.vl["AcceleratorPedal2"]["CruiseState"]
@@ -84,13 +77,6 @@ class CarState(CarStateBase):
     ret.cruiseState.standstill = False
 
     ret.brakePressed = ret.brake > 1e-5
-    #ret.regenPressed = False
-    #if self.car_fingerprint == CAR.VOLT or self.car_fingerprint == CAR.BOLT:
-    #  ret.regenPressed = bool(pt_cp.vl["EBCMRegenPaddle"]["RegenPaddle"])
-    #brake_light_enable = False
-    #if self.car_fingerprint == CAR.BOLT:
-    #  if ret.aEgo < -1.3:
-    #    brake_light_enable = True
     ret.brakeLights = ret.brakePressed
 
     ret.cruiseState.enabled = self.main_on or ret.adaptiveCruise
@@ -132,7 +118,6 @@ class CarState(CarStateBase):
       ("CruiseMainOn", "ECMEngineStatus", 0),
       ("ACCCmdActive", "ASCMActiveCruiseControlStatus", 0),
       ("LKATotalTorqueDelivered", "PSCMStatus", 0),
-      ("DistanceButton", "ASCMSteeringButton", 0),
     ]
 
 
