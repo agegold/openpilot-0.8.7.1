@@ -17,6 +17,10 @@ class CarState(CarStateBase):
     self.adaptive_Cruise = False
     self.enable_lkas = True
 
+    self.prev_distance_button = 0
+    self.distance_button = 0
+    self.follow_level = 2
+
   def update(self, pt_cp):
     ret = car.CarState.new_message()
     ret.adaptiveCruise = self.adaptive_Cruise
@@ -69,9 +73,9 @@ class CarState(CarStateBase):
     self.park_brake = pt_cp.vl["EPBStatus"]["EPBClosed"]
     # 오토홀드 표시 추가 (PSK)
     ret.autoHold = pt_cp.vl["EPBStatus"]["EPBClosed"]
-    # NDA 표시 (PSK)
-    #ret.roadLimitSpeedActive = road_speed_limiter_get_active()
-    #ret.roadLimitSpeedActive = 1
+
+    self.prev_distance_button = self.distance_button
+    self.distance_button = pt_cp.vl["ASCMSteeringButton"]["DistanceButton"]
 
     self.main_on = bool(pt_cp.vl["ECMEngineStatus"]["CruiseMainOn"])
     ret.espDisabled = pt_cp.vl["ESPStatus"]["TractionControlOn"] != 1
@@ -92,6 +96,10 @@ class CarState(CarStateBase):
     ret.cruiseState.enabled = self.main_on or ret.adaptiveCruise
 
     return ret
+
+  # 2 lines for 3 Bar distance
+  def get_follow_level(self):
+    return self.follow_level
 
   @staticmethod
   def get_can_parser(CP):
@@ -124,6 +132,7 @@ class CarState(CarStateBase):
       ("CruiseMainOn", "ECMEngineStatus", 0),
       ("ACCCmdActive", "ASCMActiveCruiseControlStatus", 0),
       ("LKATotalTorqueDelivered", "PSCMStatus", 0),
+      ("DistanceButton", "ASCMSteeringButton", 0),
     ]
 
 

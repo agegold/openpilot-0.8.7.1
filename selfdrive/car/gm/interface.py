@@ -95,6 +95,14 @@ class CarInterface(CarInterfaceBase):
     ret.canValid = self.cp.can_valid
     ret.steeringRateLimited = self.CC.steer_rate_limited if self.CC is not None else False
 
+    # 3bar
+    if self.CS.distance_button and self.CS.distance_button != self.CS.prev_distance_button:
+      self.CS.follow_level -= 1
+      if self.CS.follow_level < 1:
+        self.CS.follow_level = 3
+
+    print("follow_level : ", self.CS.follow_level)
+
     buttonEvents = []
 
     if self.CS.cruise_buttons != self.CS.prev_cruise_buttons and self.CS.prev_cruise_buttons != CruiseButtons.INIT:
