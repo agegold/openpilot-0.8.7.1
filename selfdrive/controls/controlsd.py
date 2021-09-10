@@ -751,8 +751,8 @@ class Controls:
     if controlsState.applyMaxSpeed == controlsState.cruiseMaxSpeed:
       controlsState.vCruise = float(controlsState.cruiseMaxSpeed)
     elif controlsState.applyMaxSpeed < controlsState.cruiseMaxSpeed:
-      #controlsState.applyMaxSpeed = controlsState.applyMaxSpeed - 10
-      controlsState.vCruise = float(controlsState.applyMaxSpeed - NDA_SPEED_CORRECTION)
+      controlsState.applyMaxSpeed = controlsState.applyMaxSpeed - NDA_SPEED_CORRECTION
+      controlsState.vCruise = float(controlsState.applyMaxSpeed)
 
 
     controlsState.upAccelCmd = float(self.LoC.pid.p)

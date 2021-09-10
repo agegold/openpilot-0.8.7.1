@@ -276,7 +276,7 @@ class RoadSpeedLimiter:
         #else:
         #  sec = interp(diff_speed, [10., 30.], [15., 20.])
 
-        sec = interp(diff_speed, [10., 30.], [90., 90.])
+        sec = interp(diff_speed, [10., 30.], [80., 80.])
 
         if MIN_LIMIT <= cam_limit_speed <= MAX_LIMIT and (self.slowing_down or cam_limit_speed_left_dist < v_ego * sec):
 
