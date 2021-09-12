@@ -44,12 +44,10 @@ class CarInterface(CarInterfaceBase):
     ret.lateralTuning.lqr.dcGain = 0.002858
 
     #ret.steerRatio = 17.2
-    #ret.steerActuatorDelay = 0.0
-    #ret.steerRateCost = 0.552
-
     ret.steerRatio = 17.5
-    ret.steerActuatorDelay = 0.1  # Default delay, not measured yet
-    ret.steerRateCost = 0.552     # 작아질수록 조향각이 커진다.
+    ret.steerActuatorDelay = 0.0
+    ret.steerRateCost = 0.552
+
 
     ret.minSteerSpeed = 2.78  # GM 스티어링 조작은 10km 이상부터 사용 가능하다.
     ret.minEnableSpeed = -1
