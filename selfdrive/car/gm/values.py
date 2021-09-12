@@ -15,6 +15,8 @@ LEAD_ACCEL_TAU = 8.0     # 리드 감속이 길수록 계속 감속할 가능성
 
 NDA_SPEED_CORRECTION = 18     # 카메라 속도 보정  (5 KPH 조정)
 
+CAMERA_OFFSET_ADJUST = 0.01    # 카메라 이온 위치 조정 (왼쪽으로 붙으면 -, 오른쪽으로 붙으면 +)
+
 class CarControllerParams():
   def __init__(self):
     self.STEER_MAX = 300

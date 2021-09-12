@@ -5,12 +5,13 @@ from common.numpy_fast import interp
 from common.realtime import DT_MDL
 from selfdrive.hardware import EON, TICI
 from selfdrive.swaglog import cloudlog
+from selfdrive.car.gm.values import CAMERA_OFFSET_ADJUST
 
 
 TRAJECTORY_SIZE = 33
 # camera offset is meters from center car to camera
 if EON:
-  CAMERA_OFFSET = 0.06
+  CAMERA_OFFSET = CAMERA_OFFSET_ADJUST
   PATH_OFFSET = 0.0
 elif TICI:
   CAMERA_OFFSET = -0.04
