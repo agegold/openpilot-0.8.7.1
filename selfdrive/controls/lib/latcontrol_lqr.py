@@ -9,10 +9,10 @@ from selfdrive.controls.lib.drive_helpers import get_steer_max
 
 class LatControlLQR():
   def __init__(self, CP):
-    ##self.scale = CP.lateralTuning.lqr.scale
+    #self.scale = CP.lateralTuning.lqr.scale
     self.scaleBP = CP.lateralTuning.lqr.scaleBP
     self.scaleV = CP.lateralTuning.lqr.scaleV
-    ##self.ki = CP.lateralTuning.lqr.ki
+    #self.ki = CP.lateralTuning.lqr.ki
     self.kiBP = CP.lateralTuning.lqr.kiBP
     self.kiV = CP.lateralTuning.lqr.kiV
 
@@ -21,7 +21,7 @@ class LatControlLQR():
     self.C = np.array(CP.lateralTuning.lqr.c).reshape((1, 2))
     self.K = np.array(CP.lateralTuning.lqr.k).reshape((1, 2))
     self.L = np.array(CP.lateralTuning.lqr.l).reshape((2, 1))
-    ##self.dc_gain = CP.lateralTuning.lqr.dcGain
+    #self.dc_gain = CP.lateralTuning.lqr.dcGain
     self.dc_gainBP = CP.lateralTuning.lqr.dcGainBP
     self.dc_gainV = CP.lateralTuning.lqr.dcGainV
 
