@@ -9,15 +9,21 @@ from selfdrive.controls.lib.drive_helpers import get_steer_max
 
 class LatControlLQR():
   def __init__(self, CP):
-    self.scale = CP.lateralTuning.lqr.scale
-    self.ki = CP.lateralTuning.lqr.ki
+    ##self.scale = CP.lateralTuning.lqr.scale
+    self.scaleBP = CP.lateralTuning.lqr.scaleBP
+    self.scaleV = CP.lateralTuning.lqr.scaleV
+    ##self.ki = CP.lateralTuning.lqr.ki
+    self.kiBP = CP.lateralTuning.lqr.kiBP
+    self.kiV = CP.lateralTuning.lqr.kiV
 
     self.A = np.array(CP.lateralTuning.lqr.a).reshape((2, 2))
     self.B = np.array(CP.lateralTuning.lqr.b).reshape((2, 1))
     self.C = np.array(CP.lateralTuning.lqr.c).reshape((1, 2))
     self.K = np.array(CP.lateralTuning.lqr.k).reshape((1, 2))
     self.L = np.array(CP.lateralTuning.lqr.l).reshape((2, 1))
-    self.dc_gain = CP.lateralTuning.lqr.dcGain
+    ##self.dc_gain = CP.lateralTuning.lqr.dcGain
+    self.dc_gainBP = CP.lateralTuning.lqr.dcGainBP
+    self.dc_gainV = CP.lateralTuning.lqr.dcGainV
 
     self.x_hat = np.array([[0], [0]])
     self.i_unwind_rate = 0.3 * DT_CTRL
@@ -81,7 +87,11 @@ class LatControlLQR():
 
       # LQR
       u_lqr = float(desired_angle / self.dc_gain - self.K.dot(self.x_hat))
-      lqr_output = torque_scale * u_lqr / self.scale
+      #lqr_output = torque_scale * u_lqr / self.scale
+      scale_output = interp(CS.vEgo, self.scaleBP, self.scaleV)
+      angle_scale_output = interp(abs(self.angle_steers_des), self.angleScaleBP, self.angleScaleV)
+      scale_output = max(scale_output - angle_scale_output, 100)  ## scale min value = 100
+      lqr_output = torque_scale * u_lqr / scale_output
 
       # Integrator
       if CS.steeringPressed:

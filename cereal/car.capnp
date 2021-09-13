@@ -480,9 +480,17 @@ struct CarParams {
   }
 
   struct LateralLQRTuning {
-    scale @0 :Float32;
-    ki @1 :Float32;
-    dcGain @2 :Float32;
+    #scale @0 :Float32;
+    #ki @1 :Float32;
+    #dcGain @2 :Float32;
+
+    scaleBP @0 :List(Float32);
+    scaleV @8 :List(Float32);
+    kiBP @1 :List(Float32);
+    kiV @9 :List(Float32);
+    dcGainBP @2 :List(Float32);
+    dcGainV @10 :List(Float32);
+
 
     # State space system
     a @3 :List(Float32);
