@@ -9,21 +9,15 @@ from selfdrive.controls.lib.drive_helpers import get_steer_max
 
 class LatControlLQR():
   def __init__(self, CP):
-    #self.scale = CP.lateralTuning.lqr.scale
-    self.scaleBP = CP.lateralTuning.lqr.scaleBP
-    self.scaleV = CP.lateralTuning.lqr.scaleV
-    #self.ki = CP.lateralTuning.lqr.ki
-    self.kiBP = CP.lateralTuning.lqr.kiBP
-    self.kiV = CP.lateralTuning.lqr.kiV
+    self.scale = CP.lateralTuning.lqr.scale
+    self.ki = CP.lateralTuning.lqr.ki
 
     self.A = np.array(CP.lateralTuning.lqr.a).reshape((2, 2))
     self.B = np.array(CP.lateralTuning.lqr.b).reshape((2, 1))
     self.C = np.array(CP.lateralTuning.lqr.c).reshape((1, 2))
     self.K = np.array(CP.lateralTuning.lqr.k).reshape((1, 2))
     self.L = np.array(CP.lateralTuning.lqr.l).reshape((2, 1))
-    #self.dc_gain = CP.lateralTuning.lqr.dcGain
-    self.dc_gainBP = CP.lateralTuning.lqr.dcGainBP
-    self.dc_gainV = CP.lateralTuning.lqr.dcGainV
+    self.dc_gain = CP.lateralTuning.lqr.dcGain
 
     self.x_hat = np.array([[0], [0]])
     self.i_unwind_rate = 0.3 * DT_CTRL
@@ -32,8 +26,8 @@ class LatControlLQR():
     self.sat_count_rate = 1.0 * DT_CTRL
     self.sat_limit = CP.steerLimitTimer
 
-    #self.scale_correction = [CP.lateralTuning.lqr.scale + 300, CP.lateralTuning.lqr.scale]
-    #self.ki_correction = [CP.lateralTuning.lqr.ki, CP.lateralTuning.lqr.ki + 0.015]
+    self.scale_correction = [CP.lateralTuning.lqr.scale + 300, CP.lateralTuning.lqr.scale]
+    self.ki_correction = [CP.lateralTuning.lqr.ki, CP.lateralTuning.lqr.ki + 0.015]
     self.bp = [10., 30.]
 
     self.reset()
@@ -74,8 +68,8 @@ class LatControlLQR():
     self.x_hat = self.A.dot(self.x_hat) + self.B.dot(CS.steeringTorqueEps / torque_scale) + self.L.dot(e)
 
     #scale and i gain correction to speed
-    #self.scale = interp(CS.vEgo, self.bp, self.scale_correction)
-    #self.ki = interp(CS.vEgo, self.bp, self.ki_correction)
+    self.scale = interp(CS.vEgo, self.bp, self.scale_correction)
+    self.ki = interp(CS.vEgo, self.bp, self.ki_correction)
 
     if CS.vEgo < 0.3 or not active or not CS.lkasEnable:
       lqr_log.active = False
@@ -87,11 +81,7 @@ class LatControlLQR():
 
       # LQR
       u_lqr = float(desired_angle / self.dc_gain - self.K.dot(self.x_hat))
-      #lqr_output = torque_scale * u_lqr / self.scale
-      scale_output = interp(CS.vEgo, self.scaleBP, self.scaleV)
-      angle_scale_output = interp(abs(self.angle_steers_des), self.angleScaleBP, self.angleScaleV)
-      scale_output = max(scale_output - angle_scale_output, 100)  ## scale min value = 100
-      lqr_output = torque_scale * u_lqr / scale_output
+      lqr_output = torque_scale * u_lqr / self.scale
 
       # Integrator
       if CS.steeringPressed:

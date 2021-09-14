@@ -34,33 +34,15 @@ class CarInterface(CarInterfaceBase):
 
     # Equinox lateralTuning (측면 튜닝)
     ret.lateralTuning.init('lqr')
-
     #ret.lateralTuning.lqr.scale = 1680.0
-    # scale : lower is more aggresive
-    ret.lateralTuning.lqr.scaleBP = [10. * CV.KPH_TO_MS, 100. * CV.KPH_TO_MS]
-    ret.lateralTuning.lqr.scaleV = [1200, 2000]  # with speed interp
-    ret.lateralTuning.lqr.angleScaleBP = [1., 100.]
-    ret.lateralTuning.lqr.angleScaleV = [200, 1200]  # with angle interp
-
-    #ret.lateralTuning.lqr.ki = 0.01
-    # ki : bigger is more aggresive
-    ret.lateralTuning.lqr.kiBP = [10. * CV.KPH_TO_MS, 90. * CV.KPH_TO_MS]
-    ret.lateralTuning.lqr.kiV = [0.01, 0.005]  ## with speed interp
-    ret.lateralTuning.lqr.angleKiBP = [1., 100.]
-    ret.lateralTuning.lqr.angleKiV = [0., 0.0420]  ## with angle interp
-
+    ret.lateralTuning.lqr.scale = 1750.0
+    ret.lateralTuning.lqr.ki = 0.01
     ret.lateralTuning.lqr.a = [0., 1., -0.22619643, 1.21822268]
     ret.lateralTuning.lqr.b = [-1.92006585e-04, 3.95603032e-05]
     ret.lateralTuning.lqr.c = [1., 0.]
     ret.lateralTuning.lqr.k = [-110.73572306, 451.22718255]
     ret.lateralTuning.lqr.l = [0.3233671, 0.3185757]
-
-    #ret.lateralTuning.lqr.dcGain = 0.002858
-    # dcGain : lower is more aggresive
-    ret.lateralTuning.lqr.dcGainBP = [10. * CV.KPH_TO_MS, 100. * CV.KPH_TO_MS]
-    ret.lateralTuning.lqr.dcGainV = [0.003, 0.005]  ## with speed interp
-    ret.lateralTuning.lqr.angleDcGainBP = [1., 100.]
-    ret.lateralTuning.lqr.angleDcGainV = [0., 0.0040]  ## with angle interp
+    ret.lateralTuning.lqr.dcGain = 0.002858
 
     ret.steerRatio = STEER_RATIO
     #ret.steerActuatorDelay = 0.0
