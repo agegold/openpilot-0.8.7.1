@@ -499,6 +499,13 @@ struct CarParams {
 
     k @6 :List(Float32);  # LQR gain
     l @7 :List(Float32);  # Kalman gain
+
+    angleScaleBP @11 :List(Float32);
+    angleScaleV @12 :List(Float32);
+    angleKiBP @13 :List(Float32);
+    angleKiV @14 :List(Float32);
+    angleDcGainBP @15 :List(Float32);
+    angleDcGainV @16 :List(Float32);
   }
 
   enum SafetyModel {
