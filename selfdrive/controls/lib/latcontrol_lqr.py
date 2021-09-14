@@ -32,8 +32,8 @@ class LatControlLQR():
     self.sat_count_rate = 1.0 * DT_CTRL
     self.sat_limit = CP.steerLimitTimer
 
-    self.scale_correction = [CP.lateralTuning.lqr.scale + 300, CP.lateralTuning.lqr.scale]
-    self.ki_correction = [CP.lateralTuning.lqr.ki, CP.lateralTuning.lqr.ki + 0.015]
+    #self.scale_correction = [CP.lateralTuning.lqr.scale + 300, CP.lateralTuning.lqr.scale]
+    #self.ki_correction = [CP.lateralTuning.lqr.ki, CP.lateralTuning.lqr.ki + 0.015]
     self.bp = [10., 30.]
 
     self.reset()
