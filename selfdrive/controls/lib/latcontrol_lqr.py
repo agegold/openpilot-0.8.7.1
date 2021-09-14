@@ -32,8 +32,8 @@ class LatControlLQR():
     self.sat_count_rate = 1.0 * DT_CTRL
     self.sat_limit = CP.steerLimitTimer
 
-    #self.scale_correction = [CP.lateralTuning.lqr.scale + 300, CP.lateralTuning.lqr.scale]
-    #self.ki_correction = [CP.lateralTuning.lqr.ki, CP.lateralTuning.lqr.ki + 0.015]
+    self.scale_correction = [CP.lateralTuning.lqr.scale + 300, CP.lateralTuning.lqr.scale]
+    self.ki_correction = [CP.lateralTuning.lqr.ki, CP.lateralTuning.lqr.ki + 0.015]
     self.bp = [10., 30.]
 
     self.reset()
@@ -74,8 +74,8 @@ class LatControlLQR():
     self.x_hat = self.A.dot(self.x_hat) + self.B.dot(CS.steeringTorqueEps / torque_scale) + self.L.dot(e)
 
     #scale and i gain correction to speed
-    self.scale = interp(CS.vEgo, self.bp, self.scale_correction)
-    self.ki = interp(CS.vEgo, self.bp, self.ki_correction)
+    #self.scale = interp(CS.vEgo, self.bp, self.scale_correction)
+    #self.ki = interp(CS.vEgo, self.bp, self.ki_correction)
 
     if CS.vEgo < 0.3 or not active or not CS.lkasEnable:
       lqr_log.active = False
