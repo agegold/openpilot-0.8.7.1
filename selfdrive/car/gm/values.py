@@ -17,6 +17,10 @@ NDA_SPEED_CORRECTION = 18     # 카메라 속도 보정  (5 KPH 조정)
 
 CAMERA_OFFSET_ADJUST = 0.15    # 카메라 이온 위치 조정 (왼쪽으로 붙으면 -, 오른쪽으로 붙으면 +)
 
+STEER_RATIO = 18.2
+
+STIFFNESS_FACTOR = 1.0
+
 class CarControllerParams():
   def __init__(self):
     self.STEER_MAX = 300

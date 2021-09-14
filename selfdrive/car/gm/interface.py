@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 from cereal import car
 from selfdrive.config import Conversions as CV
-from selfdrive.car.gm.values import CAR, CruiseButtons, AccState
+from selfdrive.car.gm.values import CAR, CruiseButtons, AccState, STEER_RATIO, STIFFNESS_FACTOR
 from selfdrive.car import STD_CARGO_KG, scale_rot_inertia, scale_tire_stiffness, gen_empty_fingerprint
 from selfdrive.car.interfaces import CarInterfaceBase
 from common.params import Params
@@ -62,8 +62,7 @@ class CarInterface(CarInterfaceBase):
     ret.lateralTuning.lqr.angleDcGainBP = [1., 100.]
     ret.lateralTuning.lqr.angleDcGainV = [0., 0.0040]  ## with angle interp
 
-    #ret.steerRatio = 17.2
-    ret.steerRatio = 17.5
+    ret.steerRatio = STEER_RATIO
     #ret.steerActuatorDelay = 0.0
     ret.steerActuatorDelay = 0.1
     ret.steerRateCost = 0.552
@@ -77,7 +76,7 @@ class CarInterface(CarInterfaceBase):
     ret.steerRatioRear = 0.
     ret.centerToFront = ret.wheelbase * 0.4
 
-    tire_stiffness_factor = 0.444  # not optimized yet
+    tire_stiffness_factor = STIFFNESS_FACTOR
 
     # TODO: get actual value, for now starting with reasonable value for
     # civic and scaling by mass and wheelbase
