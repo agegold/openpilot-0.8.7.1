@@ -11,13 +11,13 @@ SLOW_ON_CURVES = 1    # 슬로우 커브 사용 유무 (0,1)
 
 MIN_CURVE_SPEED = 32. * CV.KPH_TO_MS    # 커브 속도 설정
 
-LEAD_ACCEL_TAU = 8.0     # 리드 감속이 길수록 계속 감속할 가능성이 높아집니다.
+LEAD_ACCEL_TAU = 7.5     # 리드 감속이 길수록 계속 감속할 가능성이 높아집니다.
 
 NDA_SPEED_CORRECTION = 18     # 카메라 속도 보정  (5 KPH 조정)
 
 CAMERA_OFFSET_ADJUST = 0.15    # 카메라 이온 위치 조정 (왼쪽으로 붙으면 -, 오른쪽으로 붙으면 +)
 
-STEER_RATIO = 18.2
+STEER_RATIO = 17.2
 
 STIFFNESS_FACTOR = 1.0
 
