@@ -34,8 +34,7 @@ class CarInterface(CarInterfaceBase):
 
     # Equinox lateralTuning (측면 튜닝)
     ret.lateralTuning.init('lqr')
-    #ret.lateralTuning.lqr.scale = 1680.0
-    ret.lateralTuning.lqr.scale = 1950.0
+    ret.lateralTuning.lqr.scale = 1680.0
     ret.lateralTuning.lqr.ki = 0.01
     ret.lateralTuning.lqr.a = [0., 1., -0.22619643, 1.21822268]
     ret.lateralTuning.lqr.b = [-1.92006585e-04, 3.95603032e-05]
@@ -70,7 +69,7 @@ class CarInterface(CarInterfaceBase):
 
     # [Equinox 2020]
     ret.longitudinalTuning.kpBP = [0., 5., 10., 20., 30.]
-    ret.longitudinalTuning.kpV = [1.0, 0.9, 0.85, 0.8, 1.2]
+    ret.longitudinalTuning.kpV = [0.85, 0.8, 0.75, 0.7, 1.0]
     ret.longitudinalTuning.kiBP = [0., 20.]
     ret.longitudinalTuning.kiV = [0.045, 0.055]
     ret.longitudinalTuning.kfBP = [15., 20., 25.]
