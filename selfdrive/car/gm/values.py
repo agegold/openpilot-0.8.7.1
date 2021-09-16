@@ -19,7 +19,7 @@ CAMERA_OFFSET_ADJUST = 0.15    # 카메라 이온 위치 조정 (왼쪽으로 �
 
 STEER_RATIO = 17.5
 
-STIFFNESS_FACTOR = 1.0
+STIFFNESS_FACTOR = 1.0       # stiffnessFactor 값은 작을 수록 조향이 민감해지구요.
 
 class CarControllerParams():
   def __init__(self):
