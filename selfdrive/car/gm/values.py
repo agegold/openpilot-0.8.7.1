@@ -15,11 +15,11 @@ LEAD_ACCEL_TAU = 10     # 리드 감속이 길수록 계속 감속할 가능성�
 
 NDA_SPEED_CORRECTION = 45     # 카메라 속도 보정  (5 KPH 조정)
 
-CAMERA_OFFSET_ADJUST = 0.15    # 카메라 이온 위치 조정 (왼쪽으로 붙으면 -, 오른쪽으로 붙으면 +)
+CAMERA_OFFSET_ADJUST = 0.06    # 카메라 이온 위치 조정 (왼쪽으로 붙으면 -, 오른쪽으로 붙으면 +)
 
 STEER_RATIO = 17.5
 
-STIFFNESS_FACTOR = 1.0       # stiffnessFactor 값은 작을 수록 조향이 민감해지구요.
+STIFFNESS_FACTOR = 0.5       # stiffnessFactor 값은 작을 수록 조향이 민감해지구요.
 
 class CarControllerParams():
   def __init__(self):

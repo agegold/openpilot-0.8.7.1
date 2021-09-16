@@ -13,7 +13,6 @@ from common.numpy_fast import clip
 from selfdrive.locationd.models.car_kf import CarKalman, ObservationKind, States
 from selfdrive.locationd.models.constants import GENERATED_DIR
 from selfdrive.swaglog import cloudlog
-from selfdrive.car.gm.values import STEER_RATIO, STIFFNESS_FACTOR
 
 
 MAX_ANGLE_OFFSET_DELTA = 20 * DT_MDL  # Max 20 deg/s
@@ -126,8 +125,7 @@ def main(sm=None, pm=None):
   # Without a way to detect this we have to reset the stiffness every drive
   params['stiffnessFactor'] = 1.0
 
-  #learner = ParamsLearner(CP, params['steerRatio'], params['stiffnessFactor'], math.radians(params['angleOffsetAverageDeg']))
-  learner = ParamsLearner(CP, STEER_RATIO, STIFFNESS_FACTOR, math.radians(params['angleOffsetAverageDeg']))
+  learner = ParamsLearner(CP, params['steerRatio'], params['stiffnessFactor'], math.radians(params['angleOffsetAverageDeg']))
 
   angle_offset_average = params['angleOffsetAverageDeg']
   angle_offset = angle_offset_average
