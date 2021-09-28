@@ -88,15 +88,21 @@ class CarInterface(CarInterfaceBase):
     # [Equinox 2020]
     ret.longitudinalTuning.kpBP = [0., 5., 10., 20., 30.]
     ret.longitudinalTuning.kpV = [0.82, 0.78, 0.73, 0.67, 1.05]
-    ret.longitudinalTuning.kiBP = [0., 20.]
-    ret.longitudinalTuning.kiV = [0.045, 0.055]
-    ret.longitudinalTuning.kfBP = [15., 20., 25.]
-    ret.longitudinalTuning.kfV = [1., 0.5, 0.2]
+    #ret.longitudinalTuning.kiBP = [0., 20.]
+    #ret.longitudinalTuning.kiV = [0.045, 0.055]
+    #ret.longitudinalTuning.kfBP = [15., 20., 25.]
+    #ret.longitudinalTuning.kfV = [1., 0.5, 0.2]
+    ret.longitudinalTuning.kiBP = [0, 130. * CV.KPH_TO_MS]
+    ret.longitudinalTuning.kiV = [0.05, 0.03]
+    ret.longitudinalTuning.kfBP = [10. * CV.KPH_TO_MS, 30. * CV.KPH_TO_MS, 50. * CV.KPH_TO_MS, 80. * CV.KPH_TO_MS,
+                                   100. * CV.KPH_TO_MS, 130. * CV.KPH_TO_MS]
+    ret.longitudinalTuning.kfV = [1.0, 0.92, 0.86, 0.79, 0.76, 0.72]
+    ret.longitudinalTuning.deadzoneBP = [0., 100. * CV.KPH_TO_MS]
+    ret.longitudinalTuning.deadzoneV = [0., 0.015]
 
     if ret.enableGasInterceptor:
       ret.gasMaxBP = [0., 5., 10., 19., 30.]
       ret.gasMaxV = [0.2, 0.3, 0.35, 0.5, 0.7]
-
 
     ret.steerLimitTimer = 0.4
     ret.radarTimeStep = 0.0667  # GM radar runs at 15Hz instead of standard 20Hz
