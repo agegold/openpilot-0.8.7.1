@@ -279,7 +279,7 @@ static void ui_draw_vision_event(UIState *s) {
   ui_draw_circle_image(s, center_x, center_y, radius, "driver_face", s->scene.dm_active);
 }*/
 
-static void ui_draw_vision_scc_gap(UIState *s) {
+/*static void ui_draw_vision_scc_gap(UIState *s) {
   const UIScene *scene = &s->scene;
   auto car_state = (*s->sm)["carState"].getCarState();
   auto scc_smoother = s->scene.car_control.getSccSmoother();
@@ -321,7 +321,7 @@ static void ui_draw_vision_scc_gap(UIState *s) {
   ui_draw_text(s, center_x, center_y-36, "GAP", 22 * 2.5f, nvgRGBA(255, 255, 255, 200), "sans-bold");
   ui_draw_text(s, center_x, center_y+22, str, textSize * 2.5f, textColor, "sans-bold");
 
-}
+}*/
 
 static void ui_draw_vision_brake(UIState *s) {
   const int brake_size = 96;
@@ -578,7 +578,7 @@ static void ui_draw_vision(UIState *s) {
   ui_draw_vision_header(s);
   if ((*s->sm)["controlsState"].getControlsState().getAlertSize() == cereal::ControlsState::AlertSize::NONE) {
     //ui_draw_vision_face(s);  비활성화
-    ui_draw_vision_scc_gap(s);
+    //ui_draw_vision_scc_gap(s);
 	ui_draw_vision_brake(s);
 	// 오토 홀드 추가
 	ui_draw_vision_autohold(s);
