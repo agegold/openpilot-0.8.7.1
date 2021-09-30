@@ -21,7 +21,7 @@ STIFFNESS_FACTOR = 0.5       # stiffnessFactor 값은 작을 수록 조향이 �
 
 DISTANCE_GAP = 0      # 거리차 (0:auto)
 
-ACCEL_PROFILE = 1     # 엑셀프로파일 (1:eco)
+ACCEL_PROFILE = 0     # 엑셀프로파일 (0:eco)
 
 class CarControllerParams():
   def __init__(self):

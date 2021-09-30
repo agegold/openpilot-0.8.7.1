@@ -16,14 +16,15 @@ def index():
 def apply():
     if request.method == 'POST':
 
-        #value = request.form['id_name']
-        #value = str(value)
-        #print(value)
+        global DISTANCE_GAP
+        DISTANCE_GAP = request.form['chk_distance']
+        print("DISTANCE_GAP", DISTANCE_GAP)
 
-        print("chk_distance", request.form['chk_distance'])
-        print("chk_accel", request.form['chk_accel'])
+        global ACCEL_PROFILE
+        ACCEL_PROFILE = request.form['chk_accel']
+        print("ACCEL_PROFILE", ACCEL_PROFILE)
 
-        #return render_template('openpilot_control.html')
+        return render_template('openpilot_control.html')
 
 def main():
     app.run(host='0.0.0.0', port='7070')
