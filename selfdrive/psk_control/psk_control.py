@@ -13,7 +13,7 @@ accel = 1
 def index():
     global gap  # 전역 변수 x를 사용하겠다고 설정
     global accel
-    return render_template('openpilot_control.html', gapParam = gap, getAccel = accel)
+    return render_template('openpilot_control.html', gapParam = gap, accelParam = accel)
 
 
 @app.route('/apply', methods=['GET', 'POST'])

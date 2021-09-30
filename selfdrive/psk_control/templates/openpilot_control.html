@@ -34,7 +34,7 @@ input[type=text] {
 	{
 		//document.frm1.submit()
 		//alert("test")
-		var gap = {{gap}};
+		var gap = {{gapParam}};
 		if( gap == 0 ) {
 			document.frm1.chk_distance[0].checked = true;
 		}else if( gap == 1 ) {
@@ -47,7 +47,7 @@ input[type=text] {
 			document.frm1.chk_distance[4].checked = true;
 		}
 		
-		var accel = {{accel}};
+		var accel = {{accelParam}};
 		if( accel == 0 ) {
 			document.frm1.chk_accel[0].checked = true;
 		}else if( accel == 1 ) {
