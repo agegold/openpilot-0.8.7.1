@@ -19,6 +19,10 @@ STEER_RATIO = 17.2
 
 STIFFNESS_FACTOR = 0.5       # stiffnessFactor 값은 작을 수록 조향이 민감해지구요.
 
+DISTANCE_GAP = 0      # 거리차 (0:auto)
+
+ACCEL_PROFILE = 1     # 엑셀프로파일 (1:eco)
+
 class CarControllerParams():
   def __init__(self):
     self.STEER_MAX = 300
