@@ -279,6 +279,7 @@ static void ui_draw_vision_event(UIState *s) {
   ui_draw_circle_image(s, center_x, center_y, radius, "driver_face", s->scene.dm_active);
 }*/
 
+// 1>
 static void ui_draw_vision_scc_gap(UIState *s) {
   auto car_state = (*s->sm)["carState"].getCarState();
   int gap = car_state.getDistanceGap();
@@ -318,6 +319,7 @@ static void ui_draw_vision_scc_gap(UIState *s) {
 
 }
 
+// 2>
 static void ui_draw_vision_accel_profile(UIState *s) {
   auto car_state = (*s->sm)["carState"].getCarState();
   int accel = car_state.getAccelProfile();
@@ -325,7 +327,7 @@ static void ui_draw_vision_accel_profile(UIState *s) {
     return;
 
   const int radius = 96;
-  const int center_x = radius + (bdr_s * 2);
+  const int center_x = radius + (bdr_s * 2) + radius*2 + 60;
   const int center_y = s->fb_h - footer_h / 2;
 
   NVGcolor color_bg = nvgRGBA(0, 0, 0, (255 * 0.1f));
@@ -344,27 +346,29 @@ static void ui_draw_vision_accel_profile(UIState *s) {
     snprintf(str, sizeof(str), "ECO");
     textColor = nvgRGBA(120, 255, 120, 200);
   } else if(accel == 1) {
-    snprintf(str, sizeof(str), "NORMAL");
+    snprintf(str, sizeof(str), "NOR");
     textColor = nvgRGBA(120, 255, 120, 200);
   } else if(accel == 2) {
-    snprintf(str, sizeof(str), "SPORT");
+    snprintf(str, sizeof(str), "SPT");
     textColor = nvgRGBA(120, 255, 120, 200);
   }
 
   nvgTextAlign(s->vg, NVG_ALIGN_CENTER | NVG_ALIGN_MIDDLE);
 
-  ui_draw_text(s, center_x, center_y-36, "ACC", 22 * 2.5f, nvgRGBA(255, 255, 255, 200), "sans-bold");
+  ui_draw_text(s, center_x, center_y-36, "ACCEL", 22 * 2.5f, nvgRGBA(255, 255, 255, 200), "sans-bold");
   ui_draw_text(s, center_x, center_y+22, str, textSize * 2.5f, textColor, "sans-bold");
 
 }
 
+// 3>
 static void ui_draw_vision_brake(UIState *s) {
   const int brake_size = 96;
-  const int brake_x = brake_size + (bdr_s * 2) + 255;
+  const int center_x = radius + (bdr_s * 2) + (radius*2 + 60) * 2;
   const int brake_y = s->fb_h - footer_h / 2;
   ui_draw_circle_image(s, brake_x, brake_y, brake_size, "brake_img", s->scene.brakeLights);
 }
 
+// 4>
 static void ui_draw_vision_autohold(UIState *s) {
   auto car_state = (*s->sm)["carState"].getCarState();
   int autohold = car_state.getAutoHold();
@@ -372,7 +376,7 @@ static void ui_draw_vision_autohold(UIState *s) {
     return;
 
   const int radius = 96;
-  const int center_x = radius + (bdr_s * 2) + (radius*2 + 60) * 2;
+  const int center_x = radius + (bdr_s * 2) + (radius*2 + 60) * 3;
   const int center_y = s->fb_h - footer_h / 2;
 
   float brake_img_alpha = autohold > 0 ? 1.0f : 0.15f;
