@@ -18,7 +18,6 @@ body {
 
 input[type=button], input[type=submit], input[type=reset] {
   background-color: #4CAF50;
-  width: 25%;
   border: none;
   color: white;
   padding: 32px 64px;
@@ -86,10 +85,10 @@ input[type=text] {
 		<h1>Openpilot Control Ver 0.0.1</h1>
 		<h2>
 		<p>
-			<font color="GREEN">GAP(seconds)</font><br>
-			<input type="radio" name="chk_distance" value=0>AUTO&nbsp;&nbsp;
+			<font color="GREEN">GAP(seconds)</font>
+			<br><input type="radio" name="chk_distance" value=0>AUTO&nbsp;&nbsp;
 			<br><input type="radio" name="chk_distance" value=1>1.3&nbsp;&nbsp;
-			<br>input type="radio" name="chk_distance" value=2>1.6&nbsp;&nbsp;
+			<br><input type="radio" name="chk_distance" value=2>1.6&nbsp;&nbsp;
 			<br><input type="radio" name="chk_distance" value=3>2.0&nbsp;&nbsp;
 			<br><input type="radio" name="chk_distance" value=4>2.5
 			
@@ -98,8 +97,8 @@ input[type=text] {
 
 		<h2>
 		<p>
-			<font color="GREEN">ACCEL MODE</font><br>
-			<input type="radio" name="chk_accel" value=0>ECO&nbsp;&nbsp;
+			<font color="GREEN">ACCEL MODE</font>
+			<br><input type="radio" name="chk_accel" value=0>ECO&nbsp;&nbsp;
 			<br><input type="radio" name="chk_accel" value=1>NORMAL&nbsp;&nbsp;
 			<br><input type="radio" name="chk_accel" value=2>SPORT&nbsp;&nbsp;
 		</p>
@@ -134,8 +133,7 @@ input[type=text] {
 		</h2> -->
 
 		<div align="center">
-			<br>
-			<input type="button" value="RESET" onclick="load()"> &nbsp;&nbsp; <input type="button" value="APPLY" onclick="apply_ok()">
+			<input type="button" style="WIDTH: 100pt; HEIGHT: 70pt" value="RESET" onclick="load()"> &nbsp;&nbsp;<input type="button" style="WIDTH: 100pt; HEIGHT: 80pt" value="APPLY" onclick="apply_ok()">
 		</div>
 	</form>
 </body>
