@@ -280,7 +280,6 @@ static void ui_draw_vision_event(UIState *s) {
 }*/
 
 static void ui_draw_vision_scc_gap(UIState *s) {
-  const UIScene *scene = &s->scene;
   auto car_state = (*s->sm)["carState"].getCarState();
   int gap = car_state.getDistanceGap();
   if(gap < 0)
@@ -320,7 +319,6 @@ static void ui_draw_vision_scc_gap(UIState *s) {
 }
 
 static void ui_draw_vision_accel_profile(UIState *s) {
-  const UIScene *scene = &s->scene;
   auto car_state = (*s->sm)["carState"].getCarState();
   int accel = car_state.getAccelProfile();
   if(accel < 0)
