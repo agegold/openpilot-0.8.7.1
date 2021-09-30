@@ -1383,6 +1383,10 @@ struct RoadLimitSpeed {
     sectionLimitSpeed @6 :UInt16;
     sectionLeftDist @7 :UInt16;
     camSpeedFactor @8 :Float32;
+
+    # PSK control ADD
+    gap @9 :UInt16;
+    accel @10 :UInt16;
 }
 
 struct Event {

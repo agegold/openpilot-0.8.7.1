@@ -2,7 +2,7 @@ import json
 from flask import Flask, render_template
 from flask import request
 from flask import jsonify, Response
-
+from cereal import messaging
 
 app = Flask(__name__)
 
@@ -15,8 +15,9 @@ def hello():
     return 'Hello, World'
 
 @app.route('/login', methods=['GET', 'POST'])
-def login():
+def apply():
     if request.method == 'POST':
+        roadLimitSpeed = messaging.pub_sock('roadLimitSpeed')
         return Response(
                 json.dumps(
                     {
@@ -27,12 +28,11 @@ def login():
             status=200
         )
 
-    else:
-        return "show_the_login_form"
-
+def main():
+    app.run(host='0.0.0.0', port='7070')
 
 if __name__ == "__main__":
-    app.run(host='0.0.0.0', port='7070', debug=True)
+    main()
 
 
 ######
