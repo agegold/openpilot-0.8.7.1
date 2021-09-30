@@ -6,7 +6,7 @@ from opendbc.can.parser import CANParser
 from selfdrive.car.interfaces import CarStateBase
 from selfdrive.road_speed_limiter import road_speed_limiter_get_max_speed, road_speed_limiter_get_active
 from selfdrive.car.gm.values import DBC, CAR, AccState, CanBus, \
-                                    CruiseButtons, STEER_THRESHOLD
+                                    CruiseButtons, STEER_THRESHOLD, DISTANCE_GAP, ACCEL_PROFILE
 
 
 class CarState(CarStateBase):
@@ -69,6 +69,9 @@ class CarState(CarStateBase):
     self.park_brake = pt_cp.vl["EPBStatus"]["EPBClosed"]
     # 오토홀드 표시 추가 (PSK)
     ret.autoHold = pt_cp.vl["EPBStatus"]["EPBClosed"]
+    # 차간 거리, 엑셀 프로파일 추가 (PSK)
+    ret.distanceGap = DISTANCE_GAP
+    ret.accelProfile = ACCEL_PROFILE
 
     self.main_on = bool(pt_cp.vl["ECMEngineStatus"]["CruiseMainOn"])
     ret.espDisabled = pt_cp.vl["ESPStatus"]["TractionControlOn"] != 1

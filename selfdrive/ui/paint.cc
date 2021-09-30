@@ -279,14 +279,12 @@ static void ui_draw_vision_event(UIState *s) {
   ui_draw_circle_image(s, center_x, center_y, radius, "driver_face", s->scene.dm_active);
 }*/
 
-/*static void ui_draw_vision_scc_gap(UIState *s) {
+static void ui_draw_vision_scc_gap(UIState *s) {
   const UIScene *scene = &s->scene;
   auto car_state = (*s->sm)["carState"].getCarState();
-  auto scc_smoother = s->scene.car_control.getSccSmoother();
-
-  int gap = car_state.getCruiseGap();
-  bool longControl = scc_smoother.getLongControl();
-  int autoTrGap = scc_smoother.getAutoTrGap();
+  int gap = car_state.getDistanceGap();
+  if(gap < 0)
+    return;
 
   const int radius = 96;
   const int center_x = radius + (bdr_s * 2);
@@ -303,10 +301,8 @@ static void ui_draw_vision_event(UIState *s) {
   float textSize = 30.f;
 
   char str[64];
-  if(gap <= 0) {
-    snprintf(str, sizeof(str), "N/A");
-  }
-  else if(longControl && gap == autoTrGap) {
+
+  if(gap == 0) {
     snprintf(str, sizeof(str), "AUTO");
     textColor = nvgRGBA(120, 255, 120, 200);
   }
@@ -321,7 +317,48 @@ static void ui_draw_vision_event(UIState *s) {
   ui_draw_text(s, center_x, center_y-36, "GAP", 22 * 2.5f, nvgRGBA(255, 255, 255, 200), "sans-bold");
   ui_draw_text(s, center_x, center_y+22, str, textSize * 2.5f, textColor, "sans-bold");
 
-}*/
+}
+
+static void ui_draw_vision_accel_profile(UIState *s) {
+  const UIScene *scene = &s->scene;
+  auto car_state = (*s->sm)["carState"].getCarState();
+  int accel = car_state.getAccelProfile();
+  if(accel < 0)
+    return;
+
+  const int radius = 96;
+  const int center_x = radius + (bdr_s * 2);
+  const int center_y = s->fb_h - footer_h / 2;
+
+  NVGcolor color_bg = nvgRGBA(0, 0, 0, (255 * 0.1f));
+
+  nvgBeginPath(s->vg);
+  nvgCircle(s->vg, center_x, center_y, radius);
+  nvgFillColor(s->vg, color_bg);
+  nvgFill(s->vg);
+
+  NVGcolor textColor = nvgRGBA(255, 255, 255, 200);
+  float textSize = 30.f;
+
+  char str[64];
+
+  if(accel == 0) {
+    snprintf(str, sizeof(str), "ECO");
+    textColor = nvgRGBA(120, 255, 120, 200);
+  } else if(accel == 1) {
+    snprintf(str, sizeof(str), "NORMAL");
+    textColor = nvgRGBA(120, 255, 120, 200);
+  } else if(accel == 2) {
+    snprintf(str, sizeof(str), "SPORT");
+    textColor = nvgRGBA(120, 255, 120, 200);
+  }
+
+  nvgTextAlign(s->vg, NVG_ALIGN_CENTER | NVG_ALIGN_MIDDLE);
+
+  ui_draw_text(s, center_x, center_y-36, "ACC", 22 * 2.5f, nvgRGBA(255, 255, 255, 200), "sans-bold");
+  ui_draw_text(s, center_x, center_y+22, str, textSize * 2.5f, textColor, "sans-bold");
+
+}
 
 static void ui_draw_vision_brake(UIState *s) {
   const int brake_size = 96;
@@ -578,7 +615,8 @@ static void ui_draw_vision(UIState *s) {
   ui_draw_vision_header(s);
   if ((*s->sm)["controlsState"].getControlsState().getAlertSize() == cereal::ControlsState::AlertSize::NONE) {
     //ui_draw_vision_face(s);  비활성화
-    //ui_draw_vision_scc_gap(s);
+    ui_draw_vision_scc_gap(s);   // 차간거리
+    ui_draw_vision_accel_profile(s);  // 엑셀 프로파일
 	ui_draw_vision_brake(s);
 	// 오토 홀드 추가
 	ui_draw_vision_autohold(s);
