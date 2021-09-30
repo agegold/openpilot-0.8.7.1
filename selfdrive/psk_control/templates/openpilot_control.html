@@ -34,7 +34,7 @@ input[type=text] {
 	{
 		//document.frm1.submit()
 		//alert("test")
-		var gap = 4;
+		var gap = {{gap}};
 		if( gap == 0 ) {
 			document.frm1.chk_distance[0].checked = true;
 		}else if( gap == 1 ) {
@@ -47,7 +47,7 @@ input[type=text] {
 			document.frm1.chk_distance[4].checked = true;
 		}
 		
-		var accel = 1;
+		var accel = {{accel}};
 		if( accel == 0 ) {
 			document.frm1.chk_accel[0].checked = true;
 		}else if( accel == 1 ) {
@@ -56,18 +56,20 @@ input[type=text] {
 			document.frm1.chk_accel[2].checked = true;
 		}
 
-		document.getElementById("lead_accel_tau").value = 1
-		document.getElementById("steer_ratio").value = 2
-		document.getElementById("camera_offset_adjust").value = 3
-		document.getElementById("stiffness_factor").value = 4
+		//document.getElementById("lead_accel_tau").value = 1
+		//document.getElementById("steer_ratio").value = 2
+		//document.getElementById("camera_offset_adjust").value = 3
+		//document.getElementById("stiffness_factor").value = 4
 	}
 
     function apply_ok() {     
 		//document.getElementById("autoSubmit").click(); // Simulates button click
         //document.submitForm.submit(); // Submits the form without the button
-		var gap = document.frm1.chk_distance.value
-		var accel = document.frm1.chk_accel.value
-		
+		//var gap = document.frm1.chk_distance.value
+		//var accel = document.frm1.chk_accel.value
+		document.frm1.action = "/apply";
+        document.frm1.method = "post";
+        document.frm1.submit();
     }
 </script>
 	
@@ -98,7 +100,7 @@ input[type=text] {
 			<input type="radio" name="chk_accel" value=3>SPORT&nbsp;&nbsp;
 		</p>
 		</h2>
-		
+		<!--
 		<h2>
 		<p>
 			<font color="GREEN">LEAD ACCEL TAU</font>&nbsp;&nbsp;
@@ -125,7 +127,8 @@ input[type=text] {
 			<font color="GREEN">STIFFNESS FACTOR</font>&nbsp;&nbsp;
 			<input type="text" id="stiffness_factor" value="" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" />
 		</p>
-		</h2>
+		</h2> -->
+
 		<div align="center">
 			<br>
 			<input type="button" value="RESET" onclick="load()"> &nbsp;&nbsp; <input type="button" value="APPLY" onclick="apply_ok()">

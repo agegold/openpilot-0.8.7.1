@@ -153,6 +153,10 @@ class Controls:
     self.roadLimitSpeedLeftDist = 0
     self.applyMaxSpeed = 0
 
+    # PSK Control
+    self.gap = 0
+    self.accel = 1
+
 
     self.speed_conv_to_ms = CV.KPH_TO_MS if self.is_metric else CV.MPH_TO_MS
     self.speed_conv_to_clu = CV.MS_TO_KPH if self.is_metric else CV.MS_TO_MPH
@@ -203,6 +207,9 @@ class Controls:
 
     self.max_speed_clu = 0.
     self.curve_speed_ms = 0.
+
+    self.gap = 0
+    self.accel = 1
 
     self.slowing_down = False
     self.slowing_down_alert = False
