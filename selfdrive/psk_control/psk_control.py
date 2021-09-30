@@ -24,7 +24,7 @@ def apply():
         ACCEL_PROFILE = request.form['chk_accel']
         print("ACCEL_PROFILE", ACCEL_PROFILE)
 
-        return render_template('openpilot_control.html')
+        return render_template('openpilot_control.html', gapParam = DISTANCE_GAP, accelParam = ACCEL_PROFILE)
 
 def main():
     app.run(host='0.0.0.0', port='7070')
