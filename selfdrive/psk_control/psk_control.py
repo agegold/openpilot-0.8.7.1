@@ -30,8 +30,11 @@ def login():
     else:
         return "show_the_login_form"
 
-if __name__ == "__main__":
+def main():
     app.run(host='0.0.0.0', port='7070', debug=True)
+
+if __name__ == "__main__":
+    main()
 
 
 ######
