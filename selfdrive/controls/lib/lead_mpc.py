@@ -68,12 +68,12 @@ class LeadMpc():
 
     response = requests.get("http://0.0.0.0:7070/getGap")
     gap = int(response.text)
-    print("GAP====", gap)
-    #if psk_param_get_gap() == 0:
-    #  TR = interp(v_ego, AUTO_TR_BP, AUTO_TR_V)
-    #else:
-    #  cruise_gap = int(clip(psk_param_get_gap(), 1., 4.))
-    #  TR = interp(float(cruise_gap), CRUISE_GAP_BP, CRUISE_GAP_V)
+
+    if gap == 0:
+      TR = interp(v_ego, AUTO_TR_BP, AUTO_TR_V)
+    else:
+      cruise_gap = int(clip(gap, 1., 4.))
+      TR = interp(float(cruise_gap), CRUISE_GAP_BP, CRUISE_GAP_V)
 
 
     if lead is not None and lead.status:

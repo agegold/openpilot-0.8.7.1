@@ -20,9 +20,6 @@ def main():
         shutdown_count = 0
 
       #print('current', shutdown_count, 'shutdown_at', shutdown_at)
-      response = requests.get("http://0.0.0.0:7070/getGap")
-      gap = int(response.text)
-      print("GAP====", gap)
 
       if shutdown_count >= shutdown_at > 0:
         os.system('LD_LIBRARY_PATH="" svc power shutdown')
