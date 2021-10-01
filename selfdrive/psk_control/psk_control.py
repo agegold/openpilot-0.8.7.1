@@ -12,10 +12,8 @@ def index():
     return render_template('openpilot_control.html', gapParam = DISTANCE_GAP, accelParam = ACCEL_PROFILE)
 
 
-@app.route('/psk', methods=['GET', 'POST'])
+@app.route('/apply', methods=['GET', 'POST'])
 def apply():
-    if request.method == 'GET':
-        return render_template('openpilot_control.html', gapParam=DISTANCE_GAP, accelParam=ACCEL_PROFILE)
     if request.method == 'POST':
         global DISTANCE_GAP
         DISTANCE_GAP = request.form['chk_distance']
