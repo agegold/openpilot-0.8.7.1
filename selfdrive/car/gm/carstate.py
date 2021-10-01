@@ -6,7 +6,7 @@ from opendbc.can.parser import CANParser
 from selfdrive.car.interfaces import CarStateBase
 from selfdrive.road_speed_limiter import road_speed_limiter_get_max_speed, road_speed_limiter_get_active
 from selfdrive.car.gm.values import DBC, CAR, AccState, CanBus, \
-                                    CruiseButtons, STEER_THRESHOLD, DISTANCE_GAP, ACCEL_PROFILE
+                                    CruiseButtons, STEER_THRESHOLD
 
 
 class CarState(CarStateBase):

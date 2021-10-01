@@ -8,7 +8,7 @@ from selfdrive.controls.lib.lead_mpc_lib import libmpc_py
 from selfdrive.controls.lib.drive_helpers import MPC_COST_LONG, CONTROL_N
 from selfdrive.swaglog import cloudlog
 from selfdrive.config import Conversions as CV
-from selfdrive.car.gm.values import DISTANCE_GAP
+from selfdrive.psk_control.psk_control import psk_param_get_gap, psk_param_get_accel
 
 AUTO_TR_BP = [20.*CV.KPH_TO_MS, 80.*CV.KPH_TO_MS, 130.*CV.KPH_TO_MS]
 AUTO_TR_V = [1.3, 1.6, 2.3]
@@ -66,10 +66,10 @@ class LeadMpc():
     self.cur_state[0].x_ego = 0.0
 
 
-    if DISTANCE_GAP == 0:
+    if psk_param_get_gap() == 0:
       TR = interp(v_ego, AUTO_TR_BP, AUTO_TR_V)
     else:
-      cruise_gap = int(clip(DISTANCE_GAP, 1., 4.))
+      cruise_gap = int(clip(psk_param_get_gap(), 1., 4.))
       TR = interp(float(cruise_gap), CRUISE_GAP_BP, CRUISE_GAP_V)
 
 
