@@ -4,7 +4,7 @@ import os
 import time
 import cereal.messaging as messaging
 import selfdrive.car.gm.values as value
-from selfdrive.psk_control.psk_control import psk_param_get_gap, psk_param_get_accel
+import selfdrive.psk_control.psk_control as psk
 
 def main():
   # 60초가 지나면 자동 종료된다.
@@ -21,8 +21,8 @@ def main():
         shutdown_count = 0
 
       #print('current', shutdown_count, 'shutdown_at', shutdown_at)
-      print("DISTANCE============",psk_param_get_gap())
-      print("ACCEL===========",psk_param_get_accel())
+      print("DISTANCE============",psk.psk_param_get_gap())
+      print("ACCEL===========",psk.psk_param_get_accel())
 
       if shutdown_count >= shutdown_at > 0:
         os.system('LD_LIBRARY_PATH="" svc power shutdown')
