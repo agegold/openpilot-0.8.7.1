@@ -70,6 +70,7 @@ class LeadMpc():
     gap = int(response.text)
     cruise_gap = int(clip(gap, 1., 4.))
 
+    gap = 0
     if gap == 0:
       TR = interp(v_ego, AUTO_TR_BP, AUTO_TR_V)
     else:
