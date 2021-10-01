@@ -365,7 +365,7 @@ static void ui_draw_vision_brake(UIState *s) {
   const int radius = 96;
   const int brake_x = radius + (bdr_s * 2) + (radius*2 + 60) * 3;
   const int brake_y = s->fb_h - footer_h / 2;
-  ui_draw_circle_image(s, brake_x, brake_y, brake_size, "brake_img", s->scene.brakeLights);
+  ui_draw_circle_image(s, brake_x, brake_y, radius, "brake_img", s->scene.brakeLights);
 }
 
 // 4>
