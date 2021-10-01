@@ -70,6 +70,8 @@ class CarState(CarStateBase):
     # 오토홀드 표시 추가 (PSK)
     ret.autoHold = pt_cp.vl["EPBStatus"]["EPBClosed"]
     # 차간 거리, 엑셀 프로파일 추가 (PSK)
+    print("DISTANCE_GAP", DISTANCE_GAP)
+    print("ACCEL_PROFILE", ACCEL_PROFILE)
     ret.distanceGap = DISTANCE_GAP
     ret.accelProfile = ACCEL_PROFILE
 
