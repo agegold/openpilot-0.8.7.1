@@ -48,6 +48,8 @@ def psk_param_set_gap(value):
   if psk_parm is None:
     psk_parm = PskParam()
   psk_parm.setGap(value)
+  print("GAP===>",psk_parm.getGap())
+
 
 def psk_param_get_accel():
   global psk_parm
@@ -60,6 +62,7 @@ def psk_param_set_accel(value):
   if psk_parm is None:
     psk_parm = PskParam()
   psk_parm.setAccel(value)
+  print("Accel===>", psk_parm.getAccel())
 
 def main():
     app.run(host='0.0.0.0', port='7070')
