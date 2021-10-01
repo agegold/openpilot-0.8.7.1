@@ -46,6 +46,7 @@ def psk_param_get_gap():
 def psk_param_set_gap(value):
   global psk_parm
   if psk_parm is None:
+    print("psk_parm NONE")
     psk_parm = PskParam()
   psk_parm.setGap(value)
   print("GAP===>",psk_parm.getGap())
@@ -60,6 +61,7 @@ def psk_param_get_accel():
 def psk_param_set_accel(value):
   global psk_parm
   if psk_parm is None:
+    print("psk_parm NONE")
     psk_parm = PskParam()
   psk_parm.setAccel(value)
   print("Accel===>", psk_parm.getAccel())
