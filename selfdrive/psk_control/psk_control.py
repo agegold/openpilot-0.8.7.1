@@ -38,8 +38,7 @@ def getGap():
 
 def main():
     app.run(host='0.0.0.0', port='7070')
-    response = requests.get("http://0.0.0.0:7070")
-
+    requests.post('http://0.0.0.0:7070/apply',{'chk_distance': '0','chk_accel': '0'})
 
 if __name__ == "__main__":
     main()
