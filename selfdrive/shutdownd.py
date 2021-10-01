@@ -20,8 +20,8 @@ def main():
         shutdown_count = 0
 
       #print('current', shutdown_count, 'shutdown_at', shutdown_at)
-      print("DISTANCE============",value.setDistanceGap())
-      print("ACCEL===========",value.setAccelProfile())
+      print("DISTANCE============",value.DISTANCE_GAP)
+      print("ACCEL===========",value.ACCEL_PROFILE)
 
       if shutdown_count >= shutdown_at > 0:
         os.system('LD_LIBRARY_PATH="" svc power shutdown')
