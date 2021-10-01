@@ -7,6 +7,10 @@ from cereal import messaging
 
 app = Flask(__name__)
 
+import logging
+log = logging.getLogger('werkzeug')
+log.setLevel(logging.ERROR)
+
 DISTANCE_GAP = '0'
 ACCEL_PROFILE = '0'
 
