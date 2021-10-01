@@ -69,13 +69,13 @@ class LeadMpc():
     response = requests.get("http://0.0.0.0:7070/getGap")
     gap = int(response.text)
     cruise_gap = int(clip(gap, 1., 4.))
-    print("cruise_gap===", cruise_gap)
 
+    gap = 0
     if gap == 0:
       TR = interp(v_ego, AUTO_TR_BP, AUTO_TR_V)
     else:
       TR = interp(float(cruise_gap), CRUISE_GAP_BP, CRUISE_GAP_V)
-      print("TR===", TR)
+
 
 
     if lead is not None and lead.status:
