@@ -22,13 +22,6 @@ def index():
 
         return render_template('openpilot_control.html', gapParam=DISTANCE_GAP, accelParam=ACCEL_PROFILE)
 
-def psk_control_get_gap():
-  global DISTANCE_GAP
-  return DISTANCE_GAP
-
-def psk_control_get_accel():
-  global ACCEL_PROFILE
-  return ACCEL_PROFILE
 
 def main():
     app.run(host='0.0.0.0', port='7070')
