@@ -28,17 +28,18 @@ def apply():
 @app.route('/getAccel', methods=['GET', 'POST'])
 def getAccel():
     if request.method == 'GET':
+        print('ACCEL_PROFILE=====',ACCEL_PROFILE)
         return ACCEL_PROFILE
 
 @app.route('/getGap', methods=['GET', 'POST'])
 def getGap():
     if request.method == 'GET':
+        print('DISTANCE_GAP=====', DISTANCE_GAP)
         return DISTANCE_GAP
 
 
 def main():
     app.run(host='0.0.0.0', port='7070')
-    requests.post('http://0.0.0.0:7070/apply',{'chk_distance': '0','chk_accel': '0'})
 
 if __name__ == "__main__":
     main()
