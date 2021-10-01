@@ -769,14 +769,14 @@ class Controls:
     controlsState.roadLimitSpeedLeftDist = left_dist
 
     # Accel Profile, Distance GAP 추가
-    response = requests.get("http://0.0.0.0:7070/getAccel")
-    accel = int(response.text)
+    #response = requests.get("http://0.0.0.0:7070/getAccel")
+    #accel = int(response.text)
 
-    response = requests.get("http://0.0.0.0:7070/getGap")
-    gap = int(response.text)
+    #response = requests.get("http://0.0.0.0:7070/getGap")
+    #gap = int(response.text)
 
-    controlsState.distanceGap = gap
-    controlsState.accelProfile = accel
+    #controlsState.distanceGap = gap
+    #controlsState.accelProfile = accel
 
 
     if self.joystick_mode:
