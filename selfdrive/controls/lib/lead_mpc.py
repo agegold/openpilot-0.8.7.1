@@ -66,9 +66,9 @@ class LeadMpc():
     # Setup current mpc state
     self.cur_state[0].x_ego = 0.0
 
-    response = requests.get("http://0.0.0.0:7070/getGap")
-    gap = int(response.text)
-
+    #response = requests.get("http://0.0.0.0:7070/getGap")
+    #gap = int(response.text)
+    gap = 0
     if gap == 0:
       TR = interp(v_ego, AUTO_TR_BP, AUTO_TR_V)
     else:
