@@ -25,7 +25,7 @@ class PskParam:
 
 @app.route('/')
 def index():
-    return render_template('openpilot_control.html', gapParam = psk_param_get_gap, accelParam = psk_param_get_accel)
+    return render_template('openpilot_control.html', gapParam = psk_param_get_gap(), accelParam = psk_param_get_accel())
 
 
 @app.route('/apply', methods=['GET', 'POST'])
@@ -33,7 +33,7 @@ def apply():
     if request.method == 'POST':
         psk_param_set_gap(request.form['chk_distance'])
         psk_param_set_accel(request.form['chk_accel'])
-        return render_template('openpilot_control.html', gapParam = psk_param_get_gap, accelParam = psk_param_get_accel)
+        return render_template('openpilot_control.html', gapParam = psk_param_get_gap(), accelParam = psk_param_get_accel())
 
 psk_parm = None
 
