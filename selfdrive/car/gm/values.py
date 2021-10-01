@@ -19,20 +19,12 @@ STEER_RATIO = 17.2
 
 STIFFNESS_FACTOR = 0.5       # stiffnessFactor 값은 작을 수록 조향이 민감해지구요.
 
-DISTANCE_GAP = 0         # 거리차 (0:auto)
-
-ACCEL_PROFILE = 0        # 엑셀프로파일 (0:eco)
-
-def setDistanceGap(val):
-	global DISTANCE_GAP
-	DISTANCE_GAP = val
-
-def setAccelProfile(val):
-	global ACCEL_PROFILE
-	ACCEL_PROFILE = val
-
 
 class CarControllerParams():
+
+  DISTANCE_GAP = 0          # 거리차 (0:auto)
+  ACCEL_PROFILE = 0         # 엑셀프로파일 (0:eco)
+
   def __init__(self):
     self.STEER_MAX = 300
     self.STEER_STEP = 4              # how often we update the steer cmd
@@ -60,6 +52,18 @@ class CarControllerParams():
     self.BRAKE_LOOKUP_V = [MAX_BRAKE, 0]
 
     self.ACCEL_HYST_GAP = 0.02
+
+  def get_distance_gap(self):
+    return CarControllerParams.DISTANCE_GAP
+
+  def get_accel_profile(self):
+    return CarControllerParams.ACCEL_PROFILE
+
+  def set_distance_gap(self, gap):
+    self.DISTANCE_GAP = gap
+
+  def set_accel_profile(self, accel):
+    self.ACCEL_PROFILE = accel
 
 class CAR:
   HOLDEN_ASTRA = "HOLDEN ASTRA RS-V BK 2017"
