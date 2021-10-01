@@ -549,6 +549,10 @@ struct ControlsState @0x97ff69c53601abf1 {
   roadLimitSpeed @63 :UInt32;
   roadLimitSpeedLeftDist @64 :UInt32;
 
+  # Control ADD (PSK)
+  distanceGap @65 :Int16;
+  accelProfile @66 :Int16;
+
   # UI alerts
   alertText1 @24 :Text;
   alertText2 @25 :Text;

@@ -281,13 +281,13 @@ static void ui_draw_vision_event(UIState *s) {
 
 // 1>
 static void ui_draw_vision_scc_gap(UIState *s) {
-  auto car_state = (*s->sm)["carState"].getCarState();
-  int gap = car_state.getDistanceGap();
+  auto control_state = (*s->sm)["controlsState"].getControlsState();
+  int gap = control_state.getDistanceGap();
   if(gap < 0)
     return;
 
   const int radius = 96;
-  const int center_x = radius + (bdr_s * 2);
+  const int center_x = radius + (bdr_s * 2) + radius*2 + 60;
   const int center_y = s->fb_h - footer_h / 2;
 
   NVGcolor color_bg = nvgRGBA(0, 0, 0, (255 * 0.1f));
@@ -321,13 +321,13 @@ static void ui_draw_vision_scc_gap(UIState *s) {
 
 // 2>
 static void ui_draw_vision_accel_profile(UIState *s) {
-  auto car_state = (*s->sm)["carState"].getCarState();
-  int accel = car_state.getAccelProfile();
+  auto control_state = (*s->sm)["controlsState"].getControlsState();
+  int accel = control_state.getAccelProfile();
   if(accel < 0)
     return;
 
   const int radius = 96;
-  const int center_x = radius + (bdr_s * 2) + radius*2 + 60;
+  const int brake_x = brake_size + (bdr_s * 2) + (brake_size*2 + 60) * 2;
   const int center_y = s->fb_h - footer_h / 2;
 
   NVGcolor color_bg = nvgRGBA(0, 0, 0, (255 * 0.1f));
@@ -363,7 +363,7 @@ static void ui_draw_vision_accel_profile(UIState *s) {
 // 3>
 static void ui_draw_vision_brake(UIState *s) {
   const int brake_size = 96;
-  const int brake_x = brake_size + (bdr_s * 2) + (brake_size*2 + 60) * 2;
+  const int center_x = radius + (bdr_s * 2) + (radius*2 + 60) * 3;
   const int brake_y = s->fb_h - footer_h / 2;
   ui_draw_circle_image(s, brake_x, brake_y, brake_size, "brake_img", s->scene.brakeLights);
 }
@@ -376,7 +376,7 @@ static void ui_draw_vision_autohold(UIState *s) {
     return;
 
   const int radius = 96;
-  const int center_x = radius + (bdr_s * 2) + (radius*2 + 60) * 3;
+  const int center_x = radius + (bdr_s * 2) + (radius*2 + 60) * 4;
   const int center_y = s->fb_h - footer_h / 2;
 
   float brake_img_alpha = autohold > 0 ? 1.0f : 0.15f;

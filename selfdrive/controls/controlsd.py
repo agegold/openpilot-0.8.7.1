@@ -29,6 +29,7 @@ from selfdrive.road_speed_limiter import road_speed_limiter_get_max_speed, road_
 from selfdrive.controls.lib.lane_planner import TRAJECTORY_SIZE
 from selfdrive.car.gm.values import SLOW_ON_CURVES, MIN_CURVE_SPEED, STEER_RATIO, STIFFNESS_FACTOR
 from selfdrive.controls.lib.drive_helpers import V_CRUISE_MAX, V_CRUISE_MIN, V_CRUISE_DELTA_KM, V_CRUISE_DELTA_MI
+from selfdrive.psk_control.psk_control import psk_control_get_gap, psk_control_get_accel
 
 MIN_SET_SPEED_KPH = V_CRUISE_MIN
 MAX_SET_SPEED_KPH = V_CRUISE_MAX
@@ -153,11 +154,6 @@ class Controls:
     self.roadLimitSpeedLeftDist = 0
     self.applyMaxSpeed = 0
 
-    # PSK Control
-    self.gap = 0
-    self.accel = 1
-
-
     self.speed_conv_to_ms = CV.KPH_TO_MS if self.is_metric else CV.MPH_TO_MS
     self.speed_conv_to_clu = CV.MS_TO_KPH if self.is_metric else CV.MS_TO_MPH
 
@@ -207,9 +203,6 @@ class Controls:
 
     self.max_speed_clu = 0.
     self.curve_speed_ms = 0.
-
-    self.gap = 0
-    self.accel = 1
 
     self.slowing_down = False
     self.slowing_down_alert = False
@@ -774,6 +767,11 @@ class Controls:
     controlsState.roadLimitSpeedActive = road_speed_limiter_get_active()
     controlsState.roadLimitSpeed = road_limit_speed
     controlsState.roadLimitSpeedLeftDist = left_dist
+
+    # Accel Profile, Distance GAP 추가
+    controlsState.distanceGap = psk_control_get_gap()
+    controlsState.accelProfile = psk_control_get_accel()
+
 
     if self.joystick_mode:
       controlsState.lateralControlState.debugState = lac_log

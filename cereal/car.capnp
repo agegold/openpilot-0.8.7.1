@@ -159,8 +159,6 @@ struct CarState {
   brakeLights @19 :Bool;
   regenPressed @37 :Bool; #this is regen button only
   autoHold @40 : Int32;
-  distanceGap @41 : Int32;
-  accelProfile @42 : Int32;
 
   # steering wheel
   steeringAngleDeg @7 :Float32;
