@@ -75,6 +75,7 @@ class LeadMpc():
       TR = interp(v_ego, AUTO_TR_BP, AUTO_TR_V)
     else:
       TR = interp(float(cruise_gap), CRUISE_GAP_BP, CRUISE_GAP_V)
+      print("TR===", TR)
 
 
     if lead is not None and lead.status:
