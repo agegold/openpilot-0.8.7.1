@@ -8,6 +8,8 @@ from selfdrive.controls.lib.lead_mpc_lib import libmpc_py
 from selfdrive.controls.lib.drive_helpers import MPC_COST_LONG, CONTROL_N
 from selfdrive.swaglog import cloudlog
 from selfdrive.config import Conversions as CV
+import requests
+
 
 AUTO_TR_BP = [20.*CV.KPH_TO_MS, 80.*CV.KPH_TO_MS, 130.*CV.KPH_TO_MS]
 AUTO_TR_V = [1.3, 1.6, 2.3]
@@ -64,7 +66,9 @@ class LeadMpc():
     # Setup current mpc state
     self.cur_state[0].x_ego = 0.0
 
-
+    response = requests.get("http://0.0.0.0:7070/getGap")
+    gap = int(response.text)
+    print("GAP====", gap)
     #if psk_param_get_gap() == 0:
     #  TR = interp(v_ego, AUTO_TR_BP, AUTO_TR_V)
     #else:
