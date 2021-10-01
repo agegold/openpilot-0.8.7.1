@@ -6,65 +6,33 @@ from cereal import messaging
 
 app = Flask(__name__)
 
-class PskParam:
-  def __init__(self):
-    self.distance_gap = 0     # 거리차 (0:auto)
-    self.accel_profile = 0    # 엑셀프로파일 (0:eco)
-
-  def getGap(self):
-     return self.distance_gap
-
-  def setGap(self, v):
-     self.distance_gap = v
-
-  def getAccel(self):
-     return self.accel_profile
-
-  def setAccel(self, v):
-     self.accel_profile = v
+DISTANCE_GAP = 0
+ACCEL_PROFILE = 0
 
 @app.route('/')
 def index():
-    return render_template('openpilot_control.html', gapParam = psk_param_get_gap(), accelParam = psk_param_get_accel())
+    return render_template('openpilot_control.html', gapParam = DISTANCE_GAP, accelParam = ACCEL_PROFILE)
 
 
 @app.route('/apply', methods=['GET', 'POST'])
 def apply():
     if request.method == 'POST':
-        psk_param_set_gap(request.form['chk_distance'])
-        psk_param_set_accel(request.form['chk_accel'])
-        return render_template('openpilot_control.html', gapParam = psk_param_get_gap(), accelParam = psk_param_get_accel())
+        global DISTANCE_GAP
+        DISTANCE_GAP = request.form['chk_distance']
+        global ACCEL_PROFILE
+        ACCEL_PROFILE = request.form['chk_accel']
+        return render_template('openpilot_control.html', gapParam = DISTANCE_GAP, accelParam = ACCEL_PROFILE)
 
-psk_parm = None
+@app.route('/getAccel', methods=['GET', 'POST'])
+def getAccel():
+    if request.method == 'GET':
+        return ACCEL_PROFILE
 
-def psk_param_get_gap():
-  global psk_parm
-  if psk_parm is None:
-    psk_parm = PskParam()
-  return psk_parm.getGap()
+@app.route('/getGap', methods=['GET', 'POST'])
+def getGap():
+    if request.method == 'GET':
+        return DISTANCE_GAP
 
-def psk_param_set_gap(value):
-  global psk_parm
-  if psk_parm is None:
-    print("psk_parm NONE")
-    psk_parm = PskParam()
-  psk_parm.setGap(value)
-  print("GAP===>",psk_parm.getGap())
-
-
-def psk_param_get_accel():
-  global psk_parm
-  if psk_parm is None:
-    psk_parm = PskParam()
-  return psk_parm.getAccel()
-
-def psk_param_set_accel(value):
-  global psk_parm
-  if psk_parm is None:
-    print("psk_parm NONE")
-    psk_parm = PskParam()
-  psk_parm.setAccel(value)
-  print("Accel===>", psk_parm.getAccel())
 
 def main():
     app.run(host='0.0.0.0', port='7070')
