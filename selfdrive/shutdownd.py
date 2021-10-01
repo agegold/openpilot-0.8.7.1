@@ -3,7 +3,7 @@
 import os
 import time
 import cereal.messaging as messaging
-
+import selfdrive.car.gm.values as value
 
 def main():
   # 60초가 지나면 자동 종료된다.
@@ -20,6 +20,8 @@ def main():
         shutdown_count = 0
 
       #print('current', shutdown_count, 'shutdown_at', shutdown_at)
+      print("DISTANCE============",value.setDistanceGap())
+      print("ACCEL===========",value.setAccelProfile())
 
       if shutdown_count >= shutdown_at > 0:
         os.system('LD_LIBRARY_PATH="" svc power shutdown')

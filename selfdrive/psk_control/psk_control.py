@@ -15,8 +15,8 @@ def index():
 @app.route('/apply', methods=['GET', 'POST'])
 def apply():
     if request.method == 'POST':
-        value.DISTANCE_GAP = request.form['chk_distance']
-        value.ACCEL_PROFILE = request.form['chk_accel']
+        value.setDistanceGap(request.form['chk_distance'])
+        value.setAccelProfile(request.form['chk_accel'])
         return render_template('openpilot_control.html', gapParam = value.DISTANCE_GAP, accelParam = value.ACCEL_PROFILE)
 
 def main():
