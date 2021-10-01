@@ -3,6 +3,8 @@ from flask import Flask, render_template
 from flask import request
 from flask import jsonify, Response
 from cereal import messaging
+import requests
+
 
 app = Flask(__name__)
 
@@ -36,6 +38,7 @@ def getGap():
 
 def main():
     app.run(host='0.0.0.0', port='7070')
+    response = requests.get("http://0.0.0.0:7070")
 
 
 if __name__ == "__main__":
