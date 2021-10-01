@@ -770,6 +770,8 @@ class Controls:
 
     # Accel Profile, Distance GAP 추가
     controlsState.distanceGap = DISTANCE_GAP
+    print("DISTANCE_GAP==========", DISTANCE_GAP)
+    print("ACCEL_PROFILE==========", ACCEL_PROFILE)
     controlsState.accelProfile = ACCEL_PROFILE
 
 
