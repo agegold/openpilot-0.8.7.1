@@ -29,6 +29,7 @@ from selfdrive.road_speed_limiter import road_speed_limiter_get_max_speed, road_
 from selfdrive.controls.lib.lane_planner import TRAJECTORY_SIZE
 from selfdrive.car.gm.values import SLOW_ON_CURVES, MIN_CURVE_SPEED, STEER_RATIO, STIFFNESS_FACTOR
 from selfdrive.controls.lib.drive_helpers import V_CRUISE_MAX, V_CRUISE_MIN, V_CRUISE_DELTA_KM, V_CRUISE_DELTA_MI
+from selfdrive.car.gm.values import DISTANCE_GAP, ACCEL_PROFILE
 
 
 MIN_SET_SPEED_KPH = V_CRUISE_MIN
@@ -767,6 +768,10 @@ class Controls:
     controlsState.roadLimitSpeedActive = road_speed_limiter_get_active()
     controlsState.roadLimitSpeed = road_limit_speed
     controlsState.roadLimitSpeedLeftDist = left_dist
+
+    # Accel Profile, Distance GAP 추가
+    controlsState.distanceGap = DISTANCE_GAP
+    controlsState.accelProfile = ACCEL_PROFILE
 
 
     if self.joystick_mode:
