@@ -45,7 +45,7 @@ _DP_CRUISE_MAX_V_SPORT = [0.85, 0.8, 0.75, 0.7, 1.07]
 _DP_CRUISE_MAX_BP = [0., 5., 10., 20., 30.]
 
 def dp_calc_cruise_accel_limits(v_ego):
-  accel = ACCEL_PROFILE
+  accel = int(ACCEL_PROFILE)
   if accel == 0:
     a_cruise_min = interp(v_ego, _DP_CRUISE_MIN_BP, _DP_CRUISE_MIN_V_ECO)
     a_cruise_max = interp(v_ego, _DP_CRUISE_MAX_BP, _DP_CRUISE_MAX_V_ECO)

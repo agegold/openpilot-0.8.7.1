@@ -66,7 +66,7 @@ class LeadMpc():
     # Setup current mpc state
     self.cur_state[0].x_ego = 0.0
 
-    gap = DISTANCE_GAP
+    gap = int(DISTANCE_GAP)
     if gap == 0:
       TR = interp(v_ego, AUTO_TR_BP, AUTO_TR_V)
     else:

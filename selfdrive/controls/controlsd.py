@@ -770,8 +770,8 @@ class Controls:
     controlsState.roadLimitSpeedLeftDist = left_dist
 
     # Accel Profile, Distance GAP 추가
-    controlsState.distanceGap = DISTANCE_GAP
-    controlsState.accelProfile = ACCEL_PROFILE
+    controlsState.distanceGap = int(DISTANCE_GAP)
+    controlsState.accelProfile = int(ACCEL_PROFILE)
 
 
     if self.joystick_mode:
