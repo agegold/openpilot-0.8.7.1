@@ -339,8 +339,8 @@ def road_speed_limiter_get_accel_profile():
   global road_speed_limiter
   if road_speed_limiter is None:
     road_speed_limiter = RoadSpeedLimiter()
-    response = requests.get("http://0.0.0.0:7070/getAccel")
-    accel = int(response.text)
+  response = requests.get("http://0.0.0.0:7070/getAccel")
+  accel = int(response.text)
   return accel
 
 def road_speed_limiter_get_active():
