@@ -8,7 +8,7 @@ from selfdrive.controls.lib.lead_mpc_lib import libmpc_py
 from selfdrive.controls.lib.drive_helpers import MPC_COST_LONG, CONTROL_N
 from selfdrive.swaglog import cloudlog
 from selfdrive.config import Conversions as CV
-from selfdrive.road_speed_limiter import road_speed_limiter_get_distance_gap, road_speed_limiter_get_accel_profile
+from selfdrive.psk_control.psk_control import DISTANCE_GAP, ACCEL_PROFILE
 
 
 AUTO_TR_BP = [20.*CV.KPH_TO_MS, 80.*CV.KPH_TO_MS, 130.*CV.KPH_TO_MS]
@@ -66,7 +66,7 @@ class LeadMpc():
     # Setup current mpc state
     self.cur_state[0].x_ego = 0.0
 
-    gap = road_speed_limiter_get_distance_gap()
+    gap = DISTANCE_GAP
     if gap == 0:
       TR = interp(v_ego, AUTO_TR_BP, AUTO_TR_V)
     else:

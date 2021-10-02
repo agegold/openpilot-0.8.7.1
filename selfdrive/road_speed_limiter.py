@@ -10,7 +10,6 @@ from cereal import messaging
 from common.params import Params
 from common.numpy_fast import interp
 from common.realtime import sec_since_boot
-import requests
 
 #CAMERA_SPEED_FACTOR = 1.05
 CAMERA_SPEED_FACTOR = 1.00
@@ -326,22 +325,6 @@ class RoadSpeedLimiter:
     return 0, 0, 0, False, log
 
 road_speed_limiter = None
-
-def road_speed_limiter_get_distance_gap():
-  global road_speed_limiter
-  if road_speed_limiter is None:
-    road_speed_limiter = RoadSpeedLimiter()
-  response = requests.get("http://0.0.0.0:7070/getGap")
-  gap = int(response.text)
-  return gap
-
-def road_speed_limiter_get_accel_profile():
-  global road_speed_limiter
-  if road_speed_limiter is None:
-    road_speed_limiter = RoadSpeedLimiter()
-  response = requests.get("http://0.0.0.0:7070/getAccel")
-  accel = int(response.text)
-  return accel
 
 def road_speed_limiter_get_active():
   global road_speed_limiter
