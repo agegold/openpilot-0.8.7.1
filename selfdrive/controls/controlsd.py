@@ -25,7 +25,7 @@ from selfdrive.controls.lib.alertmanager import AlertManager
 from selfdrive.controls.lib.vehicle_model import VehicleModel
 from selfdrive.locationd.calibrationd import Calibration
 from selfdrive.hardware import HARDWARE, TICI
-from selfdrive.road_speed_limiter import road_speed_limiter_get_max_speed, road_speed_limiter_get_active
+from selfdrive.road_speed_limiter import road_speed_limiter_get_max_speed, road_speed_limiter_get_active, road_speed_limiter_get_distance_gap, road_speed_limiter_get_accel_profile
 from selfdrive.controls.lib.lane_planner import TRAJECTORY_SIZE
 from selfdrive.car.gm.values import SLOW_ON_CURVES, MIN_CURVE_SPEED, STEER_RATIO, STIFFNESS_FACTOR
 from selfdrive.controls.lib.drive_helpers import V_CRUISE_MAX, V_CRUISE_MIN, V_CRUISE_DELTA_KM, V_CRUISE_DELTA_MI
@@ -769,14 +769,8 @@ class Controls:
     controlsState.roadLimitSpeedLeftDist = left_dist
 
     # Accel Profile, Distance GAP 추가
-    #response = requests.get("http://0.0.0.0:7070/getAccel")
-    #accel = int(response.text)
-
-    #response = requests.get("http://0.0.0.0:7070/getGap")
-    #gap = int(response.text)
-
-    #controlsState.distanceGap = gap
-    #controlsState.accelProfile = accel
+    controlsState.distanceGap = road_speed_limiter_get_distance_gap()
+    controlsState.accelProfile = road_speed_limiter_get_accel_profile()
 
 
     if self.joystick_mode:
