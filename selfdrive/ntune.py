@@ -172,6 +172,13 @@ class nTune():
     if self.checkValue("sccCurvatureFactor", 0.5, 1.5, 1.0):
       updated = True
 
+    if self.checkValue("distanceGap", 0, 4, 0):
+      updated = True
+
+
+    if self.checkValue("accelProfile", 0, 2, 0):
+      updated = True
+
     return updated
 
   def updateLQR(self):
