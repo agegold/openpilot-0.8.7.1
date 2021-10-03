@@ -22,12 +22,12 @@ from selfdrive.car.gm.values import ACCEL_PROFILE
 LON_MPC_STEP = 0.2  # first step is 0.2s
 AWARENESS_DECEL = -0.2     # car smoothly decel at .2m/s^2 when user is distracted
 
-A_CRUISE_MIN = -6.0
+A_CRUISE_MIN = -8.0
 # 0 -> 18 -> 36 -> 72 -> 108
 #A_CRUISE_MAX_VALS = [0.8, 0.75, 0.7, 0.65, 1.0]
 #운행을 하면서 초반 엑셀 속도가 느린편
 #A_CRUISE_MAX_VALS = [0.85, 0.8, 0.75, 0.7, 1.1] 너무 빨라서 브레이크를 많이 사용
-A_CRUISE_MAX_VALS = [0.82, 0.78, 0.73, 0.67, 1.05]
+A_CRUISE_MAX_VALS = [0.82, 0.775, 0.725, 0.67, 1.05]
 A_CRUISE_MAX_BP = [0., 5., 10., 20., 30.]
 
 # Lookup table for turns
