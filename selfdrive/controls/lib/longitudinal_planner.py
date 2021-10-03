@@ -17,7 +17,7 @@ from selfdrive.controls.lib.lead_mpc import LeadMpc
 from selfdrive.controls.lib.long_mpc import LongitudinalMpc
 from selfdrive.controls.lib.drive_helpers import V_CRUISE_MAX, CONTROL_N
 from selfdrive.swaglog import cloudlog
-from selfdrive.car.gm.values import ACCEL_PROFILE
+
 
 LON_MPC_STEP = 0.2  # first step is 0.2s
 AWARENESS_DECEL = -0.2     # car smoothly decel at .2m/s^2 when user is distracted
@@ -45,7 +45,7 @@ _DP_CRUISE_MAX_V_SPORT = [0.85, 0.8, 0.75, 0.7, 1.07]
 _DP_CRUISE_MAX_BP = [0., 5., 10., 20., 30.]
 
 def dp_calc_cruise_accel_limits(v_ego):
-  accel = ACCEL_PROFILE
+  accel = 0
   if accel == 0:
     a_cruise_min = interp(v_ego, _DP_CRUISE_MIN_BP, _DP_CRUISE_MIN_V_ECO)
     a_cruise_max = interp(v_ego, _DP_CRUISE_MAX_BP, _DP_CRUISE_MAX_V_ECO)
