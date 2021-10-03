@@ -87,14 +87,14 @@ class CarInterface(CarInterfaceBase):
 
     # [Equinox 2020]
     ret.longitudinalTuning.kpBP = [0., 5., 10., 20., 30.]
-    ret.longitudinalTuning.kpV = [0.82, 0.77, 0.72, 0.67, 1.05]
+    ret.longitudinalTuning.kpV = [0.82, 0.775, 0.725, 0.67, 1.05]
     #ret.longitudinalTuning.kiBP = [0., 20.]
     #ret.longitudinalTuning.kiV = [0.045, 0.055]
     #ret.longitudinalTuning.kfBP = [15., 20., 25.]
     #ret.longitudinalTuning.kfV = [1., 0.5, 0.2]
 
     ret.longitudinalTuning.kiBP = [0, 30.]
-    ret.longitudinalTuning.kiV = [0.06, 0.04]
+    ret.longitudinalTuning.kiV = [0.03, 0.02]
     ret.longitudinalTuning.kfBP = [0., 5., 10., 20., 30.]
     ret.longitudinalTuning.kfV = [1.0, 0.92, 0.86, 0.79, 0.76]
     ret.longitudinalTuning.deadzoneBP = [0., 100. * CV.KPH_TO_MS]
