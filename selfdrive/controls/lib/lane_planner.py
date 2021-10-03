@@ -41,8 +41,8 @@ class LanePlanner:
     self.l_lane_change_prob = 0.
     self.r_lane_change_prob = 0.
 
-    self.camera_offset = -CAMERA_OFFSET if wide_camera else CAMERA_OFFSET
-    self.path_offset = -PATH_OFFSET if wide_camera else PATH_OFFSET
+    self.camera_offset = CAMERA_OFFSET
+    self.path_offset = PATH_OFFSET
 
   def parse_model(self, md):
     if len(md.laneLines) == 4 and len(md.laneLines[0].t) == TRAJECTORY_SIZE:
@@ -51,7 +51,7 @@ class LanePlanner:
       self.ll_x = md.laneLines[1].x
       # only offset left and right lane lines; offsetting path does not make sense
 
-      cameraOffset = ntune_common_get("cameraOffset") + 0.08 if self.wide_camera else ntune_common_get("cameraOffset")
+      cameraOffset = ntune_common_get("cameraOffset")
       self.lll_y = np.array(md.laneLines[1].y) - cameraOffset
       self.rll_y = np.array(md.laneLines[2].y) - cameraOffset
       self.lll_prob = md.laneLineProbs[1]
