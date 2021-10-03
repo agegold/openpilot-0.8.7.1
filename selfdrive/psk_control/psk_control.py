@@ -27,6 +27,8 @@ def apply():
         DISTANCE_GAP = request.form['chk_distance']
         global ACCEL_PROFILE
         ACCEL_PROFILE = request.form['chk_accel']
+        global SCC_CURVATURE_FACTOR
+        SCC_CURVATURE_FACTOR = request.form['chk_curv']
         return render_template('openpilot_control.html', gapParam = DISTANCE_GAP, accelParam = ACCEL_PROFILE, curvParam = SCC_CURVATURE_FACTOR)
 
 #@app.route('/getAccel', methods=['GET', 'POST'])
