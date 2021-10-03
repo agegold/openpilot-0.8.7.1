@@ -5,13 +5,13 @@ from common.numpy_fast import interp
 from common.realtime import DT_MDL
 from selfdrive.hardware import EON, TICI
 from selfdrive.swaglog import cloudlog
-from selfdrive.car.gm.values import CAMERA_OFFSET_ADJUST
+from selfdrive.ntune import ntune_common_get
 
 
 TRAJECTORY_SIZE = 33
 # camera offset is meters from center car to camera
 if EON:
-  CAMERA_OFFSET = CAMERA_OFFSET_ADJUST
+  CAMERA_OFFSET = 0.06
   PATH_OFFSET = 0.0
 elif TICI:
   CAMERA_OFFSET = -0.04
@@ -50,8 +50,10 @@ class LanePlanner:
       # left and right ll x is the same
       self.ll_x = md.laneLines[1].x
       # only offset left and right lane lines; offsetting path does not make sense
-      self.lll_y = np.array(md.laneLines[1].y) - self.camera_offset
-      self.rll_y = np.array(md.laneLines[2].y) - self.camera_offset
+
+      cameraOffset = ntune_common_get("cameraOffset") + 0.08 if self.wide_camera else ntune_common_get("cameraOffset")
+      self.lll_y = np.array(md.laneLines[1].y) - cameraOffset
+      self.rll_y = np.array(md.laneLines[2].y) - cameraOffset
       self.lll_prob = md.laneLineProbs[1]
       self.rll_prob = md.laneLineProbs[2]
       self.lll_std = md.laneLineStds[1]

@@ -94,7 +94,7 @@ class CarInterface(CarInterfaceBase):
     #ret.longitudinalTuning.kfV = [1., 0.5, 0.2]
 
     ret.longitudinalTuning.kiBP = [0, 30.]
-    ret.longitudinalTuning.kiV = [0.02, 0.03]
+    ret.longitudinalTuning.kiV = [0.07, 0.03]    # 100까지 비례한다. 오파 보간은 외삽이 없이 100 이상은 0.03 이다.
     ret.longitudinalTuning.kfBP = [0., 5., 10., 20., 30.]
     ret.longitudinalTuning.kfV = [1.0, 0.92, 0.86, 0.79, 0.76]
     ret.longitudinalTuning.deadzoneBP = [0., 100. * CV.KPH_TO_MS]

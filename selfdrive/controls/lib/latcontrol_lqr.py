@@ -5,6 +5,7 @@ from common.numpy_fast import clip, interp
 from common.realtime import DT_CTRL
 from cereal import log
 from selfdrive.controls.lib.drive_helpers import get_steer_max
+from selfdrive.ntune import nTune
 
 
 class LatControlLQR():
@@ -31,6 +32,7 @@ class LatControlLQR():
     self.bp = [10., 30.]
 
     self.reset()
+    self.tune = nTune(CP, self)
 
   def reset(self):
     self.i_lqr = 0.0

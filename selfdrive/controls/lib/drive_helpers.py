@@ -3,6 +3,7 @@ from common.numpy_fast import clip, interp
 from common.realtime import DT_MDL
 from selfdrive.config import Conversions as CV
 from selfdrive.modeld.constants import T_IDXS
+from selfdrive.ntune import ntune_common_get
 
 # cruise button by neokii
 ButtonType = car.CarState.ButtonEvent.Type
@@ -15,7 +16,8 @@ V_CRUISE_MAX = 145
 V_CRUISE_MIN = 5
 V_CRUISE_DELTA = 5
 V_CRUISE_ENABLE_MIN = 20
-V_CRUISE_DELTA_MI = 5 * CV.MPH_TO_KPH
+#V_CRUISE_DELTA_MI = 5 * CV.MPH_TO_KPH
+V_CRUISE_DELTA_MI = 1 * CV.MPH_TO_KPH
 V_CRUISE_DELTA_KM = 10
 LAT_MPC_N = 16
 LON_MPC_N = 32
@@ -102,7 +104,7 @@ def get_lag_adjusted_curvature(CP, v_ego, psis, curvatures, curvature_rates):
     curvature_rates = [0.0 for i in range(CONTROL_N)]
 
   # TODO this needs more thought, use .2s extra for now to estimate other delays
-  delay = CP.steerActuatorDelay + .2
+  delay = ntune_common_get('steerActuatorDelay') + .2
   current_curvature = curvatures[0]
   psi = interp(delay, T_IDXS[:CONTROL_N], psis)
   desired_curvature_rate = curvature_rates[0]

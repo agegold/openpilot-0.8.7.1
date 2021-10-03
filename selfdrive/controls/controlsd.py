@@ -30,6 +30,7 @@ from selfdrive.controls.lib.lane_planner import TRAJECTORY_SIZE
 from selfdrive.car.gm.values import SLOW_ON_CURVES, MIN_CURVE_SPEED, STEER_RATIO, STIFFNESS_FACTOR
 from selfdrive.controls.lib.drive_helpers import V_CRUISE_MAX, V_CRUISE_MIN, V_CRUISE_DELTA_KM, V_CRUISE_DELTA_MI
 from selfdrive.car.gm.values import DISTANCE_GAP, ACCEL_PROFILE
+from selfdrive.ntune import ntune_common_get, ntune_common_enabled, ntune_scc_get
 
 
 MIN_SET_SPEED_KPH = V_CRUISE_MIN
@@ -224,9 +225,7 @@ class Controls:
         curv = curv[start:min(start+10, TRAJECTORY_SIZE)]
         a_y_max = 2.975 - v_ego * 0.0375  # ~1.85 @ 75mph, ~2.6 @ 25mph
         v_curvature = np.sqrt(a_y_max / np.clip(np.abs(curv), 1e-4, None))
-        #model_speed = np.mean(v_curvature) * 0.85 * ntune_scc_get("sccCurvatureFactor")
-        # [0.5, 1.5, 1.0]
-        model_speed = np.mean(v_curvature) * 0.85 * 1.5
+        model_speed = np.mean(v_curvature) * 0.85 * ntune_scc_get("sccCurvatureFactor")
 
         if model_speed < v_ego:
           self.curve_speed_ms = float(max(model_speed, MIN_CURVE_SPEED))
@@ -576,10 +575,14 @@ class Controls:
 
     # Update VehicleModel
     params = self.sm['liveParameters']
-    #x = max(params.stiffnessFactor, 0.1)
+    x = max(params.stiffnessFactor, 0.1)
     #sr = max(params.steerRatio, 0.1)
-    x = max(STIFFNESS_FACTOR, 0.1)
-    sr = max(STEER_RATIO, 0.1)
+
+    if ntune_common_enabled('useLiveSteerRatio'):
+      sr = max(params.steerRatio, 0.1)
+    else:
+      sr = max(ntune_common_get('steerRatio'), 0.1)
+
     self.VM.update_params(x, sr)
 
     lat_plan = self.sm['lateralPlan']
@@ -681,8 +684,9 @@ class Controls:
     if len(meta.desirePrediction) and ldw_allowed:
       l_lane_change_prob = meta.desirePrediction[Desire.laneChangeLeft - 1]
       r_lane_change_prob = meta.desirePrediction[Desire.laneChangeRight - 1]
-      l_lane_close = left_lane_visible and (self.sm['modelV2'].laneLines[1].y[0] > -(1.08 + CAMERA_OFFSET))
-      r_lane_close = right_lane_visible and (self.sm['modelV2'].laneLines[2].y[0] < (1.08 - CAMERA_OFFSET))
+      cameraOffset = ntune_common_get("cameraOffset") + 0.08 if self.wide_camera else ntune_common_get("cameraOffset")
+      l_lane_close = left_lane_visible and (self.sm['modelV2'].laneLines[1].y[0] > -(1.08 + cameraOffset))
+      r_lane_close = right_lane_visible and (self.sm['modelV2'].laneLines[2].y[0] < (1.08 - cameraOffset))
 
       CC.hudControl.leftLaneDepart = bool(l_lane_change_prob > LANE_DEPARTURE_THRESHOLD and l_lane_close)
       CC.hudControl.rightLaneDepart = bool(r_lane_change_prob > LANE_DEPARTURE_THRESHOLD and r_lane_close)
@@ -773,6 +777,11 @@ class Controls:
     controlsState.distanceGap = DISTANCE_GAP
     controlsState.accelProfile = ACCEL_PROFILE
 
+    controlsState.steerRatio = self.VM.sR
+    controlsState.steerRateCost = ntune_common_get('steerRateCost')
+    controlsState.steerActuatorDelay = ntune_common_get('steerActuatorDelay')
+
+    controlsState.sccCurvatureFactor = ntune_scc_get('sccCurvatureFactor')
 
     if self.joystick_mode:
       controlsState.lateralControlState.debugState = lac_log
