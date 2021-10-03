@@ -29,7 +29,6 @@ from selfdrive.road_speed_limiter import road_speed_limiter_get_max_speed, road_
 from selfdrive.controls.lib.lane_planner import TRAJECTORY_SIZE
 from selfdrive.car.gm.values import SLOW_ON_CURVES, MIN_CURVE_SPEED, STEER_RATIO, STIFFNESS_FACTOR
 from selfdrive.controls.lib.drive_helpers import V_CRUISE_MAX, V_CRUISE_MIN, V_CRUISE_DELTA_KM, V_CRUISE_DELTA_MI
-from selfdrive.car.gm.values import DISTANCE_GAP, ACCEL_PROFILE
 from selfdrive.ntune import ntune_common_get, ntune_common_enabled, ntune_scc_get
 
 
@@ -773,15 +772,14 @@ class Controls:
     controlsState.roadLimitSpeed = road_limit_speed
     controlsState.roadLimitSpeedLeftDist = left_dist
 
-    # Accel Profile, Distance GAP 추가
-    controlsState.distanceGap = DISTANCE_GAP
-    controlsState.accelProfile = ACCEL_PROFILE
-
     controlsState.steerRatio = self.VM.sR
     controlsState.steerRateCost = ntune_common_get('steerRateCost')
     controlsState.steerActuatorDelay = ntune_common_get('steerActuatorDelay')
 
     controlsState.sccCurvatureFactor = ntune_scc_get('sccCurvatureFactor')
+    # Accel Profile, Distance GAP 추가
+    controlsState.distanceGap = ntune_scc_get('distanceGap')
+    controlsState.accelProfile = ntune_scc_get('accelProfile')
 
     if self.joystick_mode:
       controlsState.lateralControlState.debugState = lac_log

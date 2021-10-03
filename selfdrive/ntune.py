@@ -77,7 +77,7 @@ class nTune():
           self.config = json.load(f)
 
         if self.checkValid():
-          self.write_config(self.config)
+          self.write_config(self.config)    # 파일을 열고 변경된 정보가 있으면 파일 수정
           self.update()
         success = True
     except:
@@ -163,18 +163,11 @@ class nTune():
   def checkValidISCC(self):
     updated = False
 
-    if self.checkValue("sccGasFactor", 0.5, 1.5, 1.0):
-      updated = True
-
-    if self.checkValue("sccBrakeFactor", 0.5, 1.5, 1.0):
-      updated = True
-
     if self.checkValue("sccCurvatureFactor", 0.5, 1.5, 1.0):
       updated = True
 
     if self.checkValue("distanceGap", 0, 4, 0):
       updated = True
-
 
     if self.checkValue("accelProfile", 0, 2, 0):
       updated = True

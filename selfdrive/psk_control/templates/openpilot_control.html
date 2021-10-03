@@ -62,6 +62,15 @@ input[type=text] {
 			document.frm1.chk_accel[2].checked = true;
 		}
 
+		var curv = {{curvParam}};
+		if( curv == 0 ) {
+			document.frm1.chk_curv[0].checked = true;
+		}else if( curv == 1 ) {
+			document.frm1.chk_curv[1].checked = true;
+		}else if( curv == 2 ) {
+			document.frm1.chk_curv[2].checked = true;
+		}
+
 		//document.getElementById("lead_accel_tau").value = 1
 		//document.getElementById("steer_ratio").value = 2
 		//document.getElementById("camera_offset_adjust").value = 3
@@ -103,6 +112,16 @@ input[type=text] {
 			<br><input type="radio" name="chk_accel" value=2>SPORT
 		</p>
 		</h2>
+
+		<h2>
+		<p>
+			<font color="GREEN">SCC CURVATURE FACTOR</font>
+			<br><input type="radio" name="chk_curv" value=0>0.5
+			<br><input type="radio" name="chk_curv" value=1>1.0
+			<br><input type="radio" name="chk_curv" value=2>1.5
+		</p>
+		</h2>
+
 		<!--
 		<h2>
 		<p>
