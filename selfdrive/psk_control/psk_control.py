@@ -32,17 +32,11 @@ def apply():
         global SCC_CURVATURE_FACTOR
         SCC_CURVATURE_FACTOR = request.form['chk_curv']
 
-        if SCC_CURVATURE_FACTOR == 0:
-            curv_val = 0.5
-        elif SCC_CURVATURE_FACTOR == 1:
-            curv_val = 1.0
-        elif SCC_CURVATURE_FACTOR == 2:
-            curv_val = 1.5
 
         message = '{\n "distanceGap": DISTANCE_GAP, \n "accelProfile": ACCEL_PROFILE, \n "sccCurvatureFactor": SCC_CURVATURE_FACTOR \n }\n'
         message = message.replace('DISTANCE_GAP', DISTANCE_GAP)
         message = message.replace('ACCEL_PROFILE', ACCEL_PROFILE)
-        message = message.replace('SCC_CURVATURE_FACTOR', curv_val)
+        message = message.replace('SCC_CURVATURE_FACTOR', SCC_CURVATURE_FACTOR)
 
         print("message:", message)
         # 파일 저장
