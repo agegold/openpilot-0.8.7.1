@@ -242,7 +242,6 @@ def ntune_get(group, key):
   ntune = ntunes[group]
 
   if ntune.config == None or key not in ntune.config:
-    print('============ntune.config===============')
     ntune.read()
 
   v = ntune.config[key]
@@ -253,6 +252,17 @@ def ntune_get(group, key):
 
   return v
 
+def scc_ntune_get(group, key):
+  global ntunes
+  if group not in ntunes:
+    ntunes[group] = nTune(group=group)
+
+  ntune = ntunes[group]
+  ntune.read()
+  v = ntune.config[key]
+
+  return v
+
 def ntune_common_get(key):
   return ntune_get("common", key)
 
@@ -260,4 +270,4 @@ def ntune_common_enabled(key):
   return ntune_common_get(key) > 0.5
 
 def ntune_scc_get(key):
-  return ntune_get("scc", key)
+  return scc_ntune_get("scc", key)
