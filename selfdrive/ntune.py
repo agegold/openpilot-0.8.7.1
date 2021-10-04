@@ -97,6 +97,7 @@ class nTune():
   def checkValue(self, key, min_, max_, default_):
     updated = False
 
+    print('key',key)
     if key not in self.config:
       self.config.update({key: default_})
       updated = True
