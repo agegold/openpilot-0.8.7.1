@@ -15,6 +15,8 @@ DISTANCE_GAP = 0
 ACCEL_PROFILE = 0
 SCC_CURVATURE_FACTOR = 1
 
+CONF_SCC_FILE = '/data/ntune/scc.json'
+
 @app.route('/')
 def index():
     return render_template('openpilot_control.html', gapParam = DISTANCE_GAP, accelParam = ACCEL_PROFILE, curvParam = SCC_CURVATURE_FACTOR)
@@ -29,6 +31,17 @@ def apply():
         ACCEL_PROFILE = request.form['chk_accel']
         global SCC_CURVATURE_FACTOR
         SCC_CURVATURE_FACTOR = request.form['chk_curv']
+
+        message = '{\n "distanceGap": DISTANCE_GAP, \n "accelProfile": ACCEL_PROFILE, \n "sccCurvatureFactor": SCC_CURVATURE_FACTOR \n }'
+        message.replace('DISTANCE_GAP', DISTANCE_GAP)
+        message.replace('ACCEL_PROFILE', ACCEL_PROFILE)
+        message.replace('SCC_CURVATURE_FACTOR', SCC_CURVATURE_FACTOR)
+
+        # 파일 저장
+        f = open("CONF_SCC_FILE", 'w')
+        f.write(message)
+        f.close()
+
         return render_template('openpilot_control.html', gapParam = DISTANCE_GAP, accelParam = ACCEL_PROFILE, curvParam = SCC_CURVATURE_FACTOR)
 
 #@app.route('/getAccel', methods=['GET', 'POST'])
