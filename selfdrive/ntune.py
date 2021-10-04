@@ -172,6 +172,7 @@ class nTune():
     if self.checkValue("accelProfile", 0, 2, 0):
       updated = True
 
+    print('checkValidISCC', updated)
     return updated
 
   def updateLQR(self):
