@@ -3,7 +3,7 @@
 import os
 import time
 import cereal.messaging as messaging
-import requests
+from selfdrive.ntune import ntune_scc_get
 
 def main():
   # 60초가 지나면 자동 종료된다.
@@ -18,6 +18,9 @@ def main():
         shutdown_count += 5
       else:
         shutdown_count = 0
+
+      print('distanceGap', ntune_scc_get('distanceGap'))
+      print('accelProfile', ntune_scc_get('accelProfile'))
 
       #print('current', shutdown_count, 'shutdown_at', shutdown_at)
 

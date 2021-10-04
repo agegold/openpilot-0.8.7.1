@@ -30,9 +30,15 @@ def apply():
         global ACCEL_PROFILE
         ACCEL_PROFILE = request.form['chk_accel']
         global SCC_CURVATURE_FACTOR
-        SCC_CURVATURE_FACTOR = request.form['chk_curv']
+        #SCC_CURVATURE_FACTOR = request.form['chk_curv']
+        if request.form['chk_curv'] == 0:
+            SCC_CURVATURE_FACTOR = 0.5
+        elif request.form['chk_curv'] == 1:
+            SCC_CURVATURE_FACTOR = 1.0
+        elif request.form['chk_curv'] == 2:
+            SCC_CURVATURE_FACTOR = 1.5
 
-        message = '{\n "distanceGap": DISTANCE_GAP, \n "accelProfile": ACCEL_PROFILE, \n "sccCurvatureFactor": SCC_CURVATURE_FACTOR \n }'
+        message = '{\n "distanceGap": DISTANCE_GAP, \n "accelProfile": ACCEL_PROFILE, \n "sccCurvatureFactor": SCC_CURVATURE_FACTOR \n }\n'
         message = message.replace('DISTANCE_GAP', DISTANCE_GAP)
         message = message.replace('ACCEL_PROFILE', ACCEL_PROFILE)
         message = message.replace('SCC_CURVATURE_FACTOR', SCC_CURVATURE_FACTOR)
