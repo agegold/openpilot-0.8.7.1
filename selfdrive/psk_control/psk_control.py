@@ -29,7 +29,7 @@ def apply():
         DISTANCE_GAP = request.form['chk_distance']
         global ACCEL_PROFILE
         ACCEL_PROFILE = request.form['chk_accel']
-        global ACCEL_PROFILE
+        global SCC_CURVATURE_FACTOR
         SCC_CURVATURE_FACTOR = request.form['chk_curv']
 
         if SCC_CURVATURE_FACTOR == 0:
