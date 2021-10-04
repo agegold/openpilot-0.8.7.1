@@ -97,7 +97,7 @@ class nTune():
   def checkValue(self, key, min_, max_, default_):
     updated = False
 
-    print('key',key)
+    print('checkValue key',key)
     if key not in self.config:
       self.config.update({key: default_})
       updated = True
@@ -242,6 +242,7 @@ def ntune_get(group, key):
   ntune = ntunes[group]
 
   if ntune.config == None or key not in ntune.config:
+    print('============ntune.config===============')
     ntune.read()
 
   v = ntune.config[key]
