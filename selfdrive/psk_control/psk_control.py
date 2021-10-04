@@ -15,7 +15,7 @@ DISTANCE_GAP = 0
 ACCEL_PROFILE = 0
 SCC_CURVATURE_FACTOR = 1
 
-CONF_SCC_FILE = '/data/ntune/scc2.json'
+CONF_SCC_FILE = '/data/ntune/scc.json'
 
 @app.route('/')
 def index():
@@ -39,7 +39,7 @@ def apply():
 
         print("message:", message)
         # 파일 저장
-        f = open("CONF_SCC_FILE", 'w')
+        f = open(CONF_SCC_FILE, 'w')
         f.write(message)
         f.close()
 
