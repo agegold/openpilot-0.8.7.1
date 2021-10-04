@@ -15,7 +15,7 @@ DISTANCE_GAP = 0
 ACCEL_PROFILE = 0
 SCC_CURVATURE_FACTOR = 1
 
-CONF_SCC_FILE = '/data/ntune/scc.json'
+CONF_SCC_FILE = '/data/ntune/scc2.json'
 
 @app.route('/')
 def index():
