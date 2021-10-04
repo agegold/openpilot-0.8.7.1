@@ -97,7 +97,6 @@ class nTune():
   def checkValue(self, key, min_, max_, default_):
     updated = False
 
-    print('checkValue key',key)
     if key not in self.config:
       self.config.update({key: default_})
       updated = True
@@ -173,7 +172,6 @@ class nTune():
     if self.checkValue("accelProfile", 0, 2, 0):
       updated = True
 
-    print('checkValidISCC', updated)
     return updated
 
   def updateLQR(self):
