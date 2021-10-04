@@ -33,11 +33,11 @@ def apply():
         SCC_CURVATURE_FACTOR = request.form['chk_curv']
 
         message = '{\n "distanceGap": DISTANCE_GAP, \n "accelProfile": ACCEL_PROFILE, \n "sccCurvatureFactor": SCC_CURVATURE_FACTOR \n }'
-        message.replace('DISTANCE_GAP', DISTANCE_GAP)
-        message.replace('ACCEL_PROFILE', ACCEL_PROFILE)
-        message.replace('SCC_CURVATURE_FACTOR', SCC_CURVATURE_FACTOR)
+        message.replace('DISTANCE_GAP', request.form['chk_distance'])
+        message.replace('ACCEL_PROFILE', request.form['chk_accel'])
+        message.replace('SCC_CURVATURE_FACTOR', request.form['chk_curv'])
 
-        print("message:",message)
+        print("message:", message)
         # 파일 저장
         f = open("CONF_SCC_FILE", 'w')
         f.write(message)
