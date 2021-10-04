@@ -3,7 +3,7 @@ from flask import Flask, render_template
 from flask import request
 from flask import jsonify, Response
 from cereal import messaging
-
+from selfdrive.ntune import ntune_scc_get
 
 app = Flask(__name__)
 
@@ -11,9 +11,9 @@ import logging
 log = logging.getLogger('werkzeug')
 log.setLevel(logging.ERROR)
 
-DISTANCE_GAP = 0
-ACCEL_PROFILE = 0
-SCC_CURVATURE_FACTOR = 1
+DISTANCE_GAP = ntune_scc_get('distanceGap')
+ACCEL_PROFILE = ntune_scc_get('accelProfile')
+SCC_CURVATURE_FACTOR = ntune_scc_get('sccCurvatureFactor')
 
 CONF_SCC_FILE = '/data/ntune/scc.json'
 
@@ -29,13 +29,15 @@ def apply():
         DISTANCE_GAP = request.form['chk_distance']
         global ACCEL_PROFILE
         ACCEL_PROFILE = request.form['chk_accel']
-        global SCC_CURVATURE_FACTOR
         #SCC_CURVATURE_FACTOR = request.form['chk_curv']
         if request.form['chk_curv'] == 0:
+            global SCC_CURVATURE_FACTOR
             SCC_CURVATURE_FACTOR = 0.5
         elif request.form['chk_curv'] == 1:
+            global SCC_CURVATURE_FACTOR
             SCC_CURVATURE_FACTOR = 1.0
         elif request.form['chk_curv'] == 2:
+            global SCC_CURVATURE_FACTOR
             SCC_CURVATURE_FACTOR = 1.5
 
         message = '{\n "distanceGap": DISTANCE_GAP, \n "accelProfile": ACCEL_PROFILE, \n "sccCurvatureFactor": SCC_CURVATURE_FACTOR \n }\n'
