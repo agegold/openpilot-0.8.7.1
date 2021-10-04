@@ -37,6 +37,7 @@ def apply():
         message.replace('ACCEL_PROFILE', ACCEL_PROFILE)
         message.replace('SCC_CURVATURE_FACTOR', SCC_CURVATURE_FACTOR)
 
+        print("message:",message)
         # 파일 저장
         f = open("CONF_SCC_FILE", 'w')
         f.write(message)
