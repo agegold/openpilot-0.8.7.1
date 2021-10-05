@@ -553,7 +553,7 @@ struct ControlsState @0x97ff69c53601abf1 {
   distanceGap @65 :Int16;
   accelProfile @66 :Int16;
   adaptiveCruise @67 :Int16;
-  leadAccelTau @68 :Int16;
+  leadAccelTau @68 :Float32;
 
   # UI alerts
   alertText1 @24 :Text;
