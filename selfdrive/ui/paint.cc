@@ -292,7 +292,7 @@ static void ui_draw_vision_scc_gap(UIState *s) {
 
   //NVGcolor color_bg = nvgRGBA(0, 0, 0, (255 * 0.1f));
   // 배경화면 (흰색 -> 회색)
-  NVGcolor color_bg = nvgRGBA(0, 0, 0, 0.4);
+  NVGcolor color_bg = nvgRGBA(0, 0, 0, 1);
 
   nvgBeginPath(s->vg);
   nvgCircle(s->vg, center_x, center_y, radius);
@@ -333,7 +333,7 @@ static void ui_draw_vision_accel_profile(UIState *s) {
   const int center_y = s->fb_h - footer_h / 2;
 
   //NVGcolor color_bg = nvgRGBA(0, 0, 0, (255 * 0.1f));
-  NVGcolor color_bg = nvgRGBA(0, 0, 0, 0.4);
+  NVGcolor color_bg = nvgRGBA(0, 0, 0, 1);
 
   nvgBeginPath(s->vg);
   nvgCircle(s->vg, center_x, center_y, radius);
@@ -374,8 +374,7 @@ static void ui_draw_vision_acc(UIState *s) {
   const int center_x = radius + (bdr_s * 2) + (radius*2 + 60) * 3;
   const int center_y = s->fb_h - footer_h / 2;
 
-  //NVGcolor color_bg = nvgRGBA(0, 0, 0, (255 * 0.1f));
-  NVGcolor color_bg = nvgRGBA(0, 0, 0, 0.4);
+  NVGcolor color_bg = nvgRGBA(0, 0, 0, 1);
 
   nvgBeginPath(s->vg);
   nvgCircle(s->vg, center_x, center_y, radius);
@@ -483,7 +482,6 @@ static int bb_ui_draw_measure(UIState *s,  const char* bb_value, const char* bb_
 static void bb_ui_draw_basic_info(UIState *s)
 {
     const UIScene *scene = &s->scene;
-    char str[1024];
 
     auto controls_state = (*s->sm)["controlsState"].getControlsState();
     auto car_params = (*s->sm)["carParams"].getCarParams();
