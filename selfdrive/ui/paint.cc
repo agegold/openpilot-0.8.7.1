@@ -292,7 +292,7 @@ static void ui_draw_vision_scc_gap(UIState *s) {
 
   //NVGcolor color_bg = nvgRGBA(0, 0, 0, (255 * 0.1f));
   // 배경화면 (흰색 -> 회색)
-  NVGcolor color_bg = nvgRGBA(0, 0, 0, 0.4f);
+  NVGcolor color_bg = nvgRGBA(0, 0, 0, 0.4);
 
   nvgBeginPath(s->vg);
   nvgCircle(s->vg, center_x, center_y, radius);
@@ -333,7 +333,7 @@ static void ui_draw_vision_accel_profile(UIState *s) {
   const int center_y = s->fb_h - footer_h / 2;
 
   //NVGcolor color_bg = nvgRGBA(0, 0, 0, (255 * 0.1f));
-  NVGcolor color_bg = nvgRGBA(0, 0, 0, 0.4f);
+  NVGcolor color_bg = nvgRGBA(0, 0, 0, 0.4);
 
   nvgBeginPath(s->vg);
   nvgCircle(s->vg, center_x, center_y, radius);
@@ -375,7 +375,7 @@ static void ui_draw_vision_acc(UIState *s) {
   const int center_y = s->fb_h - footer_h / 2;
 
   //NVGcolor color_bg = nvgRGBA(0, 0, 0, (255 * 0.1f));
-  NVGcolor color_bg = nvgRGBA(0, 0, 0, 0.4f);
+  NVGcolor color_bg = nvgRGBA(0, 0, 0, 0.4);
 
   nvgBeginPath(s->vg);
   nvgCircle(s->vg, center_x, center_y, radius);
@@ -489,7 +489,7 @@ static void bb_ui_draw_basic_info(UIState *s)
     auto car_params = (*s->sm)["carParams"].getCarParams();
     auto live_params = (*s->sm)["liveParameters"].getLiveParameters();
 
-    snprintf(str, sizeof(str), "AO(%.2f/%.2f) SR(%.2f) SRC(%.2f) SAD(%.2f) LAD(%.2f) LAT(%.2f) CURV(%.2f)%s%s",
+    snprintf(str, sizeof(str), "AO(%.2f/%.2f) SR(%.2f) SRC(%.2f) SAD(%.2f) LAD(%.2f) LAT(%.2f) CURV(%.2f)",
 
                         live_params.getAngleOffsetDeg(),
                         live_params.getAngleOffsetAverageDeg(),
@@ -498,9 +498,7 @@ static void bb_ui_draw_basic_info(UIState *s)
                         controls_state.getSteerActuatorDelay(),
                         controls_state.getLongitudinalActuatorDelay(),
                         controls_state.getLeadAccelTau(),
-                        controls_state.getSccCurvatureFactor(),
-                        sccLogMessage.size() > 0 ? ", " : "",
-                        sccLogMessage.c_str()
+                        controls_state.getSccCurvatureFactor()
                         );
 
     int x = bdr_s * 2;
