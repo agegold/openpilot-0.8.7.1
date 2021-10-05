@@ -694,6 +694,7 @@ static void ui_draw_vision(UIState *s) {
     //ui_draw_vision_face(s);  비활성화
     ui_draw_vision_scc_gap(s);   // 차간거리
     ui_draw_vision_accel_profile(s);  // 엑셀 프로파일
+    ui_draw_vision_acc(s);      // ACC 사용 유무
 	ui_draw_vision_brake(s);
 	// 오토 홀드 추가
 	ui_draw_vision_autohold(s);
