@@ -482,12 +482,14 @@ static int bb_ui_draw_measure(UIState *s,  const char* bb_value, const char* bb_
 static void bb_ui_draw_basic_info(UIState *s)
 {
     const UIScene *scene = &s->scene;
+    char str[1024];
+    std::string sccLogMessage = "";
 
     auto controls_state = (*s->sm)["controlsState"].getControlsState();
     auto car_params = (*s->sm)["carParams"].getCarParams();
     auto live_params = (*s->sm)["liveParameters"].getLiveParameters();
 
-    snprintf(str, sizeof(str), "AO(%.2f/%.2f) SR(%.2f) SRC(%.2f) SAD(%.2f) LAD(%.2f) LAT(%.2f) CURV(%.2f)",
+    snprintf(str, sizeof(str), "AO(%.2f/%.2f) SR(%.2f) SRC(%.2f) SAD(%.2f) LAD(%.2f) LAT(%.2f) CURV(%.2f)%s%s",
 
                         live_params.getAngleOffsetDeg(),
                         live_params.getAngleOffsetAverageDeg(),
@@ -496,8 +498,9 @@ static void bb_ui_draw_basic_info(UIState *s)
                         controls_state.getSteerActuatorDelay(),
                         controls_state.getLongitudinalActuatorDelay(),
                         controls_state.getLeadAccelTau(),
-                        controls_state.getSccCurvatureFactor()
-
+                        controls_state.getSccCurvatureFactor(),
+                        sccLogMessage.size() > 0 ? ", " : "",
+                        sccLogMessage.c_str()
                         );
 
     int x = bdr_s * 2;
