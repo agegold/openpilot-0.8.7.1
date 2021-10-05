@@ -497,6 +497,7 @@ static void bb_ui_draw_basic_info(UIState *s)
                         controls_state.getLongitudinalActuatorDelay(),
                         controls_state.getLeadAccelTau(),
                         controls_state.getSccCurvatureFactor()
+
                         );
 
     int x = bdr_s * 2;
