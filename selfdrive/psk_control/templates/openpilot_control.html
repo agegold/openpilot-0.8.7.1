@@ -73,7 +73,7 @@ input[type=text] {
 		//}else if( curv == 1.5 ) {
 		//	document.frm1.chk_curv[2].checked = true;
 		//}
-		document.frm1.curv.text = {{curvParam}};
+		document.frm1.curv.value = {{curvParam}};
 
 		var acc = {{accParam}};
 		if( acc == 0 ) {
@@ -82,9 +82,9 @@ input[type=text] {
 			document.frm1.chk_acc[1].checked = true;
 		}
 
-		document.frm1.lad.text = {{ladParam}};
+		document.frm1.lad.value = {{ladParam}};
 
-		document.frm1.lat.text = {{latParam}};
+		document.frm1.lat.value = {{latParam}};
 
 		//document.getElementById("lead_accel_tau").value = 1
 		//document.getElementById("steer_ratio").value = 2
@@ -155,7 +155,7 @@ input[type=text] {
 <body onload="load()">
 	<form name="frm1" id="frm1" action="" method="post">
 		<h1>Openpilot Control</h1>
-		<h2>
+		<h3>
 		<p>
 			<font color="GREEN">GAP(seconds)</font>
 			<br><input type="radio" name="chk_distance" value=0>AUTO
@@ -165,52 +165,52 @@ input[type=text] {
 			<br><input type="radio" name="chk_distance" value=4>2.5
 			
 		</p>
-		</h2>
+		</h3>
 
-		<h2>
+		<h3>
 		<p>
 			<font color="GREEN">ACCEL MODE</font>
 			<br><input type="radio" name="chk_accel" value=0>ECO
 			<br><input type="radio" name="chk_accel" value=1>NORMAL
 			<br><input type="radio" name="chk_accel" value=2>SPORT
 		</p>
-		</h2>
+		</h3>
 
-		<h2>
+		<h3>
 		<p>
-			<font color="GREEN">SCC CURVATURE FACTOR (0.5 ~ 1.5)</font>
-			<br>리드 감속이 클수록 계속 감속할 가능성이 높아진다.<br>
+			<font color="GREEN">SCC CURVATURE FACTOR</font>
+			<br>리드 감속이 클수록 계속 감속(0.5 ~ 1.5)<br>
 			<!--<br><input type="radio" name="chk_curv" value=0.5>0.5
 			<br><input type="radio" name="chk_curv" value=1.0>1.0
 			<br><input type="radio" name="chk_curv" value=1.5>1.5-->
 			<input type="text" name="curv" onkeypress="return isNumberKey(event)" onkeyup="return delHangle(event)">
 		</p>
-		</h2>
+		</h3>
 
-		<h2>
+		<h3>
 		<p>
 			<font color="GREEN">ADAPTIVE CRUISE</font>
 			<br><input type="radio" name="chk_acc" value=0>True
 			<br><input type="radio" name="chk_acc" value=1>False
 		</p>
-		</h2>
+		</h3>
 
-		<h2>
+		<h3>
 		<p>
 			<font color="GREEN">LONGITUDINAL ACTUATOR DELAY (0.1 ~ 1.5)</font>
 			<!--<br><input type="radio" name="chk_curv" value=0.1>0.1
 			<br><input type="radio" name="chk_curv" value=0.2>0.2
 			<br><input type="radio" name="chk_curv" value=1.5>1.5-->
-			<input type="text" name="lad" onkeypress="return isNumberKey(event)" onkeyup="return delHangle(event)">
+			<br><input type="text" name="lad" onkeypress="return isNumberKey(event)" onkeyup="return delHangle(event)">
 		</p>
-		</h2>
+		</h3>
 
-		<h2>
+		<h3>
 		<p>
 			<font color="GREEN">LEAD ACCEL TAU (1.5 ~ 10.0)</font>
 			<input type="text" name="lat" onkeypress="return isNumberKey(event)" onkeyup="return delHangle(event)">
 		</p>
-		</h2>
+		</h3>
 
 		<div align="center">
 			<input type="button" value="APPLY" onclick="apply_ok()">
