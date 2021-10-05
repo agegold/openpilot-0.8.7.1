@@ -18,7 +18,7 @@ body {
 
 input[type=button], input[type=submit], input[type=reset] {
   background-color: #4CAF50;
-  width: 90%;
+  width: 45%;
   border: none;
   color: white;
   padding: 15px 30px;
@@ -157,6 +157,20 @@ input[type=text] {
 <body onload="load()">
 	<form name="frm1" id="frm1" action="" method="post">
 		<h2>Openpilot Control</h2>
+
+		<div align="center">
+			<input type="button" value="APPLY" onclick="apply_ok()">
+			<input type="button" value="RESET" onclick="load()">
+		</div>
+
+		<h4>
+		<p>
+			<font color="GREEN">ADAPTIVE CRUISE</font>
+			<br><input type="radio" name="chk_acc" value=0>True
+			<br><input type="radio" name="chk_acc" value=1>False
+		</p>
+		</h4>
+
 		<h4>
 		<p>
 			<font color="GREEN">GAP(seconds)</font>
@@ -190,14 +204,6 @@ input[type=text] {
 
 		<h4>
 		<p>
-			<font color="GREEN">ADAPTIVE CRUISE</font>
-			<br><input type="radio" name="chk_acc" value=0>True
-			<br><input type="radio" name="chk_acc" value=1>False
-		</p>
-		</h4>
-
-		<h4>
-		<p>
 			<font color="GREEN">LONGITUDINAL ACTUATOR DELAY (0.1 ~ 1.5)</font>
 			<!--<br><input type="radio" name="chk_curv" value=0.1>0.1
 			<br><input type="radio" name="chk_curv" value=0.2>0.2
@@ -214,10 +220,6 @@ input[type=text] {
 		</p>
 		</h4>
 
-		<div align="center">
-			<input type="button" value="APPLY" onclick="apply_ok()">
-			<br><input type="button" value="RESET" onclick="load()">
-		</div>
 
 	</form>
 </body>
