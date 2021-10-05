@@ -1,13 +1,13 @@
 from common.numpy_fast import mean
 from common.kalman.simple_kalman import KF1D
 from selfdrive.config import RADAR_TO_CAMERA
-from selfdrive.car.gm.values import LEAD_ACCEL_TAU
+from selfdrive.ntune import ntune_scc_get
 
 
 # the longer lead decels, the more likely it will keep decelerating
 # 리드 감속이 길수록 계속 감속할 가능성이 높아집니다.
 
-_LEAD_ACCEL_TAU = LEAD_ACCEL_TAU
+_LEAD_ACCEL_TAU = ntune_scc_get('leadAccelTau')
 
 # radar tracks
 SPEED, ACCEL = 0, 1   # Kalman filter states enum

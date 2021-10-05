@@ -279,7 +279,7 @@ static void ui_draw_vision_event(UIState *s) {
   ui_draw_circle_image(s, center_x, center_y, radius, "driver_face", s->scene.dm_active);
 }*/
 
-// 1>
+// 1> GAP
 static void ui_draw_vision_scc_gap(UIState *s) {
   auto control_state = (*s->sm)["controlsState"].getControlsState();
   int gap = control_state.getDistanceGap();
@@ -290,7 +290,9 @@ static void ui_draw_vision_scc_gap(UIState *s) {
   const int center_x = radius + (bdr_s * 2) + radius*2 + 60;
   const int center_y = s->fb_h - footer_h / 2;
 
-  NVGcolor color_bg = nvgRGBA(0, 0, 0, (255 * 0.1f));
+  //NVGcolor color_bg = nvgRGBA(0, 0, 0, (255 * 0.1f));
+  // 배경화면 (흰색 -> 회색)
+  NVGcolor color_bg = nvgRGBA(0, 0, 0, 0.4f);
 
   nvgBeginPath(s->vg);
   nvgCircle(s->vg, center_x, center_y, radius);
@@ -319,7 +321,7 @@ static void ui_draw_vision_scc_gap(UIState *s) {
 
 }
 
-// 2>
+// 2> 엑셀 프로파일
 static void ui_draw_vision_accel_profile(UIState *s) {
   auto control_state = (*s->sm)["controlsState"].getControlsState();
   int accel = control_state.getAccelProfile();
@@ -330,7 +332,8 @@ static void ui_draw_vision_accel_profile(UIState *s) {
   const int center_x = radius + (bdr_s * 2) + (radius*2 + 60) * 2;
   const int center_y = s->fb_h - footer_h / 2;
 
-  NVGcolor color_bg = nvgRGBA(0, 0, 0, (255 * 0.1f));
+  //NVGcolor color_bg = nvgRGBA(0, 0, 0, (255 * 0.1f));
+  NVGcolor color_bg = nvgRGBA(0, 0, 0, 0.4f);
 
   nvgBeginPath(s->vg);
   nvgCircle(s->vg, center_x, center_y, radius);
@@ -360,15 +363,54 @@ static void ui_draw_vision_accel_profile(UIState *s) {
 
 }
 
-// 3>
+// 3> ACC
+static void ui_draw_vision_acc(UIState *s) {
+  auto control_state = (*s->sm)["controlsState"].getControlsState();
+  int acc = control_state.getAdaptiveCruise();
+  if(acc < 0)
+    return;
+
+  const int radius = 96;
+  const int center_x = radius + (bdr_s * 2) + (radius*2 + 60) * 3;
+  const int center_y = s->fb_h - footer_h / 2;
+
+  //NVGcolor color_bg = nvgRGBA(0, 0, 0, (255 * 0.1f));
+  NVGcolor color_bg = nvgRGBA(0, 0, 0, 0.4f);
+
+  nvgBeginPath(s->vg);
+  nvgCircle(s->vg, center_x, center_y, radius);
+  nvgFillColor(s->vg, color_bg);
+  nvgFill(s->vg);
+
+  NVGcolor textColor = nvgRGBA(255, 255, 255, 200);
+  float textSize = 30.f;
+
+  char str[64];
+
+  if(acc == 0) {
+    snprintf(str, sizeof(str), "OFF");
+    textColor = nvgRGBA(120, 255, 120, 200);
+  } else if(acc == 1) {
+    snprintf(str, sizeof(str), "ON");
+    textColor = nvgRGBA(120, 255, 120, 200);
+  }
+
+  nvgTextAlign(s->vg, NVG_ALIGN_CENTER | NVG_ALIGN_MIDDLE);
+
+  ui_draw_text(s, center_x, center_y-36, "ACC", 22 * 2.5f, nvgRGBA(255, 255, 255, 200), "sans-bold");
+  ui_draw_text(s, center_x, center_y+22, str, textSize * 2.5f, textColor, "sans-bold");
+
+}
+
+// 4> Brake
 static void ui_draw_vision_brake(UIState *s) {
   const int radius = 96;
-  const int brake_x = radius + (bdr_s * 2) + (radius*2 + 60) * 3;
+  const int brake_x = radius + (bdr_s * 2) + (radius*2 + 60) * 4;
   const int brake_y = s->fb_h - footer_h / 2;
   ui_draw_circle_image(s, brake_x, brake_y, radius, "brake_img", s->scene.brakeLights);
 }
 
-// 4>
+// 5> autohold
 static void ui_draw_vision_autohold(UIState *s) {
   auto car_state = (*s->sm)["carState"].getCarState();
   int autohold = car_state.getAutoHold();
@@ -376,7 +418,7 @@ static void ui_draw_vision_autohold(UIState *s) {
     return;
 
   const int radius = 96;
-  const int center_x = radius + (bdr_s * 2) + (radius*2 + 60) * 4;
+  const int center_x = radius + (bdr_s * 2) + (radius*2 + 60) * 5;
   const int center_y = s->fb_h - footer_h / 2;
 
   float brake_img_alpha = autohold > 0 ? 1.0f : 0.15f;
@@ -436,6 +478,37 @@ static int bb_ui_draw_measure(UIState *s,  const char* bb_value, const char* bb_
     nvgRestore(s->vg);
   }
   return (int)((bb_valueFontSize + bb_labelFontSize)*2.5) + 5;
+}
+
+static void bb_ui_draw_basic_info(UIState *s)
+{
+    const UIScene *scene = &s->scene;
+    char str[1024];
+
+    auto controls_state = (*s->sm)["controlsState"].getControlsState();
+    auto car_params = (*s->sm)["carParams"].getCarParams();
+    auto live_params = (*s->sm)["liveParameters"].getLiveParameters();
+
+    snprintf(str, sizeof(str), "AO(%.2f/%.2f) SR(%.2f) SRC(%.2f) SAD(%.2f) LAD(%.2f) LAT(%.2f) CURV(%.2f)%s%s",
+
+                        live_params.getAngleOffsetDeg(),
+                        live_params.getAngleOffsetAverageDeg(),
+                        controls_state.getSteerRatio(),
+                        controls_state.getSteerRateCost(),
+                        controls_state.getSteerActuatorDelay(),
+                        controls_state.getLongitudinalActuatorDelay(),
+                        controls_state.getLeadAccelTau(),
+                        controls_state.getSccCurvatureFactor(),
+                        sccLogMessage.size() > 0 ? ", " : "",
+                        sccLogMessage.c_str()
+                        );
+
+    int x = bdr_s * 2;
+    int y = s->fb_h - 24;
+
+    nvgTextAlign(s->vg, NVG_ALIGN_LEFT | NVG_ALIGN_MIDDLE);
+
+    ui_draw_text(s, x, y, str, 20 * 2.5, COLOR_WHITE_ALPHA(200), "sans-semibold");
 }
 
 static void bb_ui_draw_measures_left(UIState *s, int bb_x, int bb_y, int bb_w ) {
@@ -605,6 +678,8 @@ static void bb_ui_draw_UI(UIState *s) {
   const int bb_dml_y = (bdr_s * 1.5) + 220;
 
   bb_ui_draw_measures_left(s, bb_dml_x, bb_dml_y, bb_dml_w);
+
+  bb_ui_draw_basic_info(s);
 }
 
 static void ui_draw_vision(UIState *s) {

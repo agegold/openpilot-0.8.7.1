@@ -5,6 +5,7 @@ from selfdrive.controls.lib.drive_helpers import CONTROL_N
 from selfdrive.modeld.constants import T_IDXS
 from selfdrive.config import Conversions as CV
 from selfdrive.car.gm.values import MIN_ACC_SPEED
+from selfdrive.ntune import ntune_scc_get
 
 # mpc에서 계산된 타겟속도로 맞추기 위해 PID를 이용한 gas/brake 값을 산출
 
@@ -28,7 +29,7 @@ BRAKE_THRESHOLD_TO_PID = 0.2
 BRAKE_STOPPING_TARGET = 0.5
 
 RATE = 100.0
-DEFAULT_LONG_LAG = 0.15
+#DEFAULT_LONG_LAG = 0.15
 
 
 def long_control_state_trans(active, long_control_state, v_ego, v_target, v_pid,
@@ -88,9 +89,13 @@ class LongControl():
     # Interp control trajectory
     # TODO estimate car specific lag, use .5s for now
     if len(long_plan.speeds) == CONTROL_N:
-      v_target = interp(DEFAULT_LONG_LAG, T_IDXS[:CONTROL_N], long_plan.speeds)
+      #v_target = interp(DEFAULT_LONG_LAG, T_IDXS[:CONTROL_N], long_plan.speeds)
+      #v_target_future = long_plan.speeds[-1]
+      #a_target = interp(DEFAULT_LONG_LAG, T_IDXS[:CONTROL_N], long_plan.accels)
+      longitudinalActuatorDelay = ntune_scc_get("longitudinalActuatorDelay")
+      v_target = interp(longitudinalActuatorDelay, T_IDXS[:CONTROL_N], long_plan.speeds)
       v_target_future = long_plan.speeds[-1]
-      a_target = interp(DEFAULT_LONG_LAG, T_IDXS[:CONTROL_N], long_plan.accels)
+      a_target = 2 * (v_target - long_plan.speeds[0]) / longitudinalActuatorDelay - long_plan.accels[0]
     else:
       v_target = 0.0
       v_target_future = 0.0
@@ -109,17 +114,10 @@ class LongControl():
 
     v_ego_pid = max(CS.vEgo, CP.minSpeedCan)  # Without this we get jumps, CAN bus reports 0 when speed < 0.3
 
-    if self.long_control_state == LongCtrlState.off or CS.gasPressed or not CS.adaptiveCruise or CS.brakePressed or CS.vEgo <= MIN_ACC_SPEED / CV.MS_TO_KPH:
+    if self.long_control_state == LongCtrlState.off or CS.gasPressed or not CS.adaptiveCruise or CS.brakePressed \
+            or CS.vEgo <= MIN_ACC_SPEED / CV.MS_TO_KPH or ntune_scc_get('adaptiveCruise') == 0:
       self.reset(v_ego_pid)
       output_gb = 0.
-
-    #elif CS.regenPressed:
-    #  self.reset(CS.vEgo)
-    #  output_gb = REGEN_THRESHOLD
-
-    #elif CS.gasPressed:
-    #  self.reset(v_ego_pid)
-    #  output_gb = REGEN_THRESHOLD
 
     # tracking objects and driving (물체 추적 및 운전)
     elif self.long_control_state == LongCtrlState.pid:

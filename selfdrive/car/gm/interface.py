@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 from cereal import car
 from selfdrive.config import Conversions as CV
-from selfdrive.car.gm.values import CAR, CruiseButtons, AccState, STEER_RATIO, STIFFNESS_FACTOR
+from selfdrive.car.gm.values import CAR, CruiseButtons, AccState, STIFFNESS_FACTOR
 from selfdrive.car import STD_CARGO_KG, scale_rot_inertia, scale_tire_stiffness, gen_empty_fingerprint
 from selfdrive.car.interfaces import CarInterfaceBase
 from common.params import Params
@@ -44,7 +44,7 @@ class CarInterface(CarInterfaceBase):
     ret.lateralTuning.lqr.l = [0.3233671, 0.3185757]
     ret.lateralTuning.lqr.dcGain = 0.002858
 
-    ret.steerRatio = STEER_RATIO
+    ret.steerRatio = 17.2
     ret.steerActuatorDelay = 0.0
     ret.steerRateCost = 0.552
 
@@ -68,37 +68,16 @@ class CarInterface(CarInterfaceBase):
     ret.tireStiffnessFront, ret.tireStiffnessRear = scale_tire_stiffness(ret.mass, ret.wheelbase, ret.centerToFront,
                                                                          tire_stiffness_factor=tire_stiffness_factor)
 
-    # [HYNDAI] longitudinal
-    #ret.longitudinalTuning.kpBP = [0, 10. * CV.KPH_TO_MS, 20. * CV.KPH_TO_MS, 40. * CV.KPH_TO_MS, 70. * CV.KPH_TO_MS,
-    #                               100. * CV.KPH_TO_MS, 130. * CV.KPH_TO_MS]
-    #ret.longitudinalTuning.kpV = [1.2, 1.05, 0.92, 0.765, 0.61, 0.5, 0.4]
-    #ret.longitudinalTuning.kiBP = [0, 130. * CV.KPH_TO_MS]
-    #ret.longitudinalTuning.kiV = [0.03, 0.02]
-    #ret.longitudinalTuning.kfBP = [10. * CV.KPH_TO_MS, 30. * CV.KPH_TO_MS, 50. * CV.KPH_TO_MS, 80. * CV.KPH_TO_MS,
-    #                               100. * CV.KPH_TO_MS, 130. * CV.KPH_TO_MS]
-    #ret.longitudinalTuning.kfV = [1.0, 0.92, 0.86, 0.79, 0.76, 0.72]
-    #ret.longitudinalTuning.deadzoneBP = [0., 100. * CV.KPH_TO_MS]
-    #ret.longitudinalTuning.deadzoneV = [0., 0.015]
-
-    #ret.gasMaxBP = [0., 10. * CV.KPH_TO_MS, 20. * CV.KPH_TO_MS, 50. * CV.KPH_TO_MS, 70. * CV.KPH_TO_MS,
-    #                130. * CV.KPH_TO_MS]
-    #ret.gasMaxV = [0.57, 0.4, 0.32, 0.24, 0.17, 0.13]
-
-
     # [Equinox 2020]
     ret.longitudinalTuning.kpBP = [0., 5., 10., 20., 30.]
     ret.longitudinalTuning.kpV = [0.82, 0.775, 0.725, 0.67, 1.05]
-    #ret.longitudinalTuning.kiBP = [0., 20.]
-    #ret.longitudinalTuning.kiV = [0.045, 0.055]
-    #ret.longitudinalTuning.kfBP = [15., 20., 25.]
-    #ret.longitudinalTuning.kfV = [1., 0.5, 0.2]
-
     ret.longitudinalTuning.kiBP = [0, 30.]
     ret.longitudinalTuning.kiV = [0.07, 0.03]    # 100까지 비례한다. 오파 보간은 외삽이 없이 100 이상은 0.03 이다.
     ret.longitudinalTuning.kfBP = [0., 5., 10., 20., 30.]
     ret.longitudinalTuning.kfV = [1.0, 0.92, 0.86, 0.79, 0.76]
     ret.longitudinalTuning.deadzoneBP = [0., 100. * CV.KPH_TO_MS]
     ret.longitudinalTuning.deadzoneV = [0., 0.015]
+    ret.longitudinalActuatorDelay = 0.2
 
     if ret.enableGasInterceptor:
       ret.gasMaxBP = [0., 5., 10., 19., 30.]

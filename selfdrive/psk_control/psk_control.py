@@ -14,12 +14,17 @@ log.setLevel(logging.ERROR)
 DISTANCE_GAP = ntune_scc_get('distanceGap')
 ACCEL_PROFILE = ntune_scc_get('accelProfile')
 SCC_CURVATURE_FACTOR = ntune_scc_get('sccCurvatureFactor')
+ADAPTIVE_CRUISE = ntune_scc_get('adaptiveCruise')
+LONGITUDINAL_ACTUATOR_DELAY = ntune_scc_get('longitudinalActuatorDelay')
+LEAD_ACCEL_TAU = ntune_scc_get('leadAccelTau')
 
 CONF_SCC_FILE = '/data/ntune/scc.json'
 
 @app.route('/')
 def index():
-    return render_template('openpilot_control.html', gapParam = DISTANCE_GAP, accelParam = ACCEL_PROFILE, curvParam = SCC_CURVATURE_FACTOR)
+    return render_template('openpilot_control.html', gapParam = DISTANCE_GAP, accelParam = ACCEL_PROFILE,
+                           curvParam = SCC_CURVATURE_FACTOR, accParam = ADAPTIVE_CRUISE,
+                           ladParam = LONGITUDINAL_ACTUATOR_DELAY, latParam = LEAD_ACCEL_TAU)
 
 
 @app.route('/apply', methods=['GET', 'POST'])
@@ -30,13 +35,31 @@ def apply():
         global ACCEL_PROFILE
         ACCEL_PROFILE = request.form['chk_accel']
         global SCC_CURVATURE_FACTOR
-        SCC_CURVATURE_FACTOR = request.form['chk_curv']
+        SCC_CURVATURE_FACTOR = request.form['curv']
+        global ADAPTIVE_CRUISE
+        ADAPTIVE_CRUISE = request.form['chk_acc']
+        global LONGITUDINAL_ACTUATOR_DELAY
+        LONGITUDINAL_ACTUATOR_DELAY = request.form['lad']
+        global LEAD_ACCEL_TAU
+        LEAD_ACCEL_TAU = request.form['lat']
 
 
-        message = '{\n "distanceGap": DISTANCE_GAP, \n "accelProfile": ACCEL_PROFILE, \n "sccCurvatureFactor": SCC_CURVATURE_FACTOR \n }\n'
+
+        message = '{\n ' \
+                  '"distanceGap": DISTANCE_GAP, ' \
+                  '\n "accelProfile": ACCEL_PROFILE, ' \
+                  '\n "sccCurvatureFactor": SCC_CURVATURE_FACTOR, ' \
+                  '\n "adaptiveCruise": ADAPTIVE_CRUISE, ' \
+                  '\n "longitudinalActuatorDelay": LONGITUDINAL_ACTUATOR_DELAY, ' \
+                  '\n "leadAccelTau": LEAD_ACCEL_TAU ' \
+                  '\n }\n'
+
         message = message.replace('DISTANCE_GAP', DISTANCE_GAP)
         message = message.replace('ACCEL_PROFILE', ACCEL_PROFILE)
         message = message.replace('SCC_CURVATURE_FACTOR', SCC_CURVATURE_FACTOR)
+        message = message.replace('ADAPTIVE_CRUISE', ADAPTIVE_CRUISE)
+        message = message.replace('LONGITUDINAL_ACTUATOR_DELAY', LONGITUDINAL_ACTUATOR_DELAY)
+        message = message.replace('LEAD_ACCEL_TAU', LEAD_ACCEL_TAU)
 
         print("message:", message)
         # 파일 저장
@@ -44,7 +67,9 @@ def apply():
         f.write(message)
         f.close()
 
-        return render_template('openpilot_control.html', gapParam = DISTANCE_GAP, accelParam = ACCEL_PROFILE, curvParam = SCC_CURVATURE_FACTOR)
+        return render_template('openpilot_control.html', gapParam = DISTANCE_GAP, accelParam = ACCEL_PROFILE,
+                               curvParam = SCC_CURVATURE_FACTOR, accParam = ADAPTIVE_CRUISE,
+                               ladParam = LONGITUDINAL_ACTUATOR_DELAY, latParam = LEAD_ACCEL_TAU)
 
 #@app.route('/getAccel', methods=['GET', 'POST'])
 #def getAccel():

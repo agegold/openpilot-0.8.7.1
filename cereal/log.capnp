@@ -552,6 +552,8 @@ struct ControlsState @0x97ff69c53601abf1 {
   # Control ADD (PSK)
   distanceGap @65 :Int16;
   accelProfile @66 :Int16;
+  adaptiveCruise @67 :Int16;
+  leadAccelTau @68 :Int16;
 
   # UI alerts
   alertText1 @24 :Text;
@@ -574,22 +576,18 @@ struct ControlsState @0x97ff69c53601abf1 {
     debugState @59 :LateralDebugState;
   }
 
-  angleSteers @67 :Float32;
-  cluSpeedMs @68 :Float32;
-  applyAccel @69 :Float32;
-  aReqValue @70 :Float32;
-  aReqValueMin @71 :Float32;
-  aReqValueMax @72 :Float32;
+  angleSteers @69 :Float32;
+  cluSpeedMs @70 :Float32;
+  applyAccel @71 :Float32;
+  aReqValue @72 :Float32;
+  aReqValueMin @73 :Float32;
+  aReqValueMax @74 :Float32;
 
-  steerRatio @73 :Float32;
-  steerRateCost @74 :Float32;
-  steerActuatorDelay @75 :Float32;
-  sccGasFactor @76 :Float32;
-  sccBrakeFactor @77 :Float32;
+  steerRatio @75 :Float32;
+  steerRateCost @76 :Float32;
+  steerActuatorDelay @77 :Float32;
   sccCurvatureFactor @78 :Float32;
-
-  sccStockCamAct @79 :Float32;
-  sccStockCamStatus @80 :Float32;
+  longitudinalActuatorDelay @79 :Float32;
 
   enum OpenpilotState @0xdbe58b96d2d1ac61 {
     disabled @0;

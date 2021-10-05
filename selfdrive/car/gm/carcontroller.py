@@ -6,7 +6,7 @@ from selfdrive.car import apply_std_steer_torque_limits, create_gas_command
 from selfdrive.car.gm import gmcan
 from selfdrive.car.gm.values import DBC, CanBus, CarControllerParams, MIN_ACC_SPEED
 from opendbc.can.packer import CANPacker
-#from selfdrive.car.gm.scc_smoother import SccSmoother
+from selfdrive.ntune import ntune_scc_get
 
 VisualAlert = car.CarControl.HUDControl.VisualAlert
 
@@ -65,9 +65,10 @@ class CarController():
     # Pedal
     if CS.CP.enableGasInterceptor and (frame % 2) == 0:
 
-      if not enabled or not CS.adaptive_Cruise or CS.out.vEgo <= MIN_ACC_SPEED / CV.MS_TO_KPH:
+      if not enabled or not CS.adaptive_Cruise or \
+              CS.out.vEgo <= MIN_ACC_SPEED / CV.MS_TO_KPH or ntune_scc_get('adaptiveCruise') == 0:
         final_pedal = 0
-      elif CS.adaptive_Cruise and CS.out.vEgo > MIN_ACC_SPEED / CV.MS_TO_KPH:
+      elif CS.adaptive_Cruise and CS.out.vEgo > MIN_ACC_SPEED / CV.MS_TO_KPH and ntune_scc_get('adaptiveCruise') == 1:
         accel = actuators.gas - actuators.brake
         accel, self.accel_steady = accel_hysteresis(accel, self.accel_steady)
         final_pedal = clip(accel, 0., 1.)

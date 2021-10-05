@@ -11,10 +11,6 @@ SLOW_ON_CURVES = 1    # 슬로우 커브 사용 유무 (0,1)
 
 MIN_CURVE_SPEED = 32. * CV.KPH_TO_MS    # 커브 속도 설정
 
-LEAD_ACCEL_TAU = 7     # 리드 감속이 길수록 계속 감속할 가능성이 높아집니다.
-
-STEER_RATIO = 17.2
-
 STIFFNESS_FACTOR = 0.5       # stiffnessFactor 값은 작을 수록 조향이 민감해지구요.
 
 class CarControllerParams():

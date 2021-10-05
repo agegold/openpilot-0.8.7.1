@@ -18,11 +18,14 @@ body {
 
 input[type=button], input[type=submit], input[type=reset] {
   background-color: #4CAF50;
+  width: 90%;
   border: none;
   color: white;
-  padding: 32px 64px;
+  padding: 15px 30px;
+  text-align: center;
   text-decoration: none;
-  margin: 8px 4px;
+  font-size: 20px;
+  margin: 4px 2px;
   cursor: pointer;
 }
 
@@ -62,14 +65,26 @@ input[type=text] {
 			document.frm1.chk_accel[2].checked = true;
 		}
 
-		var curv = {{curvParam}};
-		if( curv == 0.5 ) {
-			document.frm1.chk_curv[0].checked = true;
-		}else if( curv == 1.0 ) {
-			document.frm1.chk_curv[1].checked = true;
-		}else if( curv == 1.5 ) {
-			document.frm1.chk_curv[2].checked = true;
+		//var curv = {{curvParam}};
+		//if( curv == 0.5 ) {
+		//	document.frm1.chk_curv[0].checked = true;
+		//}else if( curv == 1.0 ) {
+		//	document.frm1.chk_curv[1].checked = true;
+		//}else if( curv == 1.5 ) {
+		//	document.frm1.chk_curv[2].checked = true;
+		//}
+		document.frm1.curv.text = {{curvParam}};
+
+		var acc = {{accParam}};
+		if( acc == 0 ) {
+			document.frm1.chk_acc[0].checked = true;
+		}else {
+			document.frm1.chk_acc[1].checked = true;
 		}
+
+		document.frm1.lad.text = {{ladParam}};
+
+		document.frm1.lat.text = {{latParam}};
 
 		//document.getElementById("lead_accel_tau").value = 1
 		//document.getElementById("steer_ratio").value = 2
@@ -86,6 +101,54 @@ input[type=text] {
         document.frm1.method = "post";
         document.frm1.submit();
     }
+
+    function delHangle(evt){ //한글을 지우는 부분, keyup부분에 넣어준다.
+		var objTarget = evt.srcElement || evt.target;
+		var _value = event.srcElement.value;
+		if(/[ㄱ-ㅎㅏ-ㅡ가-핳]/g.test(_value)) {
+			// objTarget.value = objTarget.value.replace(/[ㄱ-ㅎㅏ-ㅡ가-핳]/g,'');
+			objTarget.value = null;
+			//return false;
+		}
+	}
+
+	function isNumberKey(evt) { // 숫자를 제외한 값을 입력하지 못하게 한다.
+		var charCode = (evt.which) ? evt.which : event.keyCode;
+		// Textbox value
+		var _value = event.srcElement.value;
+		if (event.keyCode < 48 || event.keyCode > 57) {
+			if (event.keyCode != 46) { //숫자와 . 만 입력가능하도록함
+				return false;
+			}
+		}
+
+		// 소수점(.)이 두번 이상 나오지 못하게
+		var _pattern0 = /^\d*[.]\d*$/; // 현재 value값에 소수점(.) 이 있으면 . 입력불가
+		if (_pattern0.test(_value)) {
+			if (charCode == 46) {
+				return false;
+			}
+		}
+
+		// 두자리 이하의 숫자만 입력가능
+		var _pattern1 = /^\d{2}$/; // 현재 value값이 2자리 숫자이면 . 만 입력가능
+		// {숫자}의 값을 변경하면 자리수를 조정할 수 있다.
+		if (_pattern1.test(_value)) {
+			if (charCode != 46) {
+				alert("두자리 이하의 숫자만 입력가능합니다");
+				return false;
+			}
+		}
+
+		// 소수점 둘째자리까지만 입력가능
+		var _pattern2 = /^\d*[.]\d{2}$/; // 현재 value값이 소수점 둘째짜리 숫자이면 더이
+		// {숫자}의 값을 변경하면 자리수를 조정할 수 있다.
+		if (_pattern2.test(_value)) {
+			alert("소수점 둘째자리까지만 입력가능합니다.");
+			return false;
+		}
+		return true;
+	}
 </script>
 	
 </head>
@@ -115,45 +178,45 @@ input[type=text] {
 
 		<h2>
 		<p>
-			<font color="GREEN">SCC CURVATURE FACTOR</font>
-			<br><input type="radio" name="chk_curv" value=0.5>0.5
+			<font color="GREEN">SCC CURVATURE FACTOR (0.5 ~ 1.5)</font>
+			<br>리드 감속이 클수록 계속 감속할 가능성이 높아진다.<br>
+			<!--<br><input type="radio" name="chk_curv" value=0.5>0.5
 			<br><input type="radio" name="chk_curv" value=1.0>1.0
-			<br><input type="radio" name="chk_curv" value=1.5>1.5
+			<br><input type="radio" name="chk_curv" value=1.5>1.5-->
+			<input type="text" name="curv" onkeypress="return isNumberKey(event)" onkeyup="return delHangle(event)">
 		</p>
 		</h2>
 
-		<!--
 		<h2>
 		<p>
-			<font color="GREEN">LEAD ACCEL TAU</font>&nbsp;&nbsp;
-			<input type="text" id="lead_accel_tau" value="" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" />
+			<font color="GREEN">ADAPTIVE CRUISE</font>
+			<br><input type="radio" name="chk_acc" value=0>True
+			<br><input type="radio" name="chk_acc" value=1>False
 		</p>
 		</h2>
-		
+
 		<h2>
 		<p>
-			<font color="GREEN">STEER RATIO</font>&nbsp;&nbsp;
-			<input type="text" id="steer_ratio" value="" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" />
+			<font color="GREEN">LONGITUDINAL ACTUATOR DELAY (0.1 ~ 1.5)</font>
+			<!--<br><input type="radio" name="chk_curv" value=0.1>0.1
+			<br><input type="radio" name="chk_curv" value=0.2>0.2
+			<br><input type="radio" name="chk_curv" value=1.5>1.5-->
+			<input type="text" name="lad" onkeypress="return isNumberKey(event)" onkeyup="return delHangle(event)">
 		</p>
 		</h2>
-		
+
 		<h2>
 		<p>
-			<font color="GREEN">CAMERA OFFSET ADJUST</font>&nbsp;&nbsp;
-			<input type="text" id="camera_offset_adjust" value="" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" />
+			<font color="GREEN">LEAD ACCEL TAU (1.5 ~ 10.0)</font>
+			<input type="text" name="lat" onkeypress="return isNumberKey(event)" onkeyup="return delHangle(event)">
 		</p>
 		</h2>
-		
-		<h2>
-		<p>
-			<font color="GREEN">STIFFNESS FACTOR</font>&nbsp;&nbsp;
-			<input type="text" id="stiffness_factor" value="" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" />
-		</p>
-		</h2> -->
 
 		<div align="center">
-			<input type="button" style="WIDTH: 90pt; HEIGHT: 50pt; font-size: 60;" value="RESET" onclick="load()"> &nbsp;&nbsp;<input type="button" style="WIDTH: 90pt; HEIGHT: 50pt; font-size: 60;" value="APPLY" onclick="apply_ok()">
+			<input type="button" value="APPLY" onclick="apply_ok()">
+			<br><input type="button" value="RESET" onclick="load()">
 		</div>
+
 	</form>
 </body>
 </html>

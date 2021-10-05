@@ -172,6 +172,15 @@ class nTune():
     if self.checkValue("accelProfile", 0, 2, 0):
       updated = True
 
+    if self.checkValue("adaptiveCruise", 0, 1, 1):
+      updated = True
+
+    if self.checkValue("longitudinalActuatorDelay", 0.1, 1.5, 0.2):
+      updated = True
+
+    if self.checkValue("leadAccelTau", 1.5, 10.0, 1.5):
+      updated = True
+
     return updated
 
   def updateLQR(self):
